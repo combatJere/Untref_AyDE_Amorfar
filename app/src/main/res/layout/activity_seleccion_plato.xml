@@ -1,0 +1,38 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context="com.altosoftuntref.amorfar.SeleccionPlatoActivity"
+    android:background="#fff7d7ff">
+
+
+    <GridView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:numColumns="2"
+        android:id="@+id/gridView_seleccionPlato_platos"
+        android:layout_gravity="center_horizontal" />
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="60dp">
+
+        <!--<Button-->
+            <!--android:layout_width="0dp"-->
+            <!--android:layout_height="match_parent"-->
+            <!--android:text="New Button"-->
+            <!--android:id="@+id/button"-->
+            <!--android:layout_weight="1"/>-->
+
+        <Button
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:text="@string/nuevo_plato"
+            android:id="@+id/button_seleccionPlato_nuevoPlato"
+            android:layout_weight="1"
+            android:background="#ff8fff86"
+            android:onClick="showCrearNuevoPlatoDialog"/>
+    </LinearLayout>
+</LinearLayout>

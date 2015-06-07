@@ -1,0 +1,33 @@
+<resources>
+    <string name="app_name">Amorfar</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="action_settings">Settings</string>
+    <string name="elegir_menu">Elegi tu menu</string>
+    <string name="crear_menu">Crear menu</string>
+    <string name="informe">Informe</string>
+    <string name="usuario">Usuario</string>
+    <string name="clave">clave</string>
+    <string name="repetir_clave">Repetir clave</string>
+    <string name="entrar">Entrar</string>
+    <string name="title_activity_main">MainActivity</string>
+    <string name="title_activity_crear_menu">CrearMenuActivity</string>
+    <string name="recordar_sesion">Recordar sesion</string>
+    <string name="crear_usuario">Crear usuario</string>
+    <string name="title_activity_crear_usuario">CrearUsuarioActivity</string>
+    <string name="listo">Listo</string>
+    <string name="nombre_usuario_no_valido">El nombre de usuario debe ser mayor a 5 caracteres</string>
+    <string name="clave_no_valida">La clave debe ser mayor a 4 caracteres</string>
+    <string name="claves_no_coinciden">Las claves no coinciden</string>
+    <string name="usuario_creado_con_exito">Usuario creado!</string>
+    <string name="clave_no_correcta">La clave ingresada no es correcta</string>
+    <string name="nuevo_plato">+  Nuevo plato</string>
+    <string name="cantidad_de_platos">Cantidad de platos</string>
+    <string name="confirmar">CONFIRMAR</string>
+    <string name="title_activity_seleccion_plato">SeleccionPlatoActivity</string>
+    <string name="nombre_plato">Nombre del plato</string>
+    <string name="crear">Crear</string>
+    <string name="plato_existente">El plato ya existe</string>
+    <string name="nombre_plato_invalido">El nombre del plato deve ser mayor a 3 caracteres</string>
+    <string name="error_al_guardar_plato">Error, el plato no fue guardado</string>
+
+</resources>

@@ -1,0 +1,13 @@
+<resources>
+
+    <!-- Base application theme. -->
+    <style name="AppTheme" parent="Base.Theme.AppCompat.Light.DarkActionBar">
+        <!-- Customize your theme here. -->
+    </style>
+
+    <style name="boton_grande" >
+        <item name="android:layout_width" >@dimen/ancho_standard</item>
+        <item name="android:layout_height" >@dimen/alto_boton_standard</item>
+    </style>
+
+</resources>
