@@ -21,21 +21,24 @@ public class PlatosCursorAdapter extends CursorAdapter {
         super(context, c, flags);
     }
 
+    /**
+     * Solo inflar la vista (View) y devolverla.
+     */
     @Override
     public View newView(Context context, Cursor cursor, ViewGroup parent) {
         LayoutInflater inflater = LayoutInflater.from(context);
         View v = inflater.inflate(R.layout.plato_gridview_element, parent, false);
-//        cursor.getString(cursor.getColumnIndex(BaseDeDatosContract.Platos.COLUM_NAME_NOMBRE));
         return v;
     }
 
+    /**
+     * Instanciar los elementos de la vista (View)
+     */
     @Override
     public void bindView(View view, Context context, Cursor cursor) {
         String nombrePlato;
         TextView nombrePlatoTextView = (TextView) view.findViewById(R.id.textView_gridView_nombrePlato);
         nombrePlato = cursor.getString(cursor.getColumnIndex(BaseDeDatosContract.Platos.COLUM_NAME_NOMBRE));
-
         nombrePlatoTextView.setText(nombrePlato);
-        //asignarle el nombre del plato traido por el cursor
     }
 }

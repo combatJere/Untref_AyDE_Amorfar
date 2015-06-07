@@ -12,7 +12,8 @@
         android:layout_weight="1"
         android:numColumns="2"
         android:id="@+id/gridView_seleccionPlato_platos"
-        android:layout_gravity="center_horizontal" />
+        android:layout_gravity="center_horizontal"
+        android:background="#fffff6e2" />
 
     <LinearLayout
         android:orientation="horizontal"
