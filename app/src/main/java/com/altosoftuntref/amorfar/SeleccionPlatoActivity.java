@@ -19,6 +19,8 @@ import inversiondecontrol.ServiceLocator;
 
 public class SeleccionPlatoActivity extends ActionBarActivity implements NombrePlatoDialogFragment.NuevoPlatoDialogListener {
 
+    private PlatosCursorAdapter platosCursorAdapter;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -30,13 +32,21 @@ public class SeleccionPlatoActivity extends ActionBarActivity implements NombreP
      * Instancia el GridView que muestra los platos previamente creados que pueden elegirse.
      */
     private void instanciarGridViewPlatos(){
-        Cursor cursor = ServiceLocator.getInstance().getMenuesDao(getBaseContext()).getAllPlatosGuardadosCursor();
+        Cursor cursorAllPlatos = ServiceLocator.getInstance().getMenuesDao(getBaseContext()).getAllPlatosGuardadosCursor();
 //        cursor.moveToFirst();
 //        String s = cursor.getString(cursor.getColumnIndex(BaseDeDatosContract.Platos.COLUM_NAME_NOMBRE));
 //        Toast.makeText(getBaseContext(), s, Toast.LENGTH_LONG).show();
         GridView gridview = (GridView) findViewById(R.id.gridView_seleccionPlato_platos);
-        PlatosCursorAdapter platosCursorAdapter = new PlatosCursorAdapter(getBaseContext(), cursor, 0);
+        platosCursorAdapter = new PlatosCursorAdapter(getBaseContext(), cursorAllPlatos, 0);
         gridview.setAdapter(platosCursorAdapter);
+    }
+
+    /**
+     *
+     */
+    private void actualizarGridViewPlatos(){
+        Cursor cursorPlatosActualizados = ServiceLocator.getInstance().getMenuesDao(getBaseContext()).getAllPlatosGuardadosCursor();
+        platosCursorAdapter.changeCursor(cursorPlatosActualizados);
     }
 
     /**
@@ -73,8 +83,11 @@ public class SeleccionPlatoActivity extends ActionBarActivity implements NombreP
             if (menuesDao.existePlato(nombrePlato)) {
                 Toast.makeText(getBaseContext(), R.string.plato_existente, Toast.LENGTH_LONG).show();
             } else {
+
                 guardadoExitoso = menuesDao.guardarPlato(nombrePlato);
-                if (!guardadoExitoso) {
+                if (guardadoExitoso) {
+                    this.actualizarGridViewPlatos();
+                }else{
                     Toast.makeText(getBaseContext(), R.string.error_al_guardar_plato, Toast.LENGTH_LONG).show();
                 }
             }
