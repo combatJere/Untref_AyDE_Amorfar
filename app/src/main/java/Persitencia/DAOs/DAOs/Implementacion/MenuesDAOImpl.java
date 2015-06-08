@@ -6,6 +6,8 @@ import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 
+import java.util.prefs.Preferences;
+
 import Persitencia.BaseDeDatosContract;
 import Persitencia.BaseDeDatosHelper;
 import Persitencia.DAOs.MenuesDAO;
@@ -34,9 +36,9 @@ public class MenuesDAOImpl implements MenuesDAO {
         SQLiteDatabase db = miDbHelper.getReadableDatabase();
         boolean existeAlmuerzo = false;
 
-        String[] columnsToReturn = {
-                BaseDeDatosContract.Almuerzo.COLUMN_NAME_DIA,
-        };
+//        String[] columnsToReturn = {
+//                BaseDeDatosContract.Almuerzo.COLUMN_NAME_DIA, //CAMBIAR
+//        };
 
         String whereClause= BaseDeDatosContract.Almuerzo.COLUMN_NAME_DIA + "=? " + "AND " + BaseDeDatosContract.Almuerzo.COLUMN_NAME_MES + "=? "
                 + "AND " + BaseDeDatosContract.Almuerzo.COLUMN_NAME_ANIO + "=?";
@@ -46,7 +48,7 @@ public class MenuesDAOImpl implements MenuesDAO {
         try {
             Cursor cursor = db.query(
                     BaseDeDatosContract.Almuerzo.TABLE_NAME,  // The table to query
-                    columnsToReturn,                               // The columns to return
+                    null,                               // The columns to return
                     whereClause,                                // The columns for the WHERE clause
                     whereValues,                            // The values for the WHERE clause
                     null,                                     // don't group the rows
@@ -65,6 +67,93 @@ public class MenuesDAOImpl implements MenuesDAO {
         }
 
         return existeAlmuerzo;
+    }
+
+    @Override
+    public Cursor getPlatosDelMenu(int dia, int mes, int anio) {
+//      SQLiteDatabase db = miDbHelper.getReadableDatabase(); // si lo dejo aca, se cierra con el db.close de .getCodigosDePlatosDelMenu(dia, mes, anio);
+        int[] codigosPlatosDelMenu = this.getCodigosDePlatosDelMenu(dia, mes, anio);
+        int cantidadPlatos = codigosPlatosDelMenu.length; // number of IN arguments
+
+        SQLiteDatabase db = miDbHelper.getReadableDatabase();
+
+        String[] whereValues = new String[cantidadPlatos];
+
+        StringBuilder inList = new StringBuilder(cantidadPlatos*2);
+        for(int i=0;i<cantidadPlatos;i++){
+            whereValues[i] = String.valueOf(codigosPlatosDelMenu[i]);
+            if(i > 0) inList.append(","); inList.append("?"); }
+//        cursor = contentResolver.query(CONTENT_URI, PROJECTION, "field IN ("+inList.toString()+")", whereValues, null);
+
+        String[] columnsToReturn = {
+                BaseDeDatosContract.Platos.COLUMN_NAME_CODIGO_PLATO,
+                BaseDeDatosContract.Platos.COLUM_NAME_NOMBRE,
+        };
+
+        String whereClause= "field IN ("+inList.toString()+")";
+
+
+        Cursor cursor = db.query(
+                BaseDeDatosContract.Platos.TABLE_NAME,  // The table to query
+                columnsToReturn,                               // The columns to return
+                whereClause,                                // The columns for the WHERE clause
+                whereValues,                            // The values for the WHERE clause
+                null,                                     // don't group the rows
+                null,                                     // don't filter by row groups
+                null                                 // The sort order
+        );
+
+        return cursor;
+    }
+
+    @Override
+    public int[] getCodigosDePlatosDelMenu(int dia, int mes, int anio) {
+        SQLiteDatabase db = miDbHelper.getReadableDatabase();
+        Cursor cursorIdPlatosDelMenu;
+        int [] clavesPlatos;
+
+        String[] columnsToReturn = {
+                BaseDeDatosContract.MenuConPlatos.COLUM_NAME_CODIGO_PLATO,
+        };
+
+        String whereClause= BaseDeDatosContract.MenuConPlatos.COLUMN_NAME_DIA + "=? " + "AND " + BaseDeDatosContract.MenuConPlatos.COLUMN_NAME_MES + "=? "
+                + "AND " + BaseDeDatosContract.MenuConPlatos.COLUMN_NAME_ANIO + "=?";
+
+        String[] whereValues = {String.valueOf(dia), String.valueOf(mes), String.valueOf(anio)};
+
+
+        try{
+            cursorIdPlatosDelMenu = db.query(
+                    BaseDeDatosContract.MenuConPlatos.TABLE_NAME,  // The table to query
+                    columnsToReturn,                               // The columns to return
+                    whereClause,                                // The columns for the WHERE clause
+                    whereValues,                            // The values for the WHERE clause
+                    null,                                     // don't group the rows
+                    null,                                     // don't filter by row groups
+                    null                                 // The sort order
+            );
+
+            int cantidadPlatos =  cursorIdPlatosDelMenu.getCount();
+            clavesPlatos = new int[cantidadPlatos];
+
+
+//            for(int i = 0; cursorIdPlatosDelMenu.moveToNext(); i++){
+//                clavesPlatos[i] = cursorIdPlatosDelMenu.getInt(cursorIdPlatosDelMenu.
+//                        getColumnIndex(BaseDeDatosContract.MenuConPlatos.COLUM_NAME_CODIGO_PLATO));
+//            }
+            int contador = 0;
+            while(cursorIdPlatosDelMenu.moveToNext()){
+                clavesPlatos[contador] = cursorIdPlatosDelMenu.getInt(cursorIdPlatosDelMenu.
+                        getColumnIndex(BaseDeDatosContract.MenuConPlatos.COLUM_NAME_CODIGO_PLATO));
+                contador++;
+            }
+            cursorIdPlatosDelMenu.close();
+
+        }finally {
+            db.close();
+        }
+
+        return clavesPlatos;
     }
 
     public boolean guardarPlato(String nombreplato){
@@ -136,7 +225,7 @@ public class MenuesDAOImpl implements MenuesDAO {
         String sortOrder =
                 BaseDeDatosContract.Platos.COLUM_NAME_NOMBRE + " ASC";
 
-        try {
+//        try {
             cursor = db.query(
                     BaseDeDatosContract.Platos.TABLE_NAME,  // The table to query
                     columnsToReturn,                               // The columns to return
@@ -149,9 +238,9 @@ public class MenuesDAOImpl implements MenuesDAO {
 
 //            cursor.close(); //No cerrar porque lo tengo que pasar
 
-        }finally {
+//        }finally {
 //            db.close();
-        }
+//        }
         return cursor;
     }
 
@@ -165,7 +254,7 @@ public class MenuesDAOImpl implements MenuesDAO {
         String sortOrder =
                 BaseDeDatosContract.Platos.COLUM_NAME_NOMBRE + " ASC";
 
-        try {
+//        try {
             cursor = db.query(
                     BaseDeDatosContract.Platos.TABLE_NAME,  // The table to query
                     columnsToReturn,                               // The columns to return
@@ -178,9 +267,9 @@ public class MenuesDAOImpl implements MenuesDAO {
 
 //            cursor.close(); //No cerrar porque lo tengo que pasar
 
-        }finally {
+//        }finally {
 //            db.close();
-        }
+//        }
         return cursor;
     }
 

@@ -30,5 +30,6 @@
     <string name="nombre_plato_invalido">El nombre del plato deve ser mayor a 3 caracteres</string>
     <string name="nombre_pepe">pepelotas de humo</string>
     <string name="error_al_guardar_plato">Error, el plato no fue guardado</string>
+    <string name="elija_plato">Toque para elejir un plato</string>
 
 </resources>

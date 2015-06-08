@@ -22,7 +22,7 @@
             android:layout_marginLeft="5dp"
             android:layout_marginRight="5dp"
             android:textAppearance="?android:attr/textAppearanceMedium"
-            android:text="Large Textfffffffffffff fffffffffff fffffffffffffffffffffff"
+            android:text="@string/elija_plato"
             android:id="@+id/textView_gridView_nombrePlato"
             android:layout_gravity="center"
             android:gravity="center"/>

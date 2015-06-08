@@ -2,6 +2,7 @@ package com.altosoftuntref.amorfar;
 
 import android.app.DialogFragment;
 import android.content.Intent;
+import android.database.Cursor;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -16,6 +17,7 @@ import Configuraciones.Configuraciones;
 import Persitencia.DAOs.DAOs.Implementacion.MenuesDAOImpl;
 import Utilidades.TransformadorFechasSingleton;
 import Utilidades.TransformadorHorariosSingleton;
+import adapter.PlatosCursorAdapter;
 import dialogs.CantidadPlatosDialogFragment;
 import dialogs.TimePickerFragment;
 import inversiondecontrol.ServiceLocator;
@@ -31,6 +33,8 @@ public class CrearMenuActivity extends ActionBarActivity implements TimePickerFr
     private final static String SAVED_HORA = "com.altosoftuntref.amorfar.SAVED_HORA";
     private final static String SAVED_MINUTOS = "com.altosoftuntref.amorfar.HORA_MINUTOS";
     private final static String SAVED_CANTIDAD_PLATOS = "com.altosoftuntref.amorfar.HORA_CANTIDAD_PLATOS";
+
+    private PlatosCursorAdapter platosCursorAdapter;
 
     private int cantidadPlatos;
     private int dia;
@@ -60,7 +64,7 @@ public class CrearMenuActivity extends ActionBarActivity implements TimePickerFr
         this.obtenerFecha();
         this.actualizarTextviewFecha();
         this.actualizarTextviewHorario();
-//        this.crearGridViewPlatos();
+        this.crearGridViewPlatos();
         this.showCantidadPlatosDialog();
 
     }
@@ -108,12 +112,13 @@ public class CrearMenuActivity extends ActionBarActivity implements TimePickerFr
         }
     }
 
-//    public void crearGridViewPlatos(){
-//        //Obtener lista de platos.
-//        GridView platosGridView = (GridView) findViewById(R.id.gridView_crearMenu_platos);
-//        platosGridView.setAdapter(platosAdapter);
+    public void crearGridViewPlatos(){
+        Cursor platosDelMenu = ServiceLocator.getInstance().getMenuesDao(getBaseContext()).getPlatosDelMenu(dia, mes, anio);
+        GridView platosGridView = (GridView) findViewById(R.id.gridView_crearMenu_platos);
+        platosCursorAdapter = new PlatosCursorAdapter(getBaseContext(),platosDelMenu,0);
+        platosGridView.setAdapter(platosCursorAdapter);
 //        platosGridView.setOnItemClickListener(onPlatoClick);
-//    }
+    }
 
 //    private void crearPlatosPorDafault(){
 //        int cantidadPlatosMax = Configuraciones.CANTIDAD_PLATOS_MAX;
