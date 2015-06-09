@@ -26,6 +26,7 @@ import inversiondecontrol.ServiceLocator;
 public class CrearMenuActivity extends ActionBarActivity implements TimePickerFragment.TimePickerFragmentListenerJer, CantidadPlatosDialogFragment.CantidadPlatosDialogListener {
     public final static String EXTRA_HORA_TIMEPICKER = "com.altosoftuntref.amorfar.HORA_TIMEPICKER";
     public final static String EXTRA_MINUTOS_TIMEPICKER = "com.altosoftuntref.amorfar.MINUTOS_TIMEPICKER";
+    public final static String EXTRA_CANTIDAD_PLATOS = "com.altosoftuntref.amorfar.CANTIDAD_PLATOS";
     public final static String EXTRA_DIA = "com.altosoftuntref.amorfar.DIA";
     public final static String EXTRA_MES = "com.altosoftuntref.amorfar.MES";
     public final static String EXTRA_ANIO = "com.altosoftuntref.amorfar.ANIO";
@@ -153,6 +154,7 @@ public class CrearMenuActivity extends ActionBarActivity implements TimePickerFr
     public void onCantidadPlatosConfirmarClick(int cantidadPlatos) {
         this.cantidadPlatos = cantidadPlatos;
         Toast.makeText(getBaseContext(), "Cant platos: " + this.cantidadPlatos, Toast.LENGTH_LONG).show();
+        this.irASeleccionMultiplesPlatos(cantidadPlatos);
     }
 
     /**
@@ -198,6 +200,12 @@ public class CrearMenuActivity extends ActionBarActivity implements TimePickerFr
 //        intent.putExtra(EXTRA_DIA, dia);  LUEGO para que no aparezcan los platos ya elejidos
 //        intent.putExtra(EXTRA_MES, mes);
 //        intent.putExtra(EXTRA_ANIO, anio);
+        startActivity(intent);
+    }
+
+    private void irASeleccionMultiplesPlatos(int cantidadPlatos) {
+        Intent intent = new Intent(this, SeleccionMultiplesPlatos.class);
+        intent.putExtra(EXTRA_CANTIDAD_PLATOS, this.cantidadPlatos);
         startActivity(intent);
     }
 

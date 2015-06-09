@@ -31,5 +31,7 @@
     <string name="nombre_pepe">pepelotas de humo</string>
     <string name="error_al_guardar_plato">Error, el plato no fue guardado</string>
     <string name="elija_plato">Toque para elejir un plato</string>
+    <string name="title_activity_seleccion_multiples_platos">SeleccionMultiplesPlatos</string>
+    <string name="platos_restantes_a_elejir">Platos restantes:</string>
 
 </resources>

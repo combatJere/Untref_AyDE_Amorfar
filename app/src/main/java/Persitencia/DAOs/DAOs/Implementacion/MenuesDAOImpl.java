@@ -187,7 +187,7 @@ public class MenuesDAOImpl implements MenuesDAO {
 
         String whereClause= BaseDeDatosContract.Platos.COLUM_NAME_NOMBRE + "=?";
 
-        String[] whereValues = {String.valueOf(nombrePlato)};
+        String[] whereValues = {nombrePlato};
 
         try {
             Cursor cursor = db.query(
@@ -271,6 +271,43 @@ public class MenuesDAOImpl implements MenuesDAO {
 //            db.close();
 //        }
         return cursor;
+    }
+
+    @Override
+    public String getNombrePlato(int idPlatoElejido) {
+        SQLiteDatabase db = miDbHelper.getReadableDatabase();
+        String nombrePlato = null;
+
+        String[] columnsToReturn = {
+                BaseDeDatosContract.Platos.COLUM_NAME_NOMBRE,
+        };
+
+        String whereClause= BaseDeDatosContract.Platos.COLUMN_NAME_CODIGO_PLATO + "=?";
+
+        String[] whereValues = {String.valueOf(idPlatoElejido)};
+
+        try {
+            Cursor cursor = db.query(
+                    BaseDeDatosContract.Platos.TABLE_NAME,  // The table to query
+                    columnsToReturn,                               // The columns to return
+                    whereClause,                                // The columns for the WHERE clause
+                    whereValues,                            // The values for the WHERE clause
+                    null,                                     // don't group the rows
+                    null,                                     // don't filter by row groups
+                    null                                 // The sort order
+            );
+
+            //devuelve true si tiene elementos.
+            if(cursor.moveToFirst()){
+                nombrePlato = cursor.getString(cursor.getColumnIndex(BaseDeDatosContract.Platos.COLUM_NAME_NOMBRE));
+            }
+            cursor.close();
+
+        }finally {
+            db.close();
+        }
+
+        return nombrePlato;
     }
 
 //    public void cerrarDB(){

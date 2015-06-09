@@ -13,11 +13,11 @@ import com.altosoftuntref.amorfar.R;
 import Persitencia.BaseDeDatosContract;
 
 /**
- * Created by jeremias on 05/06/2015.
+ * Created by jeremias on 08/06/2015.
  */
-public class PlatosCursorAdapter extends CursorAdapter {
+public class PlatosMultipleChoiceAdapter extends CursorAdapter{
 
-    public PlatosCursorAdapter(Context context, Cursor c, int flags) {
+    public PlatosMultipleChoiceAdapter(Context context, Cursor c, int flags) {
         super(context, c, flags);
     }
 
@@ -41,4 +41,7 @@ public class PlatosCursorAdapter extends CursorAdapter {
         nombrePlato = cursor.getString(cursor.getColumnIndex(BaseDeDatosContract.Platos.COLUM_NAME_NOMBRE));
         nombrePlatoTextView.setText(nombrePlato);
     }
+
+
 }
+

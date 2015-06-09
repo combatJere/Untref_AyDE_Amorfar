@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="gridViewItem_background">#52fff0c5</color>
+    <color name="gridViewItemCentro_background">#41f364ff</color>
+    <color name="gridViewItem_background_checked">#37a93400</color>
+    <color name="gridViewItemCentro_background_checked">#37a93400</color>
+</resources>

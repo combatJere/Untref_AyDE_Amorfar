@@ -59,6 +59,13 @@ public interface MenuesDAO {
      * @return un Cursor con el nombre de todos los platos guardados.
      */
     public Cursor getAllNombrePlatosCursor();
-//    public void cerrarDB();
+
+    /**
+     * CUIDADO: El plato debe existir en la BDD.
+     * @param idPlatoElejido recibe el id correspondiente a un plato.
+     * @return el nobre del plato.
+     */
+    String getNombrePlato(int idPlatoElejido);
+;
 
 }

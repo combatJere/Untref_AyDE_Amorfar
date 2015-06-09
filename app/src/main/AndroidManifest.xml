@@ -32,6 +32,10 @@
             android:name=".SeleccionPlatoActivity"
             android:label="@string/title_activity_seleccion_plato" >
         </activity>
+        <activity
+            android:name=".SeleccionMultiplesPlatos"
+            android:label="@string/title_activity_seleccion_multiples_platos" >
+        </activity>
     </application>
 
 </manifest>
