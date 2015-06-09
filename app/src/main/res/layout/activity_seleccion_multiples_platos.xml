@@ -11,42 +11,37 @@
         android:layout_centerVertical="true"
         android:layout_centerHorizontal="true">
 
-        <LinearLayout
+        <RelativeLayout
             android:orientation="horizontal"
             android:layout_width="match_parent"
-            android:layout_height="60dp"
+            android:layout_height="45dp"
             android:background="#ffffe2e0">
 
-            <FrameLayout
-                android:id="@+id/linearLayout_crearMenu_fecha"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_weight="1">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:text="@string/platos_restantes_a_elejir"
+                android:id="@+id/textView_seleccionMultiplesPlatos_platosRestantes"
+                android:layout_gravity="right|center_vertical"
+                android:layout_alignTop="@+id/textView_seleccionMultiplesPlatos_CANTplatosRestantes"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"
+                android:layout_marginLeft="10dp"/>
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textAppearance="?android:attr/textAppearanceLarge"
-                    android:text="@string/platos_restantes_a_elejir"
-                    android:id="@+id/textView_seleccionMultiplesPlatos_platosRestantes"
-                    android:layout_gravity="right|center_vertical"/>
-            </FrameLayout>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:text="platos_error"
+                android:id="@+id/textView_seleccionMultiplesPlatos_CANTplatosRestantes"
+                android:layout_gravity="left|center_vertical"
+                android:layout_marginLeft="6dp"
+                android:layout_marginStart="6dp"
+                android:layout_centerVertical="true"
+                android:layout_toRightOf="@+id/textView_seleccionMultiplesPlatos_platosRestantes" />
 
-            <FrameLayout
-                android:id="@+id/linearLayout_crarMenu_hora"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_weight="1">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textAppearance="?android:attr/textAppearanceLarge"
-                    android:text="hora_error"
-                    android:id="@+id/textView_seleccionMultiplesPlatos_CANTplatosRestantes"
-                    android:layout_gravity="left|center_vertical" />
-            </FrameLayout>
-        </LinearLayout>
+        </RelativeLayout>
 
         <FrameLayout
             android:layout_width="match_parent"

@@ -1,5 +1,6 @@
 package com.altosoftuntref.amorfar;
 
+import android.app.Activity;
 import android.database.Cursor;
 import android.graphics.Color;
 import android.support.v7.app.ActionBarActivity;
@@ -20,7 +21,7 @@ import inversiondecontrol.ServiceLocator;
 import layouts.customs.GridViewItem;
 
 
-public class SeleccionMultiplesPlatos extends ActionBarActivity {
+public class SeleccionMultiplesPlatos extends Activity {
 
     private  int cantPlatosRestantes;
     private Set<Integer> platosElejidos = new HashSet<Integer>();
