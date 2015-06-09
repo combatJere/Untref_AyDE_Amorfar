@@ -15,6 +15,8 @@ import android.widget.Toast;
 import java.util.HashSet;
 import java.util.Set;
 
+import Configuraciones.Configuraciones;
+import Utilidades.TransformadorIntSetArray;
 import adapter.PlatosCursorAdapter;
 import adapter.PlatosMultipleChoiceAdapter;
 import inversiondecontrol.ServiceLocator;
@@ -23,8 +25,11 @@ import layouts.customs.GridViewItem;
 
 public class SeleccionMultiplesPlatos extends Activity {
 
+    private final static String SAVED_CANTIDAD_PLATOS = "com.altosoftuntref.amorfar.multiplesPlatos.CANTIDAD_PLATOS";
+    private final static String SAVED_SET_PLATOS_ELEJIDOS = "com.altosoftuntref.amorfar.multiplesPlatos.SET_PLATOS_ELEJIDOS";
+
     private  int cantPlatosRestantes;
-    private Set<Integer> platosElejidos = new HashSet<Integer>();
+    private Set<Integer> platosElejidos;
     private TextView textViewCantidadPlatosRestantes;
     private GridView gridViewPlatosMultiCheck;
     private PlatosMultipleChoiceAdapter platosCursorAdapter;
@@ -32,11 +37,32 @@ public class SeleccionMultiplesPlatos extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        //Check whether we are recreating a previously destroyed instance.
+        if (savedInstanceState != null) {
+            //valores salvados, si se esta recreando la actividad.
+            cantPlatosRestantes = savedInstanceState.getInt(SAVED_CANTIDAD_PLATOS);
+            int[] platosGuardadosArray = savedInstanceState.getIntArray(SAVED_SET_PLATOS_ELEJIDOS);
+            platosElejidos = TransformadorIntSetArray.getInstance().arrayIntASetInt(platosGuardadosArray);
+        } else {
+            //Default values, si inicia por primera vez.
+            cantPlatosRestantes = getIntent().getIntExtra(CrearMenuActivity.EXTRA_CANTIDAD_PLATOS, 0);
+            platosElejidos = new HashSet<Integer>();
+        }
+
+
         setContentView(R.layout.activity_seleccion_multiples_platos);
-        cantPlatosRestantes = getIntent().getIntExtra(CrearMenuActivity.EXTRA_CANTIDAD_PLATOS, 0);
+//        cantPlatosRestantes = getIntent().getIntExtra(CrearMenuActivity.EXTRA_CANTIDAD_PLATOS, 0);
 
         this.instanciarGridViewSeleccionMultiple();
         this.instanciarTextViewPlatosRestantes();
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle savedInstanceState) {
+        savedInstanceState.putInt(SAVED_CANTIDAD_PLATOS, cantPlatosRestantes);
+        savedInstanceState.putIntArray(SAVED_SET_PLATOS_ELEJIDOS, TransformadorIntSetArray.getInstance().setIntAArrayInt(platosElejidos));
+        super.onSaveInstanceState(savedInstanceState);
     }
 
     private void instanciarTextViewPlatosRestantes(){
@@ -82,6 +108,7 @@ public class SeleccionMultiplesPlatos extends Activity {
             }
         }
     };
+
 
 
 

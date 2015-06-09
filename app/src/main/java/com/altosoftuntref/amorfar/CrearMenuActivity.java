@@ -33,7 +33,7 @@ public class CrearMenuActivity extends ActionBarActivity implements TimePickerFr
 
     private final static String SAVED_HORA = "com.altosoftuntref.amorfar.SAVED_HORA";
     private final static String SAVED_MINUTOS = "com.altosoftuntref.amorfar.HORA_MINUTOS";
-    private final static String SAVED_CANTIDAD_PLATOS = "com.altosoftuntref.amorfar.HORA_CANTIDAD_PLATOS";
+    private final static String SAVED_CANTIDAD_PLATOS = "com.altosoftuntref.amorfar.CANTIDAD_PLATOS";
 
     private PlatosCursorAdapter platosCursorAdapter;
 
