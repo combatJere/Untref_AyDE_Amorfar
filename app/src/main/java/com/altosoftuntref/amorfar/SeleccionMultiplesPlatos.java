@@ -15,6 +15,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 import adapter.PlatosCursorAdapter;
+import adapter.PlatosMultipleChoiceAdapter;
 import inversiondecontrol.ServiceLocator;
 import layouts.customs.GridViewItem;
 
@@ -25,7 +26,7 @@ public class SeleccionMultiplesPlatos extends ActionBarActivity {
     private Set<Integer> platosElejidos = new HashSet<Integer>();
     private TextView textViewCantidadPlatosRestantes;
     private GridView gridViewPlatosMultiCheck;
-    private PlatosCursorAdapter platosCursorAdapter;
+    private PlatosMultipleChoiceAdapter platosCursorAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,7 +46,7 @@ public class SeleccionMultiplesPlatos extends ActionBarActivity {
     private void instanciarGridViewSeleccionMultiple(){
         Cursor cursorAllPlatos = ServiceLocator.getInstance().getMenuesDao(getBaseContext()).getAllPlatosGuardadosCursor();
         gridViewPlatosMultiCheck = (GridView) findViewById(R.id.gridView_seleccionMultiplesPlatos_platos);
-        platosCursorAdapter = new PlatosCursorAdapter(getBaseContext(), cursorAllPlatos, 0);
+        platosCursorAdapter = new PlatosMultipleChoiceAdapter(getBaseContext(), cursorAllPlatos, 0, platosElejidos);
         gridViewPlatosMultiCheck.setAdapter(platosCursorAdapter);
         gridViewPlatosMultiCheck.setOnItemClickListener(onPlatoClick);
     }
