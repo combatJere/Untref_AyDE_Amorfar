@@ -13,6 +13,8 @@ import android.widget.Toast;
 
 import com.altosoftuntref.amorfar.R;
 
+import Configuraciones.Configuraciones;
+
 /**
  * Dialog que permite al usuario (administrador) elegir la cantidad de platos que se
  * ofrecerean en ese menu. por medio de un NumberPicker.
@@ -35,9 +37,9 @@ public class CantidadPlatosDialogFragment extends DialogFragment {
 
         View numberPickerLayout = inflater.inflate(R.layout.dialog_cantidad_comidas_seleccion, null);
         numberPicker = (NumberPicker)numberPickerLayout.findViewById(R.id.numberPicker_cantidadComidas);
-        numberPicker.setMaxValue(5);
-        numberPicker.setMinValue(1);
-        numberPicker.setValue(2);
+        numberPicker.setMaxValue(Configuraciones.CANTIDAD_PLATOS_MAX);
+        numberPicker.setMinValue(Configuraciones.CANTIDAD_PLATOS_MIN);
+        numberPicker.setValue(Configuraciones.CANTIDAD_PLATOS_POR_DEFECTO);
 
         builder.setView(numberPickerLayout) //Le tengo que pasar el mismo layout que ya cree.
                 .setMessage(R.string.cantidad_de_platos)
@@ -53,7 +55,6 @@ public class CantidadPlatosDialogFragment extends DialogFragment {
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
-
         // This makes sure that the container activity has implemented
         // the TimePickerFragmentListener interface. If not, it throws an exception
         try {
