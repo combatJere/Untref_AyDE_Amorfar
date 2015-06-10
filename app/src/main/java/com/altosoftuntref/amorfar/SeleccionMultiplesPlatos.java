@@ -4,7 +4,6 @@ import android.app.Activity;
 import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
-import android.os.Parcelable;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.FrameLayout;
@@ -23,7 +22,7 @@ import layouts.customs.GridViewItem;
 
 public class SeleccionMultiplesPlatos extends Activity {
 
-    public final static String EXTRA_RETURN_IDPLATOS = "com.altosoftuntref.amorfar.multiplesPlatos.RETURN_IDPLATOS";
+    public final static String EXTRA_RETURNED_IDPLATOS = "com.altosoftuntref.amorfar.multiplesPlatos.RETURN_IDPLATOS";
     private final static String SAVED_CANTIDAD_PLATOS = "com.altosoftuntref.amorfar.multiplesPlatos.CANTIDAD_PLATOS";
     private final static String SAVED_SET_PLATOS_ELEJIDOS = "com.altosoftuntref.amorfar.multiplesPlatos.SET_PLATOS_ELEJIDOS";
 
@@ -118,7 +117,7 @@ public class SeleccionMultiplesPlatos extends Activity {
         if(cantPlatosRestantes == 0) {
             Intent intent = new Intent();
             int[] idPlatosElejidosArray = TransformadorIntSetArray.getInstance().setIntAArrayInt(idPlatosElejidos);
-            intent.putExtra(EXTRA_RETURN_IDPLATOS, idPlatosElejidosArray);
+            intent.putExtra(EXTRA_RETURNED_IDPLATOS, idPlatosElejidosArray);
             setResult(RESULT_OK, intent);
             finish();
         }else{

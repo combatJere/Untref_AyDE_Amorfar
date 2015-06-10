@@ -1,17 +1,19 @@
 package com.altosoftuntref.amorfar;
 
+import android.content.Intent;
 import android.database.Cursor;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.GridView;
 import android.widget.Toast;
 
-import Persitencia.BaseDeDatosContract;
-import Persitencia.DAOs.DAOs.Implementacion.MenuesDAOImpl;
+import java.util.Iterator;
+import java.util.Set;
+
 import Persitencia.DAOs.MenuesDAO;
+import Utilidades.TransformadorIntSetArray;
 import adapter.PlatosCursorAdapter;
 import dialogs.NombrePlatoDialogFragment;
 import inversiondecontrol.ServiceLocator;
@@ -19,13 +21,55 @@ import inversiondecontrol.ServiceLocator;
 
 public class SeleccionPlatoActivity extends ActionBarActivity implements NombrePlatoDialogFragment.NuevoPlatoDialogListener {
 
+    public final static String SAVED_SET_ID_PLATOS = "amorfar.SeleccionPlatoActivity.SET_ID_PLATOS";
+    public final static String SAVED_ID_PLATO_A_INTERCAMBIAR = "amorfar.SeleccionPlatoActivity.ID_PLATO_A_INTERCAMBIAR";
+
+    public final static String EXTRA_RETURNED_IDPLATOS_ACTUALIZADOS ="amorfar.SeleccionPlatoActivity.EXTRA_RETURNED_IDPLATOS_ACTUALIZADOS";
     private PlatosCursorAdapter platosCursorAdapter;
+    private Set<Integer> idPlatosElejidos;
+    private int idPlatoAintercambiar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        if (savedInstanceState != null) {
+            //valores salvados, si se esta recreando la actividad.
+            this.recuperarDatosSalvados(savedInstanceState);
+        } else {
+            //Default values, si inicia por primera vez.
+            this.instanciarConNuevosValores();
+        }
+
         setContentView(R.layout.activity_seleccion_plato);
         this.instanciarGridViewPlatos();
+    }
+
+
+    @Override
+    public void onSaveInstanceState(Bundle savedInstanceState) {
+        savedInstanceState.putInt(SAVED_ID_PLATO_A_INTERCAMBIAR, idPlatoAintercambiar);
+        savedInstanceState.putIntArray(SAVED_SET_ID_PLATOS, TransformadorIntSetArray.getInstance().setIntAArrayInt(idPlatosElejidos));
+        super.onSaveInstanceState(savedInstanceState);
+    }
+
+    /**
+     * Recupera los valores de una instancia anterior.
+     * @param savedInstanceState
+     */
+    private void recuperarDatosSalvados(Bundle savedInstanceState){
+        idPlatoAintercambiar = savedInstanceState.getInt(SAVED_ID_PLATO_A_INTERCAMBIAR);
+        int[] platosGuardadosArray = savedInstanceState.getIntArray(SAVED_SET_ID_PLATOS);
+        idPlatosElejidos = TransformadorIntSetArray.getInstance().arrayIntASetInt(platosGuardadosArray);
+    }
+
+    /**
+     * Si la actividad recien inicia, se obtienen los valores recividos de CrearMenuActivity.
+     */
+    private void instanciarConNuevosValores(){
+        idPlatoAintercambiar = getIntent().getIntExtra(CrearMenuActivity.EXTRA_ID_PLATO_A_INTERCAMBIAR, 0);
+        int[] idPlatosElejidosArray = getIntent().getIntArrayExtra(CrearMenuActivity.EXTRA_ID_PLATOS_ACTUALES_A_INTERC);
+        idPlatosElejidos = TransformadorIntSetArray.getInstance().arrayIntASetInt(idPlatosElejidosArray);
     }
 
     /**
@@ -36,9 +80,10 @@ public class SeleccionPlatoActivity extends ActionBarActivity implements NombreP
 //        cursor.moveToFirst();
 //        String s = cursor.getString(cursor.getColumnIndex(BaseDeDatosContract.Platos.COLUM_NAME_NOMBRE));
 //        Toast.makeText(getBaseContext(), s, Toast.LENGTH_LONG).show();
-        GridView gridview = (GridView) findViewById(R.id.gridView_seleccionPlato_platos);
+        GridView gridViewPlatos = (GridView) findViewById(R.id.gridView_seleccionPlato_platos);
         platosCursorAdapter = new PlatosCursorAdapter(getBaseContext(), cursorAllPlatos, 0);
-        gridview.setAdapter(platosCursorAdapter);
+        gridViewPlatos.setAdapter(platosCursorAdapter);
+        gridViewPlatos.setOnItemClickListener(onPlatoClick);
     }
 
     /**
@@ -64,7 +109,7 @@ public class SeleccionPlatoActivity extends ActionBarActivity implements NombreP
      * @param nombrePlato
      */
     @Override
-    public void onConfirmarClick(String nombrePlato) {
+    public void onConfirmarDialogClick(String nombrePlato) {
         this.guardarNuevoPlato(nombrePlato);
     }
 
@@ -93,6 +138,32 @@ public class SeleccionPlatoActivity extends ActionBarActivity implements NombreP
             }
         }
     }
+
+    private AdapterView.OnItemClickListener onPlatoClick = new AdapterView.OnItemClickListener() {
+        public void onItemClick(AdapterView<?> parent, View view,int position, long id) {
+
+            int idPlatoElejido = (int) id; //(int)gridViewPlatosMultiCheck.getAdapter().getItemId(position);
+
+            Iterator<Integer> iterator = idPlatosElejidos.iterator();
+
+            Integer idAPlatoARemover = null;
+            while(iterator.hasNext() && idAPlatoARemover == null){
+                Integer idActual = iterator.next();
+                if (idActual.equals(idPlatoAintercambiar)){
+                    idAPlatoARemover = idActual;
+                }
+            }
+            idPlatosElejidos.remove(idAPlatoARemover);
+
+            idPlatosElejidos.add(idPlatoElejido);
+
+            Intent intent = new Intent();
+            int[] idPlatosElejidosArray = TransformadorIntSetArray.getInstance().setIntAArrayInt(idPlatosElejidos);
+            intent.putExtra(EXTRA_RETURNED_IDPLATOS_ACTUALIZADOS, idPlatosElejidosArray);
+            setResult(RESULT_OK, intent);
+            finish();
+        }
+    };
 
 //    private boolean nombreYaExiste(String nombrePlatoAAnalizar){
 //        boolean nombreExiste = false;

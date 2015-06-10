@@ -5,18 +5,12 @@ import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.DialogFragment;
 import android.content.DialogInterface;
-import android.database.Cursor;
 import android.os.Bundle;
-import android.text.Editable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.EditText;
-import android.widget.Toast;
 
 import com.altosoftuntref.amorfar.R;
-
-import Persitencia.BaseDeDatosContract;
-import Persitencia.DAOs.DAOs.Implementacion.MenuesDAOImpl;
 
 /**
  * Dialog que permite al usuario (administrador) crear un nuevo plato, y que quede guardado
@@ -29,7 +23,7 @@ public class NombrePlatoDialogFragment extends DialogFragment {
     private NuevoPlatoDialogListener nuevoPlatoAAgregarListener;
 
     public interface NuevoPlatoDialogListener {
-        public void onConfirmarClick(String nombrePlato);
+        public void onConfirmarDialogClick(String nombrePlato);
     }
 
     public Dialog onCreateDialog(Bundle savedInstanceState) {
@@ -46,7 +40,7 @@ public class NombrePlatoDialogFragment extends DialogFragment {
                 .setPositiveButton(R.string.crear, new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
                         String nombreIngresado = editText.getText().toString();
-                        nuevoPlatoAAgregarListener.onConfirmarClick(nombreIngresado);
+                        nuevoPlatoAAgregarListener.onConfirmarDialogClick(nombreIngresado);
                     }
                 });
         // Create the AlertDialog object and return it

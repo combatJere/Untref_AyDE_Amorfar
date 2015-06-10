@@ -6,6 +6,7 @@ import android.database.Cursor;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.GridView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -31,7 +32,10 @@ public class CrearMenuActivity extends ActionBarActivity implements TimePickerFr
     public final static String EXTRA_DIA = "com.altosoftuntref.amorfar.DIA";
     public final static String EXTRA_MES = "com.altosoftuntref.amorfar.MES";
     public final static String EXTRA_ANIO = "com.altosoftuntref.amorfar.ANIO";
+    public final static String EXTRA_ID_PLATO_A_INTERCAMBIAR = "com.altosoftuntref.amorfar.PLATO_A_INTERCAMBIAR";
+    public final static String EXTRA_ID_PLATOS_ACTUALES_A_INTERC = "com.altosoftuntref.amorfar.ID_PLATOS_ACTUALES";
     public final static int OBTENER_PLATOS = 10;
+    public final static int OBTENER_PLATOS_CAMBIADOS = 11;
 
     private final static String SAVED_DIA = "com.altosoftuntref.amorfar.SAVED_DIA";
     private final static String SAVED_MES = "com.altosoftuntref.amorfar.SAVED_MES";
@@ -170,6 +174,7 @@ public class CrearMenuActivity extends ActionBarActivity implements TimePickerFr
         GridView platosGridView = (GridView) findViewById(R.id.gridView_crearMenu_platos);
         platosCursorAdapter = new PlatosCursorAdapter(getBaseContext(),platosDelMenu,0);
         platosGridView.setAdapter(platosCursorAdapter);
+        platosGridView.setOnItemClickListener(onPlatoClick);
     }
 
     public void actualizarGridViewPlatos(){
@@ -245,18 +250,6 @@ public class CrearMenuActivity extends ActionBarActivity implements TimePickerFr
     }
 
     /**
-     * OnClick.
-     * Inicia la actividad SeleccionPlato.activity cuando se presiona el boton correspondiente.
-     */
-    public void irASeleccionPlato(View view) {
-        Intent intent = new Intent(this, SeleccionPlatoActivity.class);
-//        intent.putExtra(EXTRA_DIA, dia);  LUEGO para que no aparezcan los platos ya elejidos
-//        intent.putExtra(EXTRA_MES, mes);
-//        intent.putExtra(EXTRA_ANIO, anio);
-        startActivity(intent);
-    }
-
-    /**
      * Realiza distintas acciones, dependiendo lo sucedido en SeleccionMultiplesPlatos.activity
      * Si se eligieron platos, guarda sus id en  el Set idPlatosMenu.
      * Si se cancelo, cierra esta actividad tambien.
@@ -266,17 +259,70 @@ public class CrearMenuActivity extends ActionBarActivity implements TimePickerFr
      */
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if(resultCode == RESULT_OK && requestCode == OBTENER_PLATOS){
-            int[] idPlatosArray = data.getIntArrayExtra(SeleccionMultiplesPlatos.EXTRA_RETURN_IDPLATOS);
-            idPlatosDelMenu = TransformadorIntSetArray.getInstance().arrayIntASetInt(idPlatosArray);
-            this.actualizarGridViewPlatos();
+        if(requestCode == OBTENER_PLATOS){
 
-        }else if(resultCode == RESULT_CANCELED){
-            finish();
-            Toast.makeText(getBaseContext(), R.string.menu_cancelado, Toast.LENGTH_LONG).show();
+            if (resultCode == RESULT_OK) {
+                int[] idPlatosArray = data.getIntArrayExtra(SeleccionMultiplesPlatos.EXTRA_RETURNED_IDPLATOS);
+                idPlatosDelMenu = TransformadorIntSetArray.getInstance().arrayIntASetInt(idPlatosArray);
+                this.actualizarGridViewPlatos();
+
+            } else if (resultCode == RESULT_CANCELED) {
+                finish();
+                Toast.makeText(getBaseContext(), R.string.menu_cancelado, Toast.LENGTH_LONG).show();
+            }
+        }
+
+        if(requestCode == OBTENER_PLATOS_CAMBIADOS){
+            if(resultCode == RESULT_OK) {
+                int[] idPlatosArray = data.getIntArrayExtra(SeleccionPlatoActivity.EXTRA_RETURNED_IDPLATOS_ACTUALIZADOS);
+                idPlatosDelMenu = TransformadorIntSetArray.getInstance().arrayIntASetInt(idPlatosArray);
+                this.actualizarGridViewPlatos();
+            }
         }
 
     }
+
+    /**
+     * OnClick.
+     * Inicia la actividad SeleccionPlato.activity cuando se presiona el boton correspondiente.
+     */
+    public void irACambiarPlato(int platoAIntercambiar) {
+        Intent intent = new Intent(this, SeleccionPlatoActivity.class);
+        intent.putExtra(EXTRA_ID_PLATO_A_INTERCAMBIAR, platoAIntercambiar);
+        int[] idPlatosActuales = TransformadorIntSetArray.getInstance().setIntAArrayInt(idPlatosDelMenu);
+        intent.putExtra(EXTRA_ID_PLATOS_ACTUALES_A_INTERC, idPlatosActuales);
+        startActivityForResult(intent, OBTENER_PLATOS_CAMBIADOS);
+    }
+
+    private AdapterView.OnItemClickListener onPlatoClick = new AdapterView.OnItemClickListener() {
+        public void onItemClick(AdapterView<?> parent, View view,int position, long id) {
+
+            int idPlatoElejido = (int) id; //(int)gridViewPlatosMultiCheck.getAdapter().getItemId(position);
+            irACambiarPlato(idPlatoElejido);
+
+//            if(!idPlatosElejidos.contains(idPlatoElejido)){
+//
+//                if (cantPlatosRestantes > 0) {
+//
+//                    itemElegido.setBackgroundColor(getResources().getColor(R.color.gridViewItem_background_checked));
+//                    centroBoton.setBackgroundColor(getResources().getColor(R.color.gridViewItemCentro_background_checked));
+//                    idPlatosElejidos.add(idPlatoElejido);
+//                    cantPlatosRestantes--;
+//                    textViewCantidadPlatosRestantes.setText(String.valueOf(cantPlatosRestantes));
+//
+//                }else{
+//                    Toast.makeText(getApplicationContext(), "Ya se eligiron todos los platos", Toast.LENGTH_LONG).show();
+//                }
+//
+//            }else{
+//                itemElegido.setBackgroundColor(getResources().getColor(R.color.gridViewItem_background));
+//                centroBoton.setBackgroundColor(getResources().getColor(R.color.gridViewItemCentro_background));
+//                idPlatosElejidos.remove(idPlatoElejido);
+//                cantPlatosRestantes++;
+//                textViewCantidadPlatosRestantes.setText(String.valueOf(cantPlatosRestantes));
+//            }
+        }
+    };
 
     //    @Override
 //    public boolean onCreateOptionsMenu(Menu menu) {
