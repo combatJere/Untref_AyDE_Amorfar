@@ -2,13 +2,15 @@ package Persitencia.DAOs;
 
 import android.database.Cursor;
 
+import java.util.Set;
+
 /**
  * Created by jeremias on 05/06/2015.
  */
 public interface MenuesDAO {
 
     /**
-     * Recive los valores correspondientes a la fecha de un menu.
+     * Recive los valores correspondientes a la fecha de un menu. (id de un menu)
      * @param dia
      * @param mes
      * @param anio
@@ -33,6 +35,16 @@ public interface MenuesDAO {
      * @return un array con lo codigos de los platos del menu correspondiente.
      */
     public int[] getCodigosDePlatosDelMenu(int dia, int mes, int anio);
+
+
+    /**
+     * Recive los valores correspondientes a la fecha de un menu (id de un menu)
+     * @param dia
+     * @param mes
+     * @param anio
+     * @return un Set<Integer> con lo codigos de los platos del menu correspondiente.
+     */
+    public Set<Integer> getCodigosDePlatosDelMenuSet(int dia, int mes, int anio);
 
     /**
      * Recive el nombre de un plato y lo guarda en la BDD.
@@ -65,7 +77,31 @@ public interface MenuesDAO {
      * @param idPlatoElejido recibe el id correspondiente a un plato.
      * @return el nobre del plato.
      */
-    String getNombrePlato(int idPlatoElejido);
-;
+    public String getNombrePlato(int idPlatoElejido);
+
+    /**
+     * Devuelve un Cursor con los platos correspondientes a los id solicitados;
+     * @param idPlatosDelMenu los id de los platos que se quieren obtener
+     * @return un Cursor con los platos correspondientes.
+     */
+    public Cursor getPlatos(Set<Integer> idPlatosDelMenu);
+
+    /**
+     * Recive los valores correspondientes a la fecha de un menu. (id de un menu)
+     * @param dia
+     * @param mes
+     * @param anio
+     * @return un Array de Int de dos posiciones de la forma [HORA; MINUTOS]
+     */
+    public int[] getHorarioAlmuerzo(int dia, int mes, int anio);
+
+    /**
+     * Recive los valores correspondientes a la fecha de un menu. (id de un menu)
+     * @param dia
+     * @param mes
+     * @param anio
+     * @return Un int representando la cantidad de platos del almuerzo correspondiente.
+     */
+    public int getCantidadPlatos(int dia, int mes, int anio);
 
 }

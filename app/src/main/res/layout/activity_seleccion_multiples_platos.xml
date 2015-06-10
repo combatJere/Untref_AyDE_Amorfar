@@ -77,7 +77,8 @@
                 android:layout_weight="1"
                 android:text="@string/confirmar"
                 android:background="#ffb0cbff"
-                android:id="@+id/button_seleccionMultiplesPlatos_confirmarAlmuerzo" />
+                android:id="@+id/button_seleccionMultiplesPlatos_confirmarAlmuerzo"
+                android:onClick="devolverPlatosElejidos"/>
         </LinearLayout>
     </LinearLayout>
 

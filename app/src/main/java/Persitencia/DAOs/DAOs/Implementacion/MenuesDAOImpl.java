@@ -6,11 +6,14 @@ import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 
+import java.util.HashSet;
+import java.util.Set;
 import java.util.prefs.Preferences;
 
 import Persitencia.BaseDeDatosContract;
 import Persitencia.BaseDeDatosHelper;
 import Persitencia.DAOs.MenuesDAO;
+import Utilidades.TransformadorIntSetArray;
 
 /**
  * Created by jeremias on 05/06/2015.
@@ -83,15 +86,16 @@ public class MenuesDAOImpl implements MenuesDAO {
         for(int i=0;i<cantidadPlatos;i++){
             whereValues[i] = String.valueOf(codigosPlatosDelMenu[i]);
             if(i > 0) inList.append(","); inList.append("?"); }
-//        cursor = contentResolver.query(CONTENT_URI, PROJECTION, "field IN ("+inList.toString()+")", whereValues, null);
 
         String[] columnsToReturn = {
                 BaseDeDatosContract.Platos.COLUMN_NAME_CODIGO_PLATO,
                 BaseDeDatosContract.Platos.COLUM_NAME_NOMBRE,
         };
 
-        String whereClause= "field IN ("+inList.toString()+")";
+        String whereClause= BaseDeDatosContract.Platos.COLUMN_NAME_CODIGO_PLATO + " IN ("+inList.toString()+")";
 
+        String sortOrder =
+                BaseDeDatosContract.Platos.COLUM_NAME_NOMBRE + " ASC";
 
         Cursor cursor = db.query(
                 BaseDeDatosContract.Platos.TABLE_NAME,  // The table to query
@@ -100,7 +104,7 @@ public class MenuesDAOImpl implements MenuesDAO {
                 whereValues,                            // The values for the WHERE clause
                 null,                                     // don't group the rows
                 null,                                     // don't filter by row groups
-                null                                 // The sort order
+                sortOrder                                 // The sort order
         );
 
         return cursor;
@@ -154,6 +158,48 @@ public class MenuesDAOImpl implements MenuesDAO {
         }
 
         return clavesPlatos;
+    }
+
+    @Override
+    public Set<Integer> getCodigosDePlatosDelMenuSet(int dia, int mes, int anio) {
+        SQLiteDatabase db = miDbHelper.getReadableDatabase();
+        Cursor cursorIdPlatosDelMenu;
+        Set<Integer> clavesPlatosADevolver = new HashSet<Integer>();
+
+        String[] columnsToReturn = {
+                BaseDeDatosContract.MenuConPlatos.COLUM_NAME_CODIGO_PLATO,
+        };
+
+        String whereClause= BaseDeDatosContract.MenuConPlatos.COLUMN_NAME_DIA + "=? " + "AND " + BaseDeDatosContract.MenuConPlatos.COLUMN_NAME_MES + "=? "
+                + "AND " + BaseDeDatosContract.MenuConPlatos.COLUMN_NAME_ANIO + "=?";
+
+        String[] whereValues = {String.valueOf(dia), String.valueOf(mes), String.valueOf(anio)};
+
+        try{
+            cursorIdPlatosDelMenu = db.query(
+                    BaseDeDatosContract.MenuConPlatos.TABLE_NAME,  // The table to query
+                    columnsToReturn,                               // The columns to return
+                    whereClause,                                // The columns for the WHERE clause
+                    whereValues,                            // The values for the WHERE clause
+                    null,                                     // don't group the rows
+                    null,                                     // don't filter by row groups
+                    null                                 // The sort order
+            );
+
+            int codigoEnMovimiento;
+            while(cursorIdPlatosDelMenu.moveToNext()){
+
+                codigoEnMovimiento = cursorIdPlatosDelMenu.getInt(cursorIdPlatosDelMenu.
+                        getColumnIndex(BaseDeDatosContract.MenuConPlatos.COLUM_NAME_CODIGO_PLATO));
+                clavesPlatosADevolver.add(codigoEnMovimiento);
+            }
+
+            cursorIdPlatosDelMenu.close();
+
+        }finally {
+            db.close();
+        }
+        return clavesPlatosADevolver;
     }
 
     public boolean guardarPlato(String nombreplato){
@@ -308,6 +354,117 @@ public class MenuesDAOImpl implements MenuesDAO {
         }
 
         return nombrePlato;
+    }
+
+    @Override
+    public Cursor getPlatos(Set<Integer> idPlatosDelMenu) {
+
+        int[] codigosPlatos = TransformadorIntSetArray.getInstance().setIntAArrayInt(idPlatosDelMenu);
+        int cantidadPlatos = codigosPlatos.length; // number of IN arguments
+
+        SQLiteDatabase db = miDbHelper.getReadableDatabase();
+
+        String[] whereValues = new String[cantidadPlatos];
+
+        StringBuilder inList = new StringBuilder(cantidadPlatos*2);
+        for(int i=0;i<cantidadPlatos;i++){
+            whereValues[i] = String.valueOf(codigosPlatos[i]);
+            if(i > 0) inList.append(","); inList.append("?"); }
+
+        String[] columnsToReturn = {
+                BaseDeDatosContract.Platos.COLUMN_NAME_CODIGO_PLATO,
+                BaseDeDatosContract.Platos.COLUM_NAME_NOMBRE,
+        };
+
+        String whereClause= BaseDeDatosContract.Platos.COLUMN_NAME_CODIGO_PLATO + " IN ("+inList.toString()+")";
+
+        String sortOrder =
+                BaseDeDatosContract.Platos.COLUM_NAME_NOMBRE + " ASC";
+
+        Cursor cursor = db.query(
+                BaseDeDatosContract.Platos.TABLE_NAME,  // The table to query
+                columnsToReturn,                               // The columns to return
+                whereClause,                                // The columns for the WHERE clause
+                whereValues,                            // The values for the WHERE clause
+                null,                                     // don't group the rows
+                null,                                     // don't filter by row groups
+                sortOrder                                 // The sort order
+        );
+
+        return cursor;
+    }
+
+    @Override
+    public int[] getHorarioAlmuerzo(int dia, int mes, int anio) {
+        SQLiteDatabase db = miDbHelper.getReadableDatabase();
+        int[] horarioADevolver = null;
+
+        String[] columnsToReturn = {
+                BaseDeDatosContract.Almuerzo.COLUM_NAME_HORA,
+                BaseDeDatosContract.Almuerzo.COLUM_NAME_MINUTOS,
+        };
+
+        String whereClause= BaseDeDatosContract.Almuerzo.COLUMN_NAME_DIA + "=? " + "AND " + BaseDeDatosContract.Almuerzo.COLUMN_NAME_MES + "=? "
+                + "AND " + BaseDeDatosContract.Almuerzo.COLUMN_NAME_ANIO + "=?";
+
+        String[] whereValues = {String.valueOf(dia), String.valueOf(mes), String.valueOf(anio)};
+
+        try {
+            Cursor cursor = db.query(
+                    BaseDeDatosContract.Almuerzo.TABLE_NAME,  // The table to query
+                    columnsToReturn,                               // The columns to return
+                    whereClause,                                // The columns for the WHERE clause
+                    whereValues,                            // The values for the WHERE clause
+                    null,                                     // don't group the rows
+                    null,                                     // don't filter by row groups
+                    null                                 // The sort order
+            );
+
+            if(cursor.moveToFirst()){
+                horarioADevolver = new int[2];
+                horarioADevolver[0] = cursor.getInt(cursor.getColumnIndex(BaseDeDatosContract.Almuerzo.COLUM_NAME_HORA));
+                horarioADevolver[1] = cursor.getInt(cursor.getColumnIndex(BaseDeDatosContract.Almuerzo.COLUM_NAME_MINUTOS));
+            }
+            cursor.close();
+
+        }finally {
+            db.close();
+        }
+        return horarioADevolver;
+    }
+
+    @Override
+    public int getCantidadPlatos(int dia, int mes, int anio) {
+        SQLiteDatabase db = miDbHelper.getReadableDatabase();
+        int cantidadDePlatos;
+
+        String[] columnsToReturn = {
+                BaseDeDatosContract.MenuConPlatos.COLUM_NAME_CODIGO_PLATO,
+        };
+
+        String whereClause= BaseDeDatosContract.MenuConPlatos.COLUMN_NAME_DIA + "=? " + "AND " + BaseDeDatosContract.MenuConPlatos.COLUMN_NAME_MES + "=? "
+                + "AND " + BaseDeDatosContract.MenuConPlatos.COLUMN_NAME_ANIO + "=?";
+
+        String[] whereValues = {String.valueOf(dia), String.valueOf(mes), String.valueOf(anio)};
+
+        try {
+            Cursor cursor = db.query(
+                    BaseDeDatosContract.MenuConPlatos.TABLE_NAME,  // The table to query
+                    columnsToReturn,                               // The columns to return
+                    whereClause,                                // The columns for the WHERE clause
+                    whereValues,                            // The values for the WHERE clause
+                    null,                                     // don't group the rows
+                    null,                                     // don't filter by row groups
+                    null                                 // The sort order
+            );
+
+            cantidadDePlatos = cursor.getCount();
+            cursor.close();
+
+        }finally {
+            db.close();
+        }
+        return cantidadDePlatos;
     }
 
 //    public void cerrarDB(){

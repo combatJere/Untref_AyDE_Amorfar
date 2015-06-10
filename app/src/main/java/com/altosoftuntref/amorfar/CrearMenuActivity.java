@@ -7,16 +7,17 @@ import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.GridView;
-import android.widget.NumberPicker;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.Calendar;
+import java.util.HashSet;
+import java.util.Set;
 
 import Configuraciones.Configuraciones;
-import Persitencia.DAOs.DAOs.Implementacion.MenuesDAOImpl;
 import Utilidades.TransformadorFechasSingleton;
 import Utilidades.TransformadorHorariosSingleton;
+import Utilidades.TransformadorIntSetArray;
 import adapter.PlatosCursorAdapter;
 import dialogs.CantidadPlatosDialogFragment;
 import dialogs.TimePickerFragment;
@@ -30,12 +31,19 @@ public class CrearMenuActivity extends ActionBarActivity implements TimePickerFr
     public final static String EXTRA_DIA = "com.altosoftuntref.amorfar.DIA";
     public final static String EXTRA_MES = "com.altosoftuntref.amorfar.MES";
     public final static String EXTRA_ANIO = "com.altosoftuntref.amorfar.ANIO";
+    public final static int OBTENER_PLATOS = 10;
 
+    private final static String SAVED_DIA = "com.altosoftuntref.amorfar.SAVED_DIA";
+    private final static String SAVED_MES = "com.altosoftuntref.amorfar.SAVED_MES";
+    private final static String SAVED_ANIO = "com.altosoftuntref.amorfar.SAVED_ANIO";
     private final static String SAVED_HORA = "com.altosoftuntref.amorfar.SAVED_HORA";
     private final static String SAVED_MINUTOS = "com.altosoftuntref.amorfar.HORA_MINUTOS";
     private final static String SAVED_CANTIDAD_PLATOS = "com.altosoftuntref.amorfar.CANTIDAD_PLATOS";
+    private final static String SAVED_SET_ID_PLATOS_MENU = "com.altosoftuntref.amorfar.SET_ID_PLATOS_MENU";
+
 
     private PlatosCursorAdapter platosCursorAdapter;
+    private Set<Integer> idPlatosDelMenu;
 
     private int cantidadPlatos;
     private int dia;
@@ -51,31 +59,80 @@ public class CrearMenuActivity extends ActionBarActivity implements TimePickerFr
         //Check whether we are recreating a previously destroyed instance.
         if (savedInstanceState != null) {
             //valores salvados, si se esta recreando la actividad.
-            cantidadPlatos = savedInstanceState.getInt(SAVED_CANTIDAD_PLATOS);
-            horaComida = savedInstanceState.getInt(SAVED_HORA);
-            minutosComida = savedInstanceState.getInt(SAVED_MINUTOS);
+            this.recuperarDatosSalvados(savedInstanceState);
         } else {
             //Default values, si inicia por primera vez.
-            cantidadPlatos = Configuraciones.CANTIDAD_PLATOS_POR_DEFECTO;
-            horaComida = Configuraciones.HORA_COMIDA_POR_DEFECTO;
-            minutosComida = Configuraciones.MINUTOS_COMIDA_POR_DEFETO;
+            this.obtenerFecha();
+            boolean existeAlmuerzoEnBDD = ServiceLocator.getInstance().getMenuesDao(getBaseContext()).existeAlmuerzo(dia, mes, anio);
+
+            if(existeAlmuerzoEnBDD){
+                this.obtenerCantidadPlatos();
+                this.obtenerHorarioComida();
+                this.obtenerIdPlatosDelMenu();
+            }else {
+                this.instanciarConNuevosValores();
+                this.seleccionCantidadYPlatos();
+            }
         }
 
         setContentView(R.layout.activity_crear_menu);
-        this.obtenerFecha();
         this.actualizarTextviewFecha();
         this.actualizarTextviewHorario();
         this.crearGridViewPlatos();
-        this.showCantidadPlatosDialog();
+    }
 
+    /**
+     * Recupera los valores de una Instancia anterior.
+     * @param savedInstanceState
+     */
+    private void recuperarDatosSalvados(Bundle savedInstanceState){
+        //valores salvados, si se esta recreando la actividad.
+        dia = savedInstanceState.getInt(SAVED_DIA);
+        mes = savedInstanceState.getInt(SAVED_MES);
+        anio = savedInstanceState.getInt(SAVED_ANIO);
+        cantidadPlatos = savedInstanceState.getInt(SAVED_CANTIDAD_PLATOS);
+        horaComida = savedInstanceState.getInt(SAVED_HORA);
+        minutosComida = savedInstanceState.getInt(SAVED_MINUTOS);
+        int[] platosGuardadosArray = savedInstanceState.getIntArray(SAVED_SET_ID_PLATOS_MENU);
+        idPlatosDelMenu = TransformadorIntSetArray.getInstance().arrayIntASetInt(platosGuardadosArray);
+    }
+
+    /**
+     * Si el almuerzo no existe, le asigna valores por defecto.
+     */
+    private void instanciarConNuevosValores(){
+        cantidadPlatos = Configuraciones.CANTIDAD_PLATOS_POR_DEFECTO;
+        horaComida = Configuraciones.HORA_COMIDA_POR_DEFECTO;
+        minutosComida = Configuraciones.MINUTOS_COMIDA_POR_DEFETO;
+        idPlatosDelMenu = new HashSet<Integer>();
+    }
+
+    private void obtenerIdPlatosDelMenu() {
+//        if(ServiceLocator.getInstance().getMenuesDao(getBaseContext()).existeAlmuerzo(dia, mes, anio)){
+            idPlatosDelMenu = ServiceLocator.getInstance().getMenuesDao(getBaseContext()).getCodigosDePlatosDelMenuSet(dia, mes, anio);
+//        }else{
+//            idPlatosDelMenu = new HashSet<Integer>();
+//        }
+    }
+
+    private void obtenerCantidadPlatos() {
+//        if(ServiceLocator.getInstance().getMenuesDao(getBaseContext()).existeAlmuerzo(dia,mes,anio)){
+            cantidadPlatos = ServiceLocator.getInstance().getMenuesDao(getBaseContext()).getCantidadPlatos(dia, mes, anio);
+//        }else{
+//            cantidadPlatos = Configuraciones.CANTIDAD_PLATOS_POR_DEFECTO;
+//        }
     }
 
 
     @Override
     public void onSaveInstanceState(Bundle savedInstanceState) {
+        savedInstanceState.putInt(SAVED_DIA, dia);
+        savedInstanceState.putInt(SAVED_MES, mes);
+        savedInstanceState.putInt(SAVED_ANIO, anio);
         savedInstanceState.putInt(SAVED_CANTIDAD_PLATOS, cantidadPlatos);
         savedInstanceState.putInt(SAVED_HORA, horaComida);
         savedInstanceState.putInt(SAVED_MINUTOS, minutosComida);
+        savedInstanceState.putIntArray(SAVED_SET_ID_PLATOS_MENU, TransformadorIntSetArray.getInstance().setIntAArrayInt(idPlatosDelMenu));
         super.onSaveInstanceState(savedInstanceState);
     }
 //    NO SIRVE PORQUE ESTO LO EJECUTA EN EL onStart() Y LOS VALORES LOS USO EN onCreate().
@@ -106,19 +163,29 @@ public class CrearMenuActivity extends ActionBarActivity implements TimePickerFr
      * Muestra el Dialog que permite la cantidad de platos que se ofreceran
      * en ese menu
      */
-    private void showCantidadPlatosDialog() {
-        if (cantidadPlatos == 0) { //MODIFICARRRRRRRRRRRRRRRRRRRRRRRR
+    private void seleccionCantidadYPlatos() {
+//        if (cantidadPlatos == 0) { //MODIFICARRRRRRRRRRRRRRRRRRRRRRRR
             CantidadPlatosDialogFragment cantidadPlatosDialog = new CantidadPlatosDialogFragment();
+            cantidadPlatosDialog.setCancelable(false);
             cantidadPlatosDialog.show(getFragmentManager(), "CantidadPlatosDialog");
-        }
+//        }
     }
 
     public void crearGridViewPlatos(){
-        Cursor platosDelMenu = ServiceLocator.getInstance().getMenuesDao(getBaseContext()).getPlatosDelMenu(dia, mes, anio);
+//        if(ServiceLocator.getInstance().getMenuesDao(getBaseContext()).existeAlmuerzo(dia, mes, anio)){
+//
+//        }
+//        Cursor platosDelMenu = ServiceLocator.getInstance().getMenuesDao(getBaseContext()).getPlatosDelMenu(dia, mes, anio);
+        Cursor platosDelMenu = ServiceLocator.getInstance().getMenuesDao(getBaseContext()).getPlatos(idPlatosDelMenu);
         GridView platosGridView = (GridView) findViewById(R.id.gridView_crearMenu_platos);
         platosCursorAdapter = new PlatosCursorAdapter(getBaseContext(),platosDelMenu,0);
         platosGridView.setAdapter(platosCursorAdapter);
 //        platosGridView.setOnItemClickListener(onPlatoClick);
+    }
+
+    public void actualizarGridViewPlatos(){
+        Cursor platosDelMenu = ServiceLocator.getInstance().getMenuesDao(getBaseContext()).getPlatos(idPlatosDelMenu);
+        platosCursorAdapter.changeCursor(platosDelMenu);
     }
 
 //    private void crearPlatosPorDafault(){
@@ -133,7 +200,6 @@ public class CrearMenuActivity extends ActionBarActivity implements TimePickerFr
      * Es ejecutado por el Dialog TimePickerDialog, en el momento que este
      * es confirmado.
      * Setea el nuevo horario elegido en los atributos correspondientes.
-     *
      * @param hora
      * @param minutos
      */
@@ -154,7 +220,7 @@ public class CrearMenuActivity extends ActionBarActivity implements TimePickerFr
     public void onCantidadPlatosConfirmarClick(int cantidadPlatos) {
         this.cantidadPlatos = cantidadPlatos;
         Toast.makeText(getBaseContext(), "Cant platos: " + this.cantidadPlatos, Toast.LENGTH_LONG).show();
-        this.irASeleccionMultiplesPlatos(cantidadPlatos);
+        this.irASeleccionMultiplesPlatos();
     }
 
     /**
@@ -184,11 +250,20 @@ public class CrearMenuActivity extends ActionBarActivity implements TimePickerFr
      */
     private void obtenerFecha() {
         Calendar c = Calendar.getInstance();
-//        SimpleDateFormat df = new SimpleDateFormat("dd-MMM-yyyy");
-//        String fechaEnString = df.format(c.getTime());
         this.dia = c.get(Calendar.DAY_OF_MONTH);
         this.mes = c.get(Calendar.MONTH) + 1;
         this.anio = c.get(Calendar.YEAR);
+    }
+
+    private void obtenerHorarioComida(){
+//        if(ServiceLocator.getInstance().getMenuesDao(getBaseContext()).existeAlmuerzo(dia, mes, anio)){
+            int[] horario = ServiceLocator.getInstance().getMenuesDao(getBaseContext()).getHorarioAlmuerzo(dia, mes, anio);
+            this.horaComida = horario[0];
+            this.minutosComida = horario[1];
+//        }else{
+//            horaComida = Configuraciones.HORA_COMIDA_POR_DEFECTO;
+//            horaComida = Configuraciones.MINUTOS_COMIDA_POR_DEFETO;
+//        }
     }
 
     /**
@@ -203,14 +278,42 @@ public class CrearMenuActivity extends ActionBarActivity implements TimePickerFr
         startActivity(intent);
     }
 
-    private void irASeleccionMultiplesPlatos(int cantidadPlatos) {
+    /**
+     * Inicia la actividad SeleccionMultiplesPlatos.activity
+     */
+    private void irASeleccionMultiplesPlatos() {
         Intent intent = new Intent(this, SeleccionMultiplesPlatos.class);
         intent.putExtra(EXTRA_CANTIDAD_PLATOS, this.cantidadPlatos);
-        startActivity(intent);
+        startActivityForResult(intent, OBTENER_PLATOS);
     }
 
+    /**
+     * Realiza distintas acciones, dependiendo lo sucedido en SeleccionMultiplesPlatos.activity
+     * Si se eligieron platos, guarda sus id en  el Set idPlatosMenu.
+     * Si se cancelo, cierra esta actividad tambien.
+     * @param requestCode
+     * @param resultCode
+     * @param data
+     */
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if(resultCode == RESULT_OK && requestCode == OBTENER_PLATOS){
+            int[] idPlatosArray = data.getIntArrayExtra(SeleccionMultiplesPlatos.EXTRA_RETURN_IDPLATOS);
+            idPlatosDelMenu = TransformadorIntSetArray.getInstance().arrayIntASetInt(idPlatosArray);
+            this.actualizarGridViewPlatos();
+//            Iterator<Integer> it = idPlatosDelMenu.iterator();
+//            while(it.hasNext()){
+//                String nombrePlato = ServiceLocator.getInstance().getMenuesDao(getBaseContext()).getNombrePlato(it.next());
+//                Toast.makeText(getApplicationContext(), nombrePlato, Toast.LENGTH_LONG).show();
+//            }
+        }else if(resultCode == RESULT_CANCELED){
+            finish();
+            Toast.makeText(getBaseContext(), R.string.menu_cancelado, Toast.LENGTH_LONG).show();
+        }
 
-//    @Override
+    }
+
+    //    @Override
 //    public boolean onCreateOptionsMenu(Menu menu) {
 //        // Inflate the menu; this adds items to the action bar if it is present.
 //        getMenuInflater().inflate(R.menu.menu_crear_menu, menu);

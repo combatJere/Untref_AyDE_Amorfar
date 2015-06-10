@@ -1,10 +1,10 @@
 package com.altosoftuntref.amorfar;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.database.Cursor;
-import android.graphics.Color;
-import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.FrameLayout;
@@ -15,9 +15,7 @@ import android.widget.Toast;
 import java.util.HashSet;
 import java.util.Set;
 
-import Configuraciones.Configuraciones;
 import Utilidades.TransformadorIntSetArray;
-import adapter.PlatosCursorAdapter;
 import adapter.PlatosMultipleChoiceAdapter;
 import inversiondecontrol.ServiceLocator;
 import layouts.customs.GridViewItem;
@@ -25,11 +23,12 @@ import layouts.customs.GridViewItem;
 
 public class SeleccionMultiplesPlatos extends Activity {
 
+    public final static String EXTRA_RETURN_IDPLATOS = "com.altosoftuntref.amorfar.multiplesPlatos.RETURN_IDPLATOS";
     private final static String SAVED_CANTIDAD_PLATOS = "com.altosoftuntref.amorfar.multiplesPlatos.CANTIDAD_PLATOS";
     private final static String SAVED_SET_PLATOS_ELEJIDOS = "com.altosoftuntref.amorfar.multiplesPlatos.SET_PLATOS_ELEJIDOS";
 
     private  int cantPlatosRestantes;
-    private Set<Integer> platosElejidos;
+    private Set<Integer> idPlatosElejidos;
     private TextView textViewCantidadPlatosRestantes;
     private GridView gridViewPlatosMultiCheck;
     private PlatosMultipleChoiceAdapter platosCursorAdapter;
@@ -43,11 +42,11 @@ public class SeleccionMultiplesPlatos extends Activity {
             //valores salvados, si se esta recreando la actividad.
             cantPlatosRestantes = savedInstanceState.getInt(SAVED_CANTIDAD_PLATOS);
             int[] platosGuardadosArray = savedInstanceState.getIntArray(SAVED_SET_PLATOS_ELEJIDOS);
-            platosElejidos = TransformadorIntSetArray.getInstance().arrayIntASetInt(platosGuardadosArray);
+            idPlatosElejidos = TransformadorIntSetArray.getInstance().arrayIntASetInt(platosGuardadosArray);
         } else {
             //Default values, si inicia por primera vez.
             cantPlatosRestantes = getIntent().getIntExtra(CrearMenuActivity.EXTRA_CANTIDAD_PLATOS, 0);
-            platosElejidos = new HashSet<Integer>();
+            idPlatosElejidos = new HashSet<Integer>();
         }
 
 
@@ -61,7 +60,7 @@ public class SeleccionMultiplesPlatos extends Activity {
     @Override
     public void onSaveInstanceState(Bundle savedInstanceState) {
         savedInstanceState.putInt(SAVED_CANTIDAD_PLATOS, cantPlatosRestantes);
-        savedInstanceState.putIntArray(SAVED_SET_PLATOS_ELEJIDOS, TransformadorIntSetArray.getInstance().setIntAArrayInt(platosElejidos));
+        savedInstanceState.putIntArray(SAVED_SET_PLATOS_ELEJIDOS, TransformadorIntSetArray.getInstance().setIntAArrayInt(idPlatosElejidos));
         super.onSaveInstanceState(savedInstanceState);
     }
 
@@ -73,7 +72,7 @@ public class SeleccionMultiplesPlatos extends Activity {
     private void instanciarGridViewSeleccionMultiple(){
         Cursor cursorAllPlatos = ServiceLocator.getInstance().getMenuesDao(getBaseContext()).getAllPlatosGuardadosCursor();
         gridViewPlatosMultiCheck = (GridView) findViewById(R.id.gridView_seleccionMultiplesPlatos_platos);
-        platosCursorAdapter = new PlatosMultipleChoiceAdapter(getBaseContext(), cursorAllPlatos, 0, platosElejidos);
+        platosCursorAdapter = new PlatosMultipleChoiceAdapter(getBaseContext(), cursorAllPlatos, 0, idPlatosElejidos);
         gridViewPlatosMultiCheck.setAdapter(platosCursorAdapter);
         gridViewPlatosMultiCheck.setOnItemClickListener(onPlatoClick);
     }
@@ -85,13 +84,13 @@ public class SeleccionMultiplesPlatos extends Activity {
             GridViewItem itemElegido = (GridViewItem) view;
             FrameLayout centroBoton = (FrameLayout) itemElegido.findViewById(R.id.centro_boton);
 
-            if(!platosElejidos.contains(idPlatoElejido)){
+            if(!idPlatosElejidos.contains(idPlatoElejido)){
 
                 if (cantPlatosRestantes > 0) {
 
                     itemElegido.setBackgroundColor(getResources().getColor(R.color.gridViewItem_background_checked));
                     centroBoton.setBackgroundColor(getResources().getColor(R.color.gridViewItemCentro_background_checked));
-                    platosElejidos.add(idPlatoElejido);
+                    idPlatosElejidos.add(idPlatoElejido);
                     cantPlatosRestantes--;
                     textViewCantidadPlatosRestantes.setText(String.valueOf(cantPlatosRestantes));
 
@@ -102,13 +101,36 @@ public class SeleccionMultiplesPlatos extends Activity {
             }else{
                 itemElegido.setBackgroundColor(getResources().getColor(R.color.gridViewItem_background));
                 centroBoton.setBackgroundColor(getResources().getColor(R.color.gridViewItemCentro_background));
-                platosElejidos.remove(idPlatoElejido);
+                idPlatosElejidos.remove(idPlatoElejido);
                 cantPlatosRestantes++;
                 textViewCantidadPlatosRestantes.setText(String.valueOf(cantPlatosRestantes));
             }
         }
     };
 
+    /**
+     * OnCLick
+     * Si la cantidad de platos elejidos es la correcta, cierra la actividad y devuelve los id de
+     * los platos elejidos.
+     * @param view
+     */
+    public void devolverPlatosElejidos(View view){
+        if(cantPlatosRestantes == 0) {
+            Intent intent = new Intent();
+            int[] idPlatosElejidosArray = TransformadorIntSetArray.getInstance().setIntAArrayInt(idPlatosElejidos);
+            intent.putExtra(EXTRA_RETURN_IDPLATOS, idPlatosElejidosArray);
+            setResult(RESULT_OK, intent);
+            finish();
+        }else{
+            Toast.makeText(getApplicationContext(), "Faltan elejir " +cantPlatosRestantes +" platos.", Toast.LENGTH_LONG).show();
+        }
+    }
+
+    @Override
+    public void onBackPressed() {
+        setResult(RESULT_CANCELED);
+        super.onBackPressed();
+    }
 
 
 
