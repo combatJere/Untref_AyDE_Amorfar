@@ -14,13 +14,15 @@ import android.widget.Toast;
 import java.util.HashSet;
 import java.util.Set;
 
+import Persitencia.DAOs.MenuesDAO;
 import Utilidades.TransformadorIntSetArray;
 import adapter.PlatosMultipleChoiceAdapter;
+import dialogs.NombrePlatoDialogFragment;
 import inversiondecontrol.ServiceLocator;
 import layouts.customs.GridViewItem;
 
 
-public class SeleccionMultiplesPlatos extends Activity {
+public class SeleccionMultiplesPlatos extends Activity implements NombrePlatoDialogFragment.NuevoPlatoDialogListener{
 
     public final static String EXTRA_RETURNED_IDPLATOS = "com.altosoftuntref.amorfar.multiplesPlatos.RETURN_IDPLATOS";
     private final static String SAVED_CANTIDAD_PLATOS = "com.altosoftuntref.amorfar.multiplesPlatos.CANTIDAD_PLATOS";
@@ -129,6 +131,59 @@ public class SeleccionMultiplesPlatos extends Activity {
     public void onBackPressed() {
         setResult(RESULT_CANCELED);
         super.onBackPressed();
+    }
+
+    /**
+     *
+     */
+    private void actualizarGridViewPlatos(){
+        Cursor cursorPlatosActualizados = ServiceLocator.getInstance().getMenuesDao(getBaseContext()).getAllPlatosGuardadosCursor();
+        platosCursorAdapter.changeCursor(cursorPlatosActualizados);
+    }
+
+    /**
+     * Muestra el Dialo CrearNuevoPlatoDialog, que permite crear un nuevo plato
+     * y aregarlo a la lista de platos.
+     */
+    public void showCrearNuevoPlatoDialog (View view){
+        NombrePlatoDialogFragment nombrePlatoDialogFragment = new NombrePlatoDialogFragment();
+        nombrePlatoDialogFragment.show(getFragmentManager(), "nombrePlatoDialog");
+    }
+
+    /**
+     * Es ejecutado por el dialog CrearNuevoPlatoDialog en el momento en que este es confirmado.
+     * Recive el nombre del plato a Guardar en la BDD
+     * @param nombrePlato
+     */
+    @Override
+    public void onConfirmarDialogClick(String nombrePlato) {
+        this.guardarNuevoPlato(nombrePlato);
+    }
+
+    /**
+     * Si no existe un plato con este nombre en la BDD, lo guarda como un nuevo plato
+     * con el nombre recivido.
+     * @param nombrePlato: nombre de un plato que se quiere guardar.
+     */
+    public void guardarNuevoPlato(String nombrePlato){
+        boolean guardadoExitoso = false;
+        MenuesDAO menuesDao = ServiceLocator.getInstance().getMenuesDao(getBaseContext());
+
+        if(nombrePlato.length() < 4){
+            Toast.makeText(getBaseContext(), R.string.nombre_plato_invalido, Toast.LENGTH_LONG).show();
+        }else {
+            if (menuesDao.existePlato(nombrePlato)) {
+                Toast.makeText(getBaseContext(), R.string.plato_existente, Toast.LENGTH_LONG).show();
+            } else {
+
+                guardadoExitoso = menuesDao.guardarPlato(nombrePlato);
+                if (guardadoExitoso) {
+                    this.actualizarGridViewPlatos();
+                }else{
+                    Toast.makeText(getBaseContext(), R.string.error_al_guardar_plato, Toast.LENGTH_LONG).show();
+                }
+            }
+        }
     }
 
 

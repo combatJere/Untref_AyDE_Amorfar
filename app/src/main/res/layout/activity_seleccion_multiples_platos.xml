@@ -69,7 +69,8 @@
                 android:layout_weight="1"
                 android:text="@string/nuevo_plato"
                 android:id="@+id/button_seleccionMultiplesPlatos_nuevoPlato"
-                android:background="#ff8fff86"/>
+                android:background="#ff8fff86"
+                android:onClick="showCrearNuevoPlatoDialog"/>
 
             <Button
                 android:layout_width="match_parent"
