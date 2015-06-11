@@ -72,18 +72,18 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:text="@string/nuevo_plato"
+                android:text=""
                 android:id="@+id/button_crearMenu_nuevoPlato"
-                android:background="#ff8fff86"
-                android:onClick="irASeleccionPlato"/>
+                android:background="#ff8fff86"/>
 
             <Button
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:text="@string/listo"
+                android:text="@string/enviar"
                 android:background="#ffb0cbff"
-                android:id="@+id/button_crearMenu_confirmarAlmuerzo" />
+                android:id="@+id/button_crearMenu_confirmarAlmuerzo"
+                android:onClick="enviarMenu"/>
         </LinearLayout>
     </LinearLayout>
 

@@ -104,4 +104,16 @@ public interface MenuesDAO {
      */
     public int getCantidadPlatos(int dia, int mes, int anio);
 
+    /**
+     * Recivetodos los datos correspondientes a un nuevo almuerzo y lo guarda en la BDD.
+     * @param dia
+     * @param mes
+     * @param anio
+     * @param hora
+     * @param minutos
+     * @param idPlatos
+     * @return
+     */
+    public boolean guardarAlmuerzo(int dia, int mes, int anio, int hora, int minutos, Set<Integer> idPlatos);
+
 }

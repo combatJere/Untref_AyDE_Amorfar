@@ -73,6 +73,7 @@ public class CrearMenuActivity extends ActionBarActivity implements TimePickerFr
                 this.obtenerCantidadPlatos();
                 this.obtenerHorarioComida();
                 this.obtenerIdPlatosDelMenu();
+                Toast.makeText(getBaseContext(), "Almuerzo ya creado!", Toast.LENGTH_LONG).show();
             }else {
                 this.instanciarConNuevosValores();
                 this.seleccionCantidadYPlatos();
@@ -299,30 +300,25 @@ public class CrearMenuActivity extends ActionBarActivity implements TimePickerFr
 
             int idPlatoElejido = (int) id; //(int)gridViewPlatosMultiCheck.getAdapter().getItemId(position);
             irACambiarPlato(idPlatoElejido);
-
-//            if(!idPlatosElejidos.contains(idPlatoElejido)){
-//
-//                if (cantPlatosRestantes > 0) {
-//
-//                    itemElegido.setBackgroundColor(getResources().getColor(R.color.gridViewItem_background_checked));
-//                    centroBoton.setBackgroundColor(getResources().getColor(R.color.gridViewItemCentro_background_checked));
-//                    idPlatosElejidos.add(idPlatoElejido);
-//                    cantPlatosRestantes--;
-//                    textViewCantidadPlatosRestantes.setText(String.valueOf(cantPlatosRestantes));
-//
-//                }else{
-//                    Toast.makeText(getApplicationContext(), "Ya se eligiron todos los platos", Toast.LENGTH_LONG).show();
-//                }
-//
-//            }else{
-//                itemElegido.setBackgroundColor(getResources().getColor(R.color.gridViewItem_background));
-//                centroBoton.setBackgroundColor(getResources().getColor(R.color.gridViewItemCentro_background));
-//                idPlatosElejidos.remove(idPlatoElejido);
-//                cantPlatosRestantes++;
-//                textViewCantidadPlatosRestantes.setText(String.valueOf(cantPlatosRestantes));
-//            }
         }
     };
+
+    /**
+     * OnClick
+     * Guarda el menu en la bdd
+     * @param view
+     */
+    public void enviarMenu(View view){
+        boolean guardadoExitoso;
+        guardadoExitoso= ServiceLocator.getInstance().getMenuesDao(getBaseContext()).
+                guardarAlmuerzo(dia, mes, anio, horaComida, minutosComida, idPlatosDelMenu);
+        if(guardadoExitoso){
+            Toast.makeText(getBaseContext(), "Menu del dia enviado!", Toast.LENGTH_LONG).show();
+
+        }else{
+            Toast.makeText(getBaseContext(), "Fallo al enviar", Toast.LENGTH_LONG).show();
+        }
+    }
 
     //    @Override
 //    public boolean onCreateOptionsMenu(Menu menu) {

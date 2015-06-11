@@ -5,8 +5,10 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
+import android.widget.Toast;
 
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.Set;
 import java.util.prefs.Preferences;
 
@@ -465,6 +467,52 @@ public class MenuesDAOImpl implements MenuesDAO {
             db.close();
         }
         return cantidadDePlatos;
+    }
+
+    @Override
+    public boolean guardarAlmuerzo(int dia, int mes, int anio, int hora, int minutos, Set<Integer> idPlatos) {
+        boolean guardadoExitoso = true;
+
+        SQLiteDatabase db = miDbHelper.getWritableDatabase();
+
+        try{
+            // Create a new map of values, where column names are the keys
+            ContentValues values = new ContentValues();
+            values.put(BaseDeDatosContract.Almuerzo.COLUMN_NAME_DIA, dia);
+            values.put(BaseDeDatosContract.Almuerzo.COLUMN_NAME_MES, mes);
+            values.put(BaseDeDatosContract.Almuerzo.COLUMN_NAME_ANIO, anio);
+            values.put(BaseDeDatosContract.Almuerzo.COLUM_NAME_HORA, hora);
+            values.put(BaseDeDatosContract.Almuerzo.COLUM_NAME_MINUTOS, minutos);
+
+            // Insert the new row, returning the primary key value of the new row
+            db.insertOrThrow(BaseDeDatosContract.Almuerzo.TABLE_NAME, "null", values);
+//            guardadoExitoso = true;
+
+        }catch (SQLException e) {
+            guardadoExitoso = false;
+        }
+
+        try {
+            if(guardadoExitoso) {
+                Iterator<Integer> iterator = idPlatos.iterator();
+                while (iterator.hasNext()) {
+                    ContentValues values = new ContentValues();
+                    values.put(BaseDeDatosContract.MenuConPlatos.COLUMN_NAME_DIA, dia);
+                    values.put(BaseDeDatosContract.MenuConPlatos.COLUMN_NAME_MES, mes);
+                    values.put(BaseDeDatosContract.MenuConPlatos.COLUMN_NAME_ANIO, anio);
+                    values.put(BaseDeDatosContract.MenuConPlatos.COLUM_NAME_CODIGO_PLATO, iterator.next());
+                    db.insertOrThrow(BaseDeDatosContract.MenuConPlatos.TABLE_NAME, "null", values);
+                }
+            }
+        }catch(SQLException e){
+            //BORRAR LO GUARDADO EN LA TABLA ALMUERZOS!!!
+            //BORRAR LO GUARDADO EN LA TABLA ALMUERZOS!!!
+            guardadoExitoso = false;
+        }finally{
+            db.close();
+        }
+
+        return guardadoExitoso;
     }
 
 //    public void cerrarDB(){

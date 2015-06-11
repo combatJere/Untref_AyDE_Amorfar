@@ -34,5 +34,6 @@
     <string name="title_activity_seleccion_multiples_platos">SeleccionMultiplesPlatos</string>
     <string name="platos_restantes_a_elejir">Platos restantes:</string>
     <string name="menu_cancelado">Menu cancelado</string>
+    <string name="enviar">Enviar</string>
 
 </resources>
