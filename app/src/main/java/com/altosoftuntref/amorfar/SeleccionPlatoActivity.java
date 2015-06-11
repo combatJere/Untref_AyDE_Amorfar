@@ -76,7 +76,9 @@ public class SeleccionPlatoActivity extends ActionBarActivity implements NombreP
      * Instancia el GridView que muestra los platos previamente creados que pueden elegirse.
      */
     private void instanciarGridViewPlatos(){
-        Cursor cursorAllPlatos = ServiceLocator.getInstance().getMenuesDao(getBaseContext()).getAllPlatosGuardadosCursor();
+//        Cursor cursorAllPlatos = ServiceLocator.getInstance().getMenuesDao(getBaseContext()).getAllPlatosGuardadosCursor();
+        Cursor cursorAllPlatos = ServiceLocator.getInstance().getMenuesDao(getBaseContext()).
+                getPlatosGuardadosExcepto(idPlatosElejidos);
 //        cursor.moveToFirst();
 //        String s = cursor.getString(cursor.getColumnIndex(BaseDeDatosContract.Platos.COLUM_NAME_NOMBRE));
 //        Toast.makeText(getBaseContext(), s, Toast.LENGTH_LONG).show();
@@ -90,7 +92,9 @@ public class SeleccionPlatoActivity extends ActionBarActivity implements NombreP
      *
      */
     private void actualizarGridViewPlatos(){
-        Cursor cursorPlatosActualizados = ServiceLocator.getInstance().getMenuesDao(getBaseContext()).getAllPlatosGuardadosCursor();
+//        Cursor cursorPlatosActualizados = ServiceLocator.getInstance().getMenuesDao(getBaseContext()).getAllPlatosGuardadosCursor();
+        Cursor cursorPlatosActualizados = ServiceLocator.getInstance().getMenuesDao(getBaseContext()).
+                getPlatosGuardadosExcepto(idPlatosElejidos);
         platosCursorAdapter.changeCursor(cursorPlatosActualizados);
     }
 

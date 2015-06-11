@@ -67,6 +67,13 @@ public interface MenuesDAO {
     public Cursor getAllPlatosGuardadosCursor();
 
     /**
+     * CUIDADO: Recordar cerrar el cursor al finalizar su uso.
+     * @param idPlatosEscluidos conjunto de id de los platos que no se desean obtener
+     * @return un cusor con todos los platos, excepto los no deseados.
+     */
+    public Cursor getPlatosGuardadosExcepto(Set<Integer> idPlatosEscluidos);
+
+    /**
      * CUIDADO: Recordar cerrer el cursor al finalizar su uso.
      * @return un Cursor con el nombre de todos los platos guardados.
      */

@@ -296,6 +296,43 @@ public class MenuesDAOImpl implements MenuesDAO {
         return cursor;
     }
 
+    @Override
+    public Cursor getPlatosGuardadosExcepto(Set<Integer> idPlatosEscluidos) {
+        int[] codigosPlatosExcluidos = TransformadorIntSetArray.getInstance().setIntAArrayInt(idPlatosEscluidos);
+        int cantidadPlatos = codigosPlatosExcluidos.length; // number of IN arguments
+
+        SQLiteDatabase db = miDbHelper.getReadableDatabase();
+
+        String[] whereValues = new String[cantidadPlatos];
+
+        StringBuilder inList = new StringBuilder(cantidadPlatos*2);
+        for(int i=0;i<cantidadPlatos;i++){
+            whereValues[i] = String.valueOf(codigosPlatosExcluidos[i]);
+            if(i > 0) inList.append(","); inList.append("?"); }
+
+        String[] columnsToReturn = {
+                BaseDeDatosContract.Platos.COLUMN_NAME_CODIGO_PLATO,
+                BaseDeDatosContract.Platos.COLUM_NAME_NOMBRE,
+        };
+
+        String whereClause= BaseDeDatosContract.Platos.COLUMN_NAME_CODIGO_PLATO + " NOT IN ("+inList.toString()+")";
+
+        String sortOrder =
+                BaseDeDatosContract.Platos.COLUM_NAME_NOMBRE + " ASC";
+
+        Cursor cursor = db.query(
+                BaseDeDatosContract.Platos.TABLE_NAME,  // The table to query
+                columnsToReturn,                               // The columns to return
+                whereClause,                                // The columns for the WHERE clause
+                whereValues,                            // The values for the WHERE clause
+                null,                                     // don't group the rows
+                null,                                     // don't filter by row groups
+                sortOrder                                 // The sort order
+        );
+
+        return cursor;
+    }
+
 
     public Cursor getAllNombrePlatosCursor(){
         SQLiteDatabase db = miDbHelper.getReadableDatabase();
