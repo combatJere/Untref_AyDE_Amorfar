@@ -5,12 +5,10 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
-import android.widget.Toast;
 
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
-import java.util.prefs.Preferences;
 
 import Persitencia.BaseDeDatosContract;
 import Persitencia.BaseDeDatosHelper;
@@ -37,6 +35,7 @@ public class MenuesDAOImpl implements MenuesDAO {
     }
 
 
+    @Override
     public boolean existeAlmuerzo(int dia, int mes, int anio){
         SQLiteDatabase db = miDbHelper.getReadableDatabase();
         boolean existeAlmuerzo = false;
@@ -73,6 +72,7 @@ public class MenuesDAOImpl implements MenuesDAO {
 
         return existeAlmuerzo;
     }
+
 
     @Override
     public Cursor getPlatosDelMenu(int dia, int mes, int anio) {
@@ -111,6 +111,7 @@ public class MenuesDAOImpl implements MenuesDAO {
 
         return cursor;
     }
+
 
     @Override
     public int[] getCodigosDePlatosDelMenu(int dia, int mes, int anio) {
@@ -162,6 +163,7 @@ public class MenuesDAOImpl implements MenuesDAO {
         return clavesPlatos;
     }
 
+
     @Override
     public Set<Integer> getCodigosDePlatosDelMenuSet(int dia, int mes, int anio) {
         SQLiteDatabase db = miDbHelper.getReadableDatabase();
@@ -204,6 +206,7 @@ public class MenuesDAOImpl implements MenuesDAO {
         return clavesPlatosADevolver;
     }
 
+    @Override
     public boolean guardarPlato(String nombreplato){
         boolean platoGuardadoConExito;
         SQLiteDatabase db = miDbHelper.getWritableDatabase();
@@ -223,6 +226,7 @@ public class MenuesDAOImpl implements MenuesDAO {
         }
         return platoGuardadoConExito;
     }
+
 
     @Override
     public boolean existePlato(String nombrePlato) {
@@ -292,6 +296,7 @@ public class MenuesDAOImpl implements MenuesDAO {
         return cursor;
     }
 
+
     public Cursor getAllNombrePlatosCursor(){
         SQLiteDatabase db = miDbHelper.getReadableDatabase();
         Cursor cursor;
@@ -320,6 +325,7 @@ public class MenuesDAOImpl implements MenuesDAO {
 //        }
         return cursor;
     }
+
 
     @Override
     public String getNombrePlato(int idPlatoElejido) {
@@ -358,6 +364,7 @@ public class MenuesDAOImpl implements MenuesDAO {
         return nombrePlato;
     }
 
+
     @Override
     public Cursor getPlatos(Set<Integer> idPlatosDelMenu) {
 
@@ -395,6 +402,7 @@ public class MenuesDAOImpl implements MenuesDAO {
 
         return cursor;
     }
+
 
     @Override
     public int[] getHorarioAlmuerzo(int dia, int mes, int anio) {
@@ -435,6 +443,7 @@ public class MenuesDAOImpl implements MenuesDAO {
         return horarioADevolver;
     }
 
+
     @Override
     public int getCantidadPlatos(int dia, int mes, int anio) {
         SQLiteDatabase db = miDbHelper.getReadableDatabase();
@@ -468,6 +477,7 @@ public class MenuesDAOImpl implements MenuesDAO {
         }
         return cantidadDePlatos;
     }
+
 
     @Override
     public boolean guardarAlmuerzo(int dia, int mes, int anio, int hora, int minutos, Set<Integer> idPlatos) {
@@ -513,6 +523,38 @@ public class MenuesDAOImpl implements MenuesDAO {
         }
 
         return guardadoExitoso;
+    }
+
+
+    @Override
+    public void eliminarAlmuerzo(int dia, int mes, int anio) {
+        SQLiteDatabase db = miDbHelper.getReadableDatabase();
+        boolean eliminadoExitoso = false;
+
+        String whereClause= BaseDeDatosContract.Almuerzo.COLUMN_NAME_DIA + "=? " + "AND " + BaseDeDatosContract.Almuerzo.COLUMN_NAME_MES + "=? "
+                + "AND " + BaseDeDatosContract.Almuerzo.COLUMN_NAME_ANIO + "=?";
+
+        String[] whereValues = {String.valueOf(dia), String.valueOf(mes), String.valueOf(anio)};
+
+        try {
+            db.delete(
+                    BaseDeDatosContract.Almuerzo.TABLE_NAME,
+                    whereClause,
+                    whereValues
+            );
+
+            whereClause= BaseDeDatosContract.MenuConPlatos.COLUMN_NAME_DIA + "=? " + "AND " + BaseDeDatosContract.MenuConPlatos.COLUMN_NAME_MES + "=? "
+                    + "AND " + BaseDeDatosContract.MenuConPlatos.COLUMN_NAME_ANIO + "=?";
+
+            db.delete(
+                    BaseDeDatosContract.MenuConPlatos.TABLE_NAME,
+                    whereClause,
+                    whereValues
+            );
+
+        }finally {
+            db.close();
+        }
     }
 
 //    public void cerrarDB(){

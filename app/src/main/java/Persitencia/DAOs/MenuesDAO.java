@@ -116,4 +116,12 @@ public interface MenuesDAO {
      */
     public boolean guardarAlmuerzo(int dia, int mes, int anio, int hora, int minutos, Set<Integer> idPlatos);
 
+    /**
+     * Elimina un Almuerzo completo de la BDD.
+     * @param dia
+     * @param mes
+     * @param anio
+     * @return
+     */
+    public void eliminarAlmuerzo(int dia, int mes, int anio);
 }

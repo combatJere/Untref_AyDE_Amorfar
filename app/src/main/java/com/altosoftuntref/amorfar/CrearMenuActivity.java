@@ -1,6 +1,7 @@
 package com.altosoftuntref.amorfar;
 
 import android.app.DialogFragment;
+import android.app.Service;
 import android.content.Intent;
 import android.database.Cursor;
 import android.support.v7.app.ActionBarActivity;
@@ -44,7 +45,7 @@ public class CrearMenuActivity extends ActionBarActivity implements TimePickerFr
     private final static String SAVED_MINUTOS = "com.altosoftuntref.amorfar.HORA_MINUTOS";
     private final static String SAVED_CANTIDAD_PLATOS = "com.altosoftuntref.amorfar.CANTIDAD_PLATOS";
     private final static String SAVED_SET_ID_PLATOS_MENU = "com.altosoftuntref.amorfar.SET_ID_PLATOS_MENU";
-    private final static String SAVED_HAY_CAMBIOS = "com.altosoftuntref.amorfar.SET_ID_PLATOS_MENU";
+    private final static String SAVED_HAY_CAMBIOS = "com.altosoftuntref.amorfar.HAY_CAMBIOS";
 
     private PlatosCursorAdapter platosCursorAdapter;
     private Set<Integer> idPlatosDelMenu;
@@ -96,7 +97,8 @@ public class CrearMenuActivity extends ActionBarActivity implements TimePickerFr
         savedInstanceState.putInt(SAVED_CANTIDAD_PLATOS, cantidadPlatos);
         savedInstanceState.putInt(SAVED_HORA, horaComida);
         savedInstanceState.putInt(SAVED_MINUTOS, minutosComida);
-        savedInstanceState.putIntArray(SAVED_SET_ID_PLATOS_MENU, TransformadorIntSetArray.getInstance().setIntAArrayInt(idPlatosDelMenu));
+        int[] idPlatosArray =TransformadorIntSetArray.getInstance().setIntAArrayInt(idPlatosDelMenu);
+        savedInstanceState.putIntArray(SAVED_SET_ID_PLATOS_MENU, idPlatosArray);
         savedInstanceState.putBoolean(SAVED_HAY_CAMBIOS, hayCambios);
         super.onSaveInstanceState(savedInstanceState);
     }
@@ -326,11 +328,11 @@ public class CrearMenuActivity extends ActionBarActivity implements TimePickerFr
     public void enviarMenu(View view){
         if(hayCambios) {
             boolean guardadoExitoso;
+            ServiceLocator.getInstance().getMenuesDao(getBaseContext()).eliminarAlmuerzo(dia, mes, anio);
             guardadoExitoso = ServiceLocator.getInstance().getMenuesDao(getBaseContext()).
                     guardarAlmuerzo(dia, mes, anio, horaComida, minutosComida, idPlatosDelMenu);
             if (guardadoExitoso) {
                 Toast.makeText(getBaseContext(), "Menu del dia enviado!", Toast.LENGTH_LONG).show();
-
             } else {
                 Toast.makeText(getBaseContext(), "Fallo al enviar", Toast.LENGTH_LONG).show();
             }
