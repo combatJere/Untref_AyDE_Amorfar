@@ -39,10 +39,15 @@ public class TimePickerFragment extends DialogFragment
                 DateFormat.is24HourFormat(getActivity()));
     }
 
+    int callcount = 0; //por bug de android que llama onTimeSet aunque se aprete el boton atras o el se cierre el dialog.
+
     @Override
     public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
 
-        timePickerListener.onHorarioSet(hourOfDay, minute);
+        if(callcount == 1) {
+            timePickerListener.onHorarioSet(hourOfDay, minute);
+        }
+        callcount ++;
 //        Bundle horaYminutosRecividos = this.getArguments();
 //
 //        horaYminutosRecividos.getInt(CrearMenuActivity.EXTRA_HORA_TIMEPICKER);

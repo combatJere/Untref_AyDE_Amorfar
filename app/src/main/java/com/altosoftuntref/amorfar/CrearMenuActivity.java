@@ -44,7 +44,7 @@ public class CrearMenuActivity extends ActionBarActivity implements TimePickerFr
     private final static String SAVED_MINUTOS = "com.altosoftuntref.amorfar.HORA_MINUTOS";
     private final static String SAVED_CANTIDAD_PLATOS = "com.altosoftuntref.amorfar.CANTIDAD_PLATOS";
     private final static String SAVED_SET_ID_PLATOS_MENU = "com.altosoftuntref.amorfar.SET_ID_PLATOS_MENU";
-
+    private final static String SAVED_HAY_CAMBIOS = "com.altosoftuntref.amorfar.SET_ID_PLATOS_MENU";
 
     private PlatosCursorAdapter platosCursorAdapter;
     private Set<Integer> idPlatosDelMenu;
@@ -55,6 +55,8 @@ public class CrearMenuActivity extends ActionBarActivity implements TimePickerFr
     private int anio;
     private Integer horaComida;
     private Integer minutosComida;
+
+    private boolean hayCambios;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -67,14 +69,14 @@ public class CrearMenuActivity extends ActionBarActivity implements TimePickerFr
         } else {
             //Default values, si inicia por primera vez.
             this.obtenerFecha();
-            boolean existeAlmuerzoEnBDD = ServiceLocator.getInstance().getMenuesDao(getBaseContext()).existeAlmuerzo(dia, mes, anio);
 
+            boolean existeAlmuerzoEnBDD = ServiceLocator.getInstance().getMenuesDao(getBaseContext()).existeAlmuerzo(dia, mes, anio);
             if(existeAlmuerzoEnBDD){
-                this.obtenerCantidadPlatos();
-                this.obtenerHorarioComida();
-                this.obtenerIdPlatosDelMenu();
+                hayCambios = false;
+                instanciarConValoresGuardados();
                 Toast.makeText(getBaseContext(), "Almuerzo ya creado!", Toast.LENGTH_LONG).show();
             }else {
+                hayCambios = true;
                 this.instanciarConNuevosValores();
                 this.seleccionCantidadYPlatos();
             }
@@ -95,6 +97,7 @@ public class CrearMenuActivity extends ActionBarActivity implements TimePickerFr
         savedInstanceState.putInt(SAVED_HORA, horaComida);
         savedInstanceState.putInt(SAVED_MINUTOS, minutosComida);
         savedInstanceState.putIntArray(SAVED_SET_ID_PLATOS_MENU, TransformadorIntSetArray.getInstance().setIntAArrayInt(idPlatosDelMenu));
+        savedInstanceState.putBoolean(SAVED_HAY_CAMBIOS, hayCambios);
         super.onSaveInstanceState(savedInstanceState);
     }
 //    NO SIRVE PORQUE ESTO LO EJECUTA EN EL onStart() Y LOS VALORES LOS USO EN onCreate().
@@ -119,10 +122,20 @@ public class CrearMenuActivity extends ActionBarActivity implements TimePickerFr
         minutosComida = savedInstanceState.getInt(SAVED_MINUTOS);
         int[] platosGuardadosArray = savedInstanceState.getIntArray(SAVED_SET_ID_PLATOS_MENU);
         idPlatosDelMenu = TransformadorIntSetArray.getInstance().arrayIntASetInt(platosGuardadosArray);
+        hayCambios = savedInstanceState.getBoolean(SAVED_HAY_CAMBIOS);
     }
 
     /**
-     * Si el almuerzo no existe, le asigna valores por defecto.
+     * llamado cuando el almuerzo ya existia, Obtiene los datos del mismo
+     */
+    private void instanciarConValoresGuardados(){
+        this.obtenerCantidadPlatos();
+        this.obtenerHorarioComida();
+        this.obtenerIdPlatosDelMenu();
+    }
+
+    /**
+     * llamado si el almuerzo no existia, le asigna valores por defecto.
      */
     private void instanciarConNuevosValores(){
         cantidadPlatos = Configuraciones.CANTIDAD_PLATOS_POR_DEFECTO;
@@ -195,6 +208,7 @@ public class CrearMenuActivity extends ActionBarActivity implements TimePickerFr
         this.horaComida = hora;
         this.minutosComida = minutos;
         this.actualizarTextviewHorario();
+        hayCambios = true;
     }
 
     /**
@@ -251,6 +265,26 @@ public class CrearMenuActivity extends ActionBarActivity implements TimePickerFr
     }
 
     /**
+     * OnClick.
+     * Inicia la actividad SeleccionPlato.activity cuando se presiona el boton correspondiente.
+     */
+    public void irACambiarPlato(int platoAIntercambiar) {
+        Intent intent = new Intent(this, SeleccionPlatoActivity.class);
+        intent.putExtra(EXTRA_ID_PLATO_A_INTERCAMBIAR, platoAIntercambiar);
+        int[] idPlatosActuales = TransformadorIntSetArray.getInstance().setIntAArrayInt(idPlatosDelMenu);
+        intent.putExtra(EXTRA_ID_PLATOS_ACTUALES_A_INTERC, idPlatosActuales);
+        startActivityForResult(intent, OBTENER_PLATOS_CAMBIADOS);
+    }
+
+    private AdapterView.OnItemClickListener onPlatoClick = new AdapterView.OnItemClickListener() {
+        public void onItemClick(AdapterView<?> parent, View view,int position, long id) {
+
+            int idPlatoElejido = (int) id; //(int)gridViewPlatosMultiCheck.getAdapter().getItemId(position);
+            irACambiarPlato(idPlatoElejido);
+        }
+    };
+
+    /**
      * Realiza distintas acciones, dependiendo lo sucedido en SeleccionMultiplesPlatos.activity
      * Si se eligieron platos, guarda sus id en  el Set idPlatosMenu.
      * Si se cancelo, cierra esta actividad tambien.
@@ -278,30 +312,11 @@ public class CrearMenuActivity extends ActionBarActivity implements TimePickerFr
                 int[] idPlatosArray = data.getIntArrayExtra(SeleccionPlatoActivity.EXTRA_RETURNED_IDPLATOS_ACTUALIZADOS);
                 idPlatosDelMenu = TransformadorIntSetArray.getInstance().arrayIntASetInt(idPlatosArray);
                 this.actualizarGridViewPlatos();
+                hayCambios = true;
             }
         }
 
     }
-
-    /**
-     * OnClick.
-     * Inicia la actividad SeleccionPlato.activity cuando se presiona el boton correspondiente.
-     */
-    public void irACambiarPlato(int platoAIntercambiar) {
-        Intent intent = new Intent(this, SeleccionPlatoActivity.class);
-        intent.putExtra(EXTRA_ID_PLATO_A_INTERCAMBIAR, platoAIntercambiar);
-        int[] idPlatosActuales = TransformadorIntSetArray.getInstance().setIntAArrayInt(idPlatosDelMenu);
-        intent.putExtra(EXTRA_ID_PLATOS_ACTUALES_A_INTERC, idPlatosActuales);
-        startActivityForResult(intent, OBTENER_PLATOS_CAMBIADOS);
-    }
-
-    private AdapterView.OnItemClickListener onPlatoClick = new AdapterView.OnItemClickListener() {
-        public void onItemClick(AdapterView<?> parent, View view,int position, long id) {
-
-            int idPlatoElejido = (int) id; //(int)gridViewPlatosMultiCheck.getAdapter().getItemId(position);
-            irACambiarPlato(idPlatoElejido);
-        }
-    };
 
     /**
      * OnClick
@@ -309,14 +324,19 @@ public class CrearMenuActivity extends ActionBarActivity implements TimePickerFr
      * @param view
      */
     public void enviarMenu(View view){
-        boolean guardadoExitoso;
-        guardadoExitoso= ServiceLocator.getInstance().getMenuesDao(getBaseContext()).
-                guardarAlmuerzo(dia, mes, anio, horaComida, minutosComida, idPlatosDelMenu);
-        if(guardadoExitoso){
-            Toast.makeText(getBaseContext(), "Menu del dia enviado!", Toast.LENGTH_LONG).show();
+        if(hayCambios) {
+            boolean guardadoExitoso;
+            guardadoExitoso = ServiceLocator.getInstance().getMenuesDao(getBaseContext()).
+                    guardarAlmuerzo(dia, mes, anio, horaComida, minutosComida, idPlatosDelMenu);
+            if (guardadoExitoso) {
+                Toast.makeText(getBaseContext(), "Menu del dia enviado!", Toast.LENGTH_LONG).show();
 
+            } else {
+                Toast.makeText(getBaseContext(), "Fallo al enviar", Toast.LENGTH_LONG).show();
+            }
+            finish();
         }else{
-            Toast.makeText(getBaseContext(), "Fallo al enviar", Toast.LENGTH_LONG).show();
+            Toast.makeText(getBaseContext(), "No hay cambios que enviar", Toast.LENGTH_LONG).show();
         }
     }
 
