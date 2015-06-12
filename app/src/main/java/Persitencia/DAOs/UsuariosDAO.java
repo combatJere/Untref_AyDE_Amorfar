@@ -65,4 +65,24 @@ public interface UsuariosDAO {
      * @return
      */
     public boolean enviarVoto(String nombreUsuarioID, boolean tienePremio, int idPlatoelejido, int cantInvitados);
+
+    /**
+     * reinicia las votaciones, platoElejido y cantidad de Invitados
+     * (ideado para cuando empieza un nuevo dia)
+     * @return
+     */
+    public boolean reiniciarVotacion();
+
+    /**
+     * Asigna a todos los usuarios el premio en verdadero
+     * (ideado para cuando empieza un nuevo ciclo)
+     * @return
+     */
+    public boolean reinicairPremios();
+
+    /**
+     * usado para calcular si conserva el premio, a partir de la ultima votacion realizada.
+     * @return
+     */
+    public boolean actualizarPremios();
 }

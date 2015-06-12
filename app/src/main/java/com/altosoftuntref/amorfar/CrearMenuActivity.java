@@ -78,6 +78,7 @@ public class CrearMenuActivity extends ActionBarActivity implements TimePickerFr
                 Toast.makeText(getBaseContext(), "Almuerzo ya creado!", Toast.LENGTH_LONG).show();
             }else {
                 hayCambios = true;
+                this.reiniciarVotacion();
                 this.instanciarConNuevosValores();
                 this.seleccionCantidadYPlatos();
             }
@@ -317,8 +318,8 @@ public class CrearMenuActivity extends ActionBarActivity implements TimePickerFr
                 hayCambios = true;
             }
         }
-
     }
+
 
     /**
      * OnClick
@@ -340,6 +341,22 @@ public class CrearMenuActivity extends ActionBarActivity implements TimePickerFr
         }else{
             Toast.makeText(getBaseContext(), "No hay cambios que enviar", Toast.LENGTH_LONG).show();
         }
+    }
+
+
+    /**
+     * Reinicia las votaciones para empezar un nuevo almuerzo.
+     */
+    public void reiniciarVotacion(){
+        this.actualizarPremios();
+        ServiceLocator.getInstance().getUsuariosDAO(getBaseContext()).reiniciarVotacion();
+    }
+
+    /**
+     * actualiza los premios dependiendo de la votacion actual, si no votaste te quita el premio
+     */
+    public void actualizarPremios(){
+        ServiceLocator.getInstance().getUsuariosDAO(getBaseContext()).actualizarPremios();
     }
 
     //    @Override

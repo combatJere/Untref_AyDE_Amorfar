@@ -42,5 +42,6 @@
     <string name="no_como">No, gracias</string>
     <string name="texto_comserva_premio">Conserva el premio :)</string>
     <string name="texto_no_conserva_premio">Esta semana no hay premio :(</string>
+    <string name="title_activity_informe">InformeActivity</string>
 
 </resources>

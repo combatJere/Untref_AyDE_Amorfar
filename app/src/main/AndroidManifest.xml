@@ -40,6 +40,10 @@
             android:name=".ElejirMenuActivity"
             android:label="@string/title_activity_elejir_menu" >
         </activity>
+        <activity
+            android:name=".InformeActivity"
+            android:label="@string/title_activity_informe" >
+        </activity>
     </application>
 
 </manifest>

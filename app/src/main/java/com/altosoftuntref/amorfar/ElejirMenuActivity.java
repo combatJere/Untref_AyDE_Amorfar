@@ -322,26 +322,27 @@ public class ElejirMenuActivity extends Activity implements CantidadInvitadosDia
         if(!horaDeVotacionPermitida()){
             Toast.makeText(getBaseContext(), "El tiempo para votar era hasta las " +Configuraciones.HORA_LIMITE_VOTACION + ":" + Configuraciones.MINUTOS_LIMITE_VOTACION , Toast.LENGTH_LONG).show();
             finish();
-        }
-        if(hayCambios) {
-            boolean guardadoExitoso;
-            //si conservava el premio, y voto, lo sigue conservando.
-            boolean conservaPremio = ServiceLocator.getInstance().getUsuariosDAO(getBaseContext())
-                    .usuarioTienePremio(nombreUsuarioID);
+        }else {
+            if (hayCambios) {
+                boolean guardadoExitoso;
+                //si conservava el premio, y voto, lo sigue conservando.
+                boolean conservaPremio = ServiceLocator.getInstance().getUsuariosDAO(getBaseContext())
+                        .usuarioTienePremio(nombreUsuarioID);
 
-            guardadoExitoso = ServiceLocator.getInstance().getUsuariosDAO(getBaseContext()).
-                    enviarVoto(nombreUsuarioID,conservaPremio, idPlatoElejido, cantidadInvitados);
+                guardadoExitoso = ServiceLocator.getInstance().getUsuariosDAO(getBaseContext()).
+                        enviarVoto(nombreUsuarioID, conservaPremio, idPlatoElejido, cantidadInvitados);
 
-            String textoConservaPremio = getTextoConservaPremio(conservaPremio);
+                String textoConservaPremio = getTextoConservaPremio(conservaPremio);
 
-            if (guardadoExitoso) {
-                Toast.makeText(getBaseContext(), "Votacion enviada!\n" + textoConservaPremio, Toast.LENGTH_LONG).show();
+                if (guardadoExitoso) {
+                    Toast.makeText(getBaseContext(), "Votacion enviada!\n" + textoConservaPremio, Toast.LENGTH_LONG).show();
+                } else {
+                    Toast.makeText(getBaseContext(), "Upss, vuelva a intentarlo", Toast.LENGTH_LONG).show();
+                }
+                finish();
             } else {
-                Toast.makeText(getBaseContext(), "Upss, vuelva a intentarlo", Toast.LENGTH_LONG).show();
+                Toast.makeText(getBaseContext(), "No hay cambios que enviar", Toast.LENGTH_LONG).show();
             }
-            finish();
-        }else{
-            Toast.makeText(getBaseContext(), "No hay cambios que enviar", Toast.LENGTH_LONG).show();
         }
     }
 

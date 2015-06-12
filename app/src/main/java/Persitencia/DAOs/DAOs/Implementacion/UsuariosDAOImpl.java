@@ -298,4 +298,107 @@ public class UsuariosDAOImpl implements UsuariosDAO{
         }
         return guardadoExitoso;
     }
+
+    @Override
+    public boolean reiniciarVotacion() {
+        SQLiteDatabase db = miDbHelper.getReadableDatabase();
+        boolean reiniciadoExitoso = true;
+
+        try{
+            ContentValues values = new ContentValues();
+            values.put(BaseDeDatosContract.UsuariosYAvisos.COLUMN_NAME_COD_PLATO_ELEJIDO, Configuraciones.SIN_PLATO_ELEGIDO);
+            values.put(BaseDeDatosContract.UsuariosYAvisos.COLUMN_NAME_CANTIDAD_INVITADOS, Configuraciones.CANTIDAD_INVITADOS_POR_DEFECTO);
+
+            db.update(
+                    BaseDeDatosContract.UsuariosYAvisos.TABLE_NAME,
+                    values,
+                    null,
+                    null
+            );
+
+        }catch(SQLException e){
+            reiniciadoExitoso = false;
+        }finally{
+            db.close();
+        }
+        return reiniciadoExitoso;
+    }
+
+    @Override
+    public boolean reinicairPremios() {
+        SQLiteDatabase db = miDbHelper.getReadableDatabase();
+        boolean reiniciadoExitoso = true;
+
+        try{
+            ContentValues values = new ContentValues();
+            values.put(BaseDeDatosContract.UsuariosYAvisos.COLUMN_NAME_TIENE_PREMIO, Configuraciones.TIENE_PREMIO);
+
+            db.update(
+                    BaseDeDatosContract.UsuariosYAvisos.TABLE_NAME,
+                    values,
+                    null,
+                    null
+            );
+
+        }catch(SQLException e){
+            reiniciadoExitoso = false;
+        }finally{
+            db.close();
+        }
+        return reiniciadoExitoso;
+    }
+
+    public boolean actualizarPremios(){
+        SQLiteDatabase db = miDbHelper.getReadableDatabase();
+        boolean actualizadoExitoso = true;
+
+        String[] columnsToReturn = {
+                BaseDeDatosContract.UsuariosYAvisos.COLUMN_NAME_USUARIO_ID,
+                BaseDeDatosContract.UsuariosYAvisos.COLUMN_NAME_COD_PLATO_ELEJIDO,
+        };
+
+        String whereClause= BaseDeDatosContract.UsuariosYAvisos.COLUMN_NAME_COD_PLATO_ELEJIDO + "=?";
+
+        String[] whereValues = {String.valueOf(Configuraciones.SIN_PLATO_ELEGIDO)};
+
+
+        try {
+            Cursor cursor = db.query(
+                    BaseDeDatosContract.UsuariosYAvisos.TABLE_NAME,  // The table to query
+                    columnsToReturn,                                 // The columns to return
+                    whereClause,                                     // The columns for the WHERE clause
+                    whereValues,                                     // The values for the WHERE clause
+                    null,                                            // don't group the rows
+                    null,                                            // don't filter by row groups
+                    null                                             // The sort order
+            );
+
+            String nombreUsuarioID;
+            while(cursor.moveToNext()){
+                nombreUsuarioID = cursor.getString(cursor.getColumnIndex(BaseDeDatosContract.UsuariosYAvisos.COLUMN_NAME_USUARIO_ID));
+
+                ContentValues values = new ContentValues();
+                values.put(BaseDeDatosContract.UsuariosYAvisos.COLUMN_NAME_TIENE_PREMIO, Configuraciones.PERDIO_PREMIO);
+
+                whereClause= BaseDeDatosContract.UsuariosYAvisos.COLUMN_NAME_USUARIO_ID + "=?";
+                whereValues[0] = nombreUsuarioID;
+
+                db.update(
+                        BaseDeDatosContract.UsuariosYAvisos.TABLE_NAME,
+                        values,
+                        whereClause,
+                        whereValues
+                );
+            }
+
+            cursor.close();
+
+        }catch (SQLException e){
+            actualizadoExitoso = false;
+        }finally {
+            db.close();
+        }
+        return actualizadoExitoso;
+
+    }
 }
