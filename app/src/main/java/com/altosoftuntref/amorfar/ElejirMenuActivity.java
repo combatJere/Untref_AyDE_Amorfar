@@ -123,7 +123,6 @@ public class ElejirMenuActivity extends Activity implements CantidadInvitadosDia
      * @param savedInstanceState
      */
     private void recuperarDatosSalvados(Bundle savedInstanceState){
-        //valores salvados, si se esta recreando la actividad.
         nombreUsuarioID = savedInstanceState.getString(SAVED_NOMBRE_USUARIO_ID);
         dia = savedInstanceState.getInt(SAVED_DIA);
         mes = savedInstanceState.getInt(SAVED_MES);
@@ -212,10 +211,6 @@ public class ElejirMenuActivity extends Activity implements CantidadInvitadosDia
         platosGridView.setOnItemClickListener(onPlatoClick);
     }
 
-//    public void actualizarGridViewPlatos(){
-//        Cursor platosDelMenu = ServiceLocator.getInstance().getMenuesDao(getBaseContext()).getPlatos(idPlatosDelMenu);
-//        platosCursorAdapter.changeCursor(platosDelMenu);
-//    }
 
     /**
      * @Edu Resuelto distinto que en MultipleChoice, En este caso se le pasa al adapter el id del item
@@ -226,8 +221,8 @@ public class ElejirMenuActivity extends Activity implements CantidadInvitadosDia
         public void onItemClick(AdapterView<?> parent, View view,int position, long id) {
 
             int idNuevoPlatoElejido = (int) id;
-            GridViewItem itemElegido = (GridViewItem) view;
-            FrameLayout centroBoton = (FrameLayout) itemElegido.findViewById(R.id.centro_boton);
+//            GridViewItem itemElegido = (GridViewItem) view;
+//            FrameLayout centroBoton = (FrameLayout) itemElegido.findViewById(R.id.centro_boton);
 
             if(idNuevoPlatoElejido != idPlatoElejido){
                 idPlatoElejido = idNuevoPlatoElejido;
@@ -235,14 +230,13 @@ public class ElejirMenuActivity extends Activity implements CantidadInvitadosDia
 //                platosCursorAdapter.cambiarPlatoElegido(idNuevoPlatoElejido);
 //                platosCursorAdapter.notifyDataSetChanged();
 
-//                itemElegido.setBackgroundColor(getResources().getColor(R.color.gridViewItem_background_checked));
-//                centroBoton.setBackgroundColor(getResources().getColor(R.color.gridViewItemCentro_background_checked));
                 idPlatoElejido = idNuevoPlatoElejido;
                 cambiarEstadoBotonNoComo();
                 hayCambios = true;
             }
         }
     };
+
 
     /**
      * actualiza el GridView
@@ -252,6 +246,7 @@ public class ElejirMenuActivity extends Activity implements CantidadInvitadosDia
         platosCursorAdapter.cambiarPlatoElegido(idPlatoElejido);
         platosCursorAdapter.notifyDataSetChanged();
     }
+
 
     /**
      * OnClick
@@ -269,6 +264,7 @@ public class ElejirMenuActivity extends Activity implements CantidadInvitadosDia
 //            platosCursorAdapter.notifyDataSetChanged();
         }
     }
+
 
     /**
      * Chequea el estado del boton hoyNoComo y lo resalta segun esa sea la opcion elegida o no.
@@ -309,6 +305,9 @@ public class ElejirMenuActivity extends Activity implements CantidadInvitadosDia
     }
 
 
+    /**
+     * Actualiza el textview con el nuevo numero de invitados
+     */
     private void actualizarTextViewCantidadInvitados(){
         TextView textViewCantInvitados = (TextView)findViewById(R.id.textView_elejirMenu_cantidadInvitados);
         textViewCantInvitados.setText(String.valueOf(cantidadInvitados));
@@ -320,6 +319,10 @@ public class ElejirMenuActivity extends Activity implements CantidadInvitadosDia
      * @param view
      */
     public void enviarVotacion(View view){
+        if(!horaDeVotacionPermitida()){
+            Toast.makeText(getBaseContext(), "El tiempo para votar era hasta las " +Configuraciones.HORA_LIMITE_VOTACION + ":" + Configuraciones.MINUTOS_LIMITE_VOTACION , Toast.LENGTH_LONG).show();
+            finish();
+        }
         if(hayCambios) {
             boolean guardadoExitoso;
             //si conservava el premio, y voto, lo sigue conservando.
@@ -329,16 +332,10 @@ public class ElejirMenuActivity extends Activity implements CantidadInvitadosDia
             guardadoExitoso = ServiceLocator.getInstance().getUsuariosDAO(getBaseContext()).
                     enviarVoto(nombreUsuarioID,conservaPremio, idPlatoElejido, cantidadInvitados);
 
-            String textoConservaPremio;
-            if(conservaPremio){
-                textoConservaPremio = "\nConserva el premio :)";
-            }else{
-                textoConservaPremio = "\nEsta semana no hay premio :(";
-            }
-
+            String textoConservaPremio = getTextoConservaPremio(conservaPremio);
 
             if (guardadoExitoso) {
-                Toast.makeText(getBaseContext(), "Votacion enviada! " + textoConservaPremio, Toast.LENGTH_LONG).show();
+                Toast.makeText(getBaseContext(), "Votacion enviada!\n" + textoConservaPremio, Toast.LENGTH_LONG).show();
             } else {
                 Toast.makeText(getBaseContext(), "Upss, vuelva a intentarlo", Toast.LENGTH_LONG).show();
             }
@@ -348,16 +345,42 @@ public class ElejirMenuActivity extends Activity implements CantidadInvitadosDia
         }
     }
 
-    private boolean conservaPremio(){
-        boolean conservaraElPremio = false;
-        boolean conservavaElPremio = ServiceLocator.getInstance().getUsuariosDAO(getBaseContext())
-                .usuarioTienePremio(nombreUsuarioID);
-        if(conservavaElPremio){
-            conservaraElPremio = true;
+
+    /**
+     * Segun tenga premio o no, devuelve el texto a mostrar correspondiente.
+     * @param conservaPremio
+     * @return
+     */
+    private String getTextoConservaPremio (boolean conservaPremio){
+        String textoConservaPremio;
+        if(conservaPremio){
+            textoConservaPremio = getResources().getString(R.string.texto_comserva_premio);
+        }else{
+            textoConservaPremio = getResources().getString(R.string.texto_no_conserva_premio);
         }
-        return conservaraElPremio;
+        return textoConservaPremio;
     }
 
+    /**
+     * //CUIDADO LA HORA DEBE COMPROBARLA DE OTRO LADO, NO DEL CELULAR. ARREGLAR
+     * @return true si todavia es horario de votacion.
+     */
+    private boolean horaDeVotacionPermitida(){
+        boolean votacionPermitida = false;
+
+        Calendar c = Calendar.getInstance();
+        int Hr24=c.get(Calendar.HOUR_OF_DAY);
+        int Min=c.get(Calendar.MINUTE);
+
+        if(Hr24 < Configuraciones.HORA_LIMITE_VOTACION){
+            votacionPermitida = true;
+        }else{
+            if(Hr24 == Configuraciones.HORA_LIMITE_VOTACION && Min < Configuraciones.MINUTOS_LIMITE_VOTACION){
+                votacionPermitida =true;
+            }
+        }
+        return votacionPermitida;
+    }
 
 
 //    @Override

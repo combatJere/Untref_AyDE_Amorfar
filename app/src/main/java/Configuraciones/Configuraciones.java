@@ -14,16 +14,19 @@ public class Configuraciones {
     public static final int CANTIDAD_INVITADOS_MIN = 0;
     public static final int CANTIDAD_INVITADOS_POR_DEFECTO = 0;
 
-    public static final int PERDIO_PREMIO = 0;
-    public static final int TIENE_PREMIO = 1;
-    public static final int SIN_PLATO_ELEGIDO = -1;
-    public static final int NO_COME = -2;
-
-
-
     public static final int HORA_COMIDA_POR_DEFECTO = 13;
     public static final int MINUTOS_COMIDA_POR_DEFETO = 00;
 
     public static final int COLUMNAS_GRIDVIEW_PLATOS = 2;
+
+    public static final int HORA_LIMITE_VOTACION = 11;
+    public static final int MINUTOS_LIMITE_VOTACION = 00;
+
+
+   //no son configuraciones.
+    public static final int PERDIO_PREMIO = 0;
+    public static final int TIENE_PREMIO = 1;
+    public static final int SIN_PLATO_ELEGIDO = -1;
+    public static final int NO_COME = -2;
 
 }
