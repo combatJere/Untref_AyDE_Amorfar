@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -23,38 +24,51 @@ public class MainActivity extends ActionBarActivity {
     public final static String EXTRA_NOMBRE_USUARIO_ID = "amorfar.mainActivity.NOMBRE_USUARIO_ID";
 
     private String nombreUsuarioID;
+    private boolean esAdmin;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
         Intent intent = getIntent();
         nombreUsuarioID = intent.getStringExtra(LoginActivity.EXTRA_NOMBRE_USUARIO);
-
         TextView textViewNombreUsuario = (TextView) findViewById(R.id.textView_nombreUsuario);
         textViewNombreUsuario.setText(nombreUsuarioID);
+
+        esAdmin = ServiceLocator.getInstance().getUsuariosDAO(getBaseContext()).esAdmin(nombreUsuarioID);
+        this.ocultarBotonesSiNoEsAdmin();
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_main, menu);
-        return true;
-    }
+//    @Override
+//    public boolean onCreateOptionsMenu(Menu menu) {
+//        // Inflate the menu; this adds items to the action bar if it is present.
+//        getMenuInflater().inflate(R.menu.menu_main, menu);
+//        return true;
+//    }
+//
+//    @Override
+//    public boolean onOptionsItemSelected(MenuItem item) {
+//        // Handle action bar item clicks here. The action bar will
+//        // automatically handle clicks on the Home/Up button, so long
+//        // as you specify a parent activity in AndroidManifest.xml.
+//        int id = item.getItemId();
+//
+//        //noinspection SimplifiableIfStatement
+//        if (id == R.id.action_settings) {
+//            return true;
+//        }
+//
+//        return super.onOptionsItemSelected(item);
+//    }
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
+    public void ocultarBotonesSiNoEsAdmin(){
+        if(!esAdmin) {
+            Button botonIrACrearMenu = (Button) findViewById(R.id.button_irACrearMenu);
+            botonIrACrearMenu.setVisibility(View.GONE);
+            Button botonIrAInforme = (Button) findViewById(R.id.button_mostrarInforme);
+            botonIrAInforme.setVisibility(View.GONE);
         }
-
-        return super.onOptionsItemSelected(item);
     }
 
     /**

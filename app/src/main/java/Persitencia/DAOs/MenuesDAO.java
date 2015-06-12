@@ -131,4 +131,11 @@ public interface MenuesDAO {
      * @return
      */
     public void eliminarAlmuerzo(int dia, int mes, int anio);
+
+    /**
+     * @param idPlato id del plato que se quiere saber la cantidad.
+     * @return cantidad de veces que fue elegido para el almuerzo actual.
+     */
+    public int getCantidadDelPlato(int idPlato);
+
 }

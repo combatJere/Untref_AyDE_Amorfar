@@ -24,6 +24,8 @@ public class Configuraciones {
 
 
    //no son configuraciones.
+    public static final int ES_ADMIN = 1;
+    public static final int NO_ES_ADMIN = 0;
     public static final int PERDIO_PREMIO = 0;
     public static final int TIENE_PREMIO = 1;
     public static final int SIN_PLATO_ELEGIDO = -1;

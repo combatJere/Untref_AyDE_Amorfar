@@ -92,4 +92,38 @@ public interface UsuariosDAO {
      * @return
      */
     public boolean actualizarPremios();
+
+    /**
+     *
+     * @param dia
+     * @param mes
+     * @param anio
+     * @return
+     */
+    public int getCantidadNoComen(int dia, int mes, int anio);
+
+    /**
+     *
+     * @param dia
+     * @param mes
+     * @param anio
+     * @return
+     */
+    public int getCantidadNoVotaron(int dia, int mes, int anio);
+
+    /**
+     *
+     * @param dia
+     * @param mes
+     * @param anio
+     * @return
+     */
+    public int getCantidadDeInvitadosTotales(int dia, int mes, int anio);
+
+    /**
+     *
+     * @param nombreUsuarioID
+     * @return true si el usuario es admin.
+     */
+    public boolean esAdmin(String nombreUsuarioID);
 }

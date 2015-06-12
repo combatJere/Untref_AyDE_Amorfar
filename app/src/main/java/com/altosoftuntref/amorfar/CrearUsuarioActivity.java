@@ -14,6 +14,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import Configuraciones.Configuraciones;
 import Persitencia.BaseDeDatosContract;
 import Persitencia.BaseDeDatosHelper;
 import Persitencia.DAOs.DAOs.Implementacion.UsuariosDAOImpl;
@@ -60,7 +61,7 @@ public class CrearUsuarioActivity extends ActionBarActivity {
         }else{
 
             if(!usuariosDao.usuarioExiste(nombreUsuarioIngresado)){
-                usuariosDao.guardarUsuario(nombreUsuarioIngresado, claveIngresada,0);
+                usuariosDao.guardarUsuario(nombreUsuarioIngresado, claveIngresada, Configuraciones.ES_ADMIN); //MODIFICAR PARA CREAR ADMINES
                 Toast.makeText(getBaseContext(), R.string.usuario_creado_con_exito, Toast.LENGTH_LONG).show();
                 finish();
             }else{

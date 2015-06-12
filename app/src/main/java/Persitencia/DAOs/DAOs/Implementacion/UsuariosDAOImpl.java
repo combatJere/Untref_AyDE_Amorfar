@@ -438,6 +438,127 @@ public class UsuariosDAOImpl implements UsuariosDAO{
             db.close();
         }
         return actualizadoExitoso;
+    }
 
+    @Override
+    public int getCantidadNoComen(int dia, int mes, int anio) {
+        SQLiteDatabase db = miDbHelper.getReadableDatabase();
+        int cantidadNoComen;
+
+        String[] columnsToReturn = {
+                BaseDeDatosContract.UsuariosYAvisos.COLUMN_NAME_COD_PLATO_ELEJIDO,
+        };
+
+        String whereClause= BaseDeDatosContract.UsuariosYAvisos.COLUMN_NAME_COD_PLATO_ELEJIDO + "=?";
+
+        String[] whereValues = {String.valueOf(Configuraciones.NO_COME)};
+
+        try {
+            Cursor cursor = db.query(
+                    BaseDeDatosContract.UsuariosYAvisos.TABLE_NAME,  // The table to query
+                    columnsToReturn,                               // The columns to return
+                    whereClause,                                // The columns for the WHERE clause
+                    whereValues,                            // The values for the WHERE clause
+                    null,                                     // don't group the rows
+                    null,                                     // don't filter by row groups
+                    null                                 // The sort order
+            );
+
+            cantidadNoComen = cursor.getCount();
+            cursor.close();
+
+        }finally {
+            db.close();
+        }
+        return cantidadNoComen;
+    }
+
+    @Override
+    public int getCantidadNoVotaron(int dia, int mes, int anio) {
+        SQLiteDatabase db = miDbHelper.getReadableDatabase();
+        int cantidadNoVotaron;
+
+        String[] columnsToReturn = {
+                BaseDeDatosContract.UsuariosYAvisos.COLUMN_NAME_COD_PLATO_ELEJIDO,
+        };
+
+        String whereClause= BaseDeDatosContract.UsuariosYAvisos.COLUMN_NAME_COD_PLATO_ELEJIDO + "=?";
+
+        String[] whereValues = {String.valueOf(Configuraciones.SIN_PLATO_ELEGIDO)};
+
+        try {
+            Cursor cursor = db.query(
+                    BaseDeDatosContract.UsuariosYAvisos.TABLE_NAME,  // The table to query
+                    columnsToReturn,                               // The columns to return
+                    whereClause,                                // The columns for the WHERE clause
+                    whereValues,                            // The values for the WHERE clause
+                    null,                                     // don't group the rows
+                    null,                                     // don't filter by row groups
+                    null                                 // The sort order
+            );
+
+            cantidadNoVotaron = cursor.getCount();
+            cursor.close();
+
+        }finally {
+            db.close();
+        }
+        return cantidadNoVotaron;
+    }
+
+    @Override
+    public int getCantidadDeInvitadosTotales(int dia, int mes, int anio) {
+        SQLiteDatabase db = miDbHelper.getReadableDatabase();
+        int cantidadInviadosTotales = 0;
+
+        try {
+            Cursor cursor = db.rawQuery("SELECT SUM(" + BaseDeDatosContract.UsuariosYAvisos.COLUMN_NAME_CANTIDAD_INVITADOS
+                            + ") FROM " + BaseDeDatosContract.UsuariosYAvisos.TABLE_NAME, null);
+
+            if(cursor.moveToFirst()){
+                cantidadInviadosTotales= cursor.getInt(0);
+            }
+            cursor.close();
+        }finally {
+            db.close();
+        }
+        return cantidadInviadosTotales;
+    }
+
+    @Override
+    public boolean esAdmin(String nombreUsuarioID) {
+        SQLiteDatabase db = miDbHelper.getReadableDatabase();
+        boolean esAdmin = false;
+
+        String[] columnsToReturn = {
+                BaseDeDatosContract.UsuariosYClave.COLUMN_NAME_ES_ADMINISTRDOR,
+        };
+
+        String whereClause= BaseDeDatosContract.UsuariosYClave.COLUMN_NAME_USUARIO_ID + "=?";
+
+        String[] whereValues = {nombreUsuarioID};
+
+        try {
+            Cursor cursor = db.query(
+                    BaseDeDatosContract.UsuariosYClave.TABLE_NAME,  // The table to query
+                    columnsToReturn,                               // The columns to return
+                    whereClause,                                // The columns for the WHERE clause
+                    whereValues,                            // The values for the WHERE clause
+                    null,                                     // don't group the rows
+                    null,                                     // don't filter by row groups
+                    null                                 // The sort order
+            );
+
+            cursor.moveToFirst();
+            int esAdminInt = cursor.getInt(cursor.getColumnIndex(BaseDeDatosContract.UsuariosYClave.COLUMN_NAME_ES_ADMINISTRDOR));
+            if(esAdminInt == Configuraciones.ES_ADMIN ){
+                esAdmin = true;
+            }
+            cursor.close();
+
+        }finally {
+            db.close();
+        }
+        return esAdmin;
     }
 }

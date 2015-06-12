@@ -10,6 +10,7 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
 
+import Configuraciones.Configuraciones;
 import Persitencia.BaseDeDatosContract;
 import Persitencia.BaseDeDatosHelper;
 import Persitencia.DAOs.MenuesDAO;
@@ -593,6 +594,41 @@ public class MenuesDAOImpl implements MenuesDAO {
             db.close();
         }
     }
+
+    @Override
+    public int getCantidadDelPlato(int idPlato) {
+        SQLiteDatabase db = miDbHelper.getReadableDatabase();
+        int cantidadDePedidos;
+
+        String[] columnsToReturn = {
+                BaseDeDatosContract.UsuariosYAvisos.COLUMN_NAME_COD_PLATO_ELEJIDO,
+        };
+
+        String whereClause= BaseDeDatosContract.UsuariosYAvisos.COLUMN_NAME_COD_PLATO_ELEJIDO + "=?";
+
+        String[] whereValues = {String.valueOf(idPlato)};
+
+        try {
+            Cursor cursor = db.query(
+                    BaseDeDatosContract.UsuariosYAvisos.TABLE_NAME,  // The table to query
+                    columnsToReturn,                               // The columns to return
+                    whereClause,                                // The columns for the WHERE clause
+                    whereValues,                            // The values for the WHERE clause
+                    null,                                     // don't group the rows
+                    null,                                     // don't filter by row groups
+                    null                                 // The sort order
+            );
+
+            cantidadDePedidos = cursor.getCount();
+            cursor.close();
+
+        }finally {
+            db.close();
+        }
+    return cantidadDePedidos;
+    }
+
+
 
 //    public void cerrarDB(){
 //
