@@ -12,7 +12,7 @@ public class BaseDeDatosHelper extends SQLiteOpenHelper {
 
     private static BaseDeDatosHelper instance;
 
-    public static final int DATABASE_VERSION = 8;
+    public static final int DATABASE_VERSION = 14;
     public static final String DATABASE_NAME = "amorfar.db";
 
 
@@ -31,6 +31,7 @@ public class BaseDeDatosHelper extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase db) {
         db.execSQL(BaseDeDatosComandos.SQL_CREATE_USUARIOSYCLAVES);
+        db.execSQL(BaseDeDatosComandos.SQL_CREATE_USUARIOSYAVISOS);
         db.execSQL(BaseDeDatosComandos.SQL_CREATE_ALMUERZOS);
         db.execSQL(BaseDeDatosComandos.SQL_CREATE_MENU_CON_PLATOS);
         db.execSQL(BaseDeDatosComandos.SQL_CREATE_PLATOS);
@@ -39,6 +40,7 @@ public class BaseDeDatosHelper extends SQLiteOpenHelper {
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         db.execSQL(BaseDeDatosComandos.SQL_DELETE_USUARIOSYCLAVES);
+        db.execSQL(BaseDeDatosComandos.SQL_DELETE_USUARIOSYAVISOS);
         db.execSQL(BaseDeDatosComandos.SQL_DELETE_ALMUERZOS);
         db.execSQL(BaseDeDatosComandos.SQL_DELETE_MENU_CON_PLATOS);
         db.execSQL(BaseDeDatosComandos.SQL_DELETE_PLATOS);

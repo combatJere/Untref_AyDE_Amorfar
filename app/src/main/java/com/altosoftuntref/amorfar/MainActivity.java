@@ -1,5 +1,6 @@
 package com.altosoftuntref.amorfar;
 
+import android.app.Service;
 import android.content.Intent;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
@@ -7,6 +8,11 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import java.util.Calendar;
+
+import inversiondecontrol.ServiceLocator;
 
 /**
  * Actividad que permite elegir a que parte del sistema ingresar.
@@ -14,15 +20,19 @@ import android.widget.TextView;
  */
 public class MainActivity extends ActionBarActivity {
 
+    public final static String EXTRA_NOMBRE_USUARIO_ID = "amorfar.mainActivity.NOMBRE_USUARIO_ID";
+
+    private String nombreUsuarioID;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         Intent intent = getIntent();
-        String nombreUsuario = intent.getStringExtra(LoginActivity.EXTRA_NOMBRE_USUARIO);
+        nombreUsuarioID = intent.getStringExtra(LoginActivity.EXTRA_NOMBRE_USUARIO);
 
         TextView textViewNombreUsuario = (TextView) findViewById(R.id.textView_nombreUsuario);
-        textViewNombreUsuario.setText(nombreUsuario);
+        textViewNombreUsuario.setText(nombreUsuarioID);
     }
 
     @Override
@@ -54,5 +64,24 @@ public class MainActivity extends ActionBarActivity {
     public void irACrearMenu(View view){
         Intent intent = new Intent(this, CrearMenuActivity.class);
         startActivity(intent);
+    }
+
+    /**
+     * OnClick
+     * Inicia la actividad ElejirMenu.activity
+     * @param view
+     */
+    public void irAElejirMenu(View view){
+        Calendar c = Calendar.getInstance();
+        int dia = c.get(Calendar.DAY_OF_MONTH);
+        int mes = c.get(Calendar.MONTH) + 1;
+        int anio = c.get(Calendar.YEAR);
+        if(ServiceLocator.getInstance().getMenuesDao(getBaseContext()).existeAlmuerzo(dia, mes, anio)) {
+            Intent intent = new Intent(this, ElejirMenuActivity.class);
+            intent.putExtra(EXTRA_NOMBRE_USUARIO_ID, nombreUsuarioID);
+            startActivity(intent);
+        }else{
+            Toast.makeText(getBaseContext(), "Todavia no hay almuerzo!", Toast.LENGTH_LONG).show();
+        }
     }
 }

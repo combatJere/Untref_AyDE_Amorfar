@@ -35,5 +35,10 @@
     <string name="platos_restantes_a_elejir">Platos restantes:</string>
     <string name="menu_cancelado">Menu cancelado</string>
     <string name="enviar">Enviar</string>
+    <string name="enviar_voto">Enviar Voto</string>
+    <string name="title_activity_elejir_menu">ElejirMenuActivity</string>
+    <string name="cantidad_de_invitados">Cantidad de invitados</string>
+    <string name="invitados">Ivitados:</string>
+    <string name="no_como">No, gracias</string>
 
 </resources>

@@ -11,11 +11,16 @@ public class BaseDeDatosComandos {
     public static final String SQL_CREATE_USUARIOSYCLAVES = "CREATE TABLE " + BaseDeDatosContract.UsuariosYClave.TABLE_NAME + " (" +
             BaseDeDatosContract.UsuariosYClave.COLUMN_NAME_USUARIO_ID + " TEXT PRIMARY KEY NOT NULL," +
             BaseDeDatosContract.UsuariosYClave.COLUMN_NAME_CLAVE + " TEXT NOT NULL, " +
-            BaseDeDatosContract.UsuariosYClave.COLUMN_NAME_PREMIO + " INTEGER NOT NULL, " +
-            BaseDeDatosContract.UsuariosYClave.COLUMN_NAME_CODIGO_PLATO + " INTEGER, " +
             BaseDeDatosContract.UsuariosYClave.COLUMN_NAME_ES_ADMINISTRDOR + " INTEGER NOT NULL"
             + " )";
     ;
+
+    public static final String SQL_CREATE_USUARIOSYAVISOS = "CREATE TABLE " + BaseDeDatosContract.UsuariosYAvisos.TABLE_NAME + " (" +
+            BaseDeDatosContract.UsuariosYAvisos.COLUMN_NAME_USUARIO_ID + " TEXT PRIMARY KEY NOT NULL," +
+            BaseDeDatosContract.UsuariosYAvisos.COLUMN_NAME_TIENE_PREMIO + " INTEGER NOT NULL, " +
+            BaseDeDatosContract.UsuariosYAvisos.COLUMN_NAME_COD_PLATO_ELEJIDO + " INTEGER NOT NULL, " +
+            BaseDeDatosContract.UsuariosYAvisos.COLUMN_NAME_CANTIDAD_INVITADOS + " INTEGER NOT NULL"
+            + " )";
 
     public static final String SQL_CREATE_ALMUERZOS = "CREATE TABLE " + BaseDeDatosContract.Almuerzo.TABLE_NAME + " (" +
             BaseDeDatosContract.Almuerzo.COLUMN_NAME_DIA + " INTEGER NOT NULL, " +
@@ -40,6 +45,9 @@ public class BaseDeDatosComandos {
 
     public static final String SQL_DELETE_USUARIOSYCLAVES =
             "DROP TABLE IF EXISTS " + BaseDeDatosContract.UsuariosYClave.TABLE_NAME;
+
+    public static final String SQL_DELETE_USUARIOSYAVISOS =
+            "DROP TABLE IF EXISTS " + BaseDeDatosContract.UsuariosYAvisos.TABLE_NAME;
 
     public static final String SQL_DELETE_ALMUERZOS =
             "DROP TABLE IF EXISTS " + BaseDeDatosContract.Almuerzo.TABLE_NAME;

@@ -14,9 +14,15 @@ public class BaseDeDatosContract {
         public static final String TABLE_NAME = "usuariosYclave";
         public static final String COLUMN_NAME_USUARIO_ID = "usuario";
         public static final String COLUMN_NAME_CLAVE = "clave";
-        public static final String COLUMN_NAME_PREMIO = "premio";
-        public static final String COLUMN_NAME_CODIGO_PLATO = "codigo_plato";
         public static final String COLUMN_NAME_ES_ADMINISTRDOR = "es_administrador";
+    }
+
+    public static abstract class UsuariosYAvisos implements BaseColumns{
+        public static final String TABLE_NAME = "usuariosYavisos";
+        public static final String COLUMN_NAME_USUARIO_ID = "usuarioIdFK";
+        public static final String COLUMN_NAME_TIENE_PREMIO = "tienePremio";
+        public static final String COLUMN_NAME_COD_PLATO_ELEJIDO = "codigoPlatoElejido";
+        public static final String COLUMN_NAME_CANTIDAD_INVITADOS = "cantidadInvitados";
     }
 
     public static abstract class Almuerzo implements BaseColumns {

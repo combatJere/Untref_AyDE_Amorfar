@@ -48,16 +48,8 @@ public class TimePickerFragment extends DialogFragment
             timePickerListener.onHorarioSet(hourOfDay, minute);
         }
         callcount ++;
-//        Bundle horaYminutosRecividos = this.getArguments();
-//
-//        horaYminutosRecividos.getInt(CrearMenuActivity.EXTRA_HORA_TIMEPICKER);
-//
-//        horaRecivida = hourOfDay;
-//        minutosRecividos = minute;
-
-//        TextView textViewHora= (TextView)this.getActivity().findViewById(R.id.textView_crearMenu_hora);
-//        textViewHora.setText(TransformadorHorariosSingleton.getTransformadorHorariosSingleton().getHorarioEnTexto(hourOfDay,minute));
     }
+
 
     @Override
     public void onAttach(Activity activity) {

@@ -31,4 +31,38 @@ public interface UsuariosDAO {
      */
     public boolean usuarioExiste(String nombreUsuario);
 
+    /**
+     *
+     * @param nombreUsuarioID
+     * @return el id del plato elegido por el usuario.
+     */
+    public int getIdPlatoElegido(String nombreUsuarioID);
+
+    /**
+     * @param nombreUsuarioID
+     * @return true, si el usuario ya tiene voto registrado para ese almuerzo.
+     */
+    public boolean platoYaElegido(String nombreUsuarioID);
+
+    /**
+     * @param nombreUsuarioID
+     * @return la cantidad de invitados.
+     */
+    public int getCantidadInvitados(String nombreUsuarioID);
+
+    /**
+     * @param nombreUsuarioID
+     * @return true si el usuario conserva el premio
+     */
+    public boolean usuarioTienePremio(String nombreUsuarioID);
+
+    /**
+     * guarda una votacion (eleccion de plato) en la BDD
+     * @param nombreUsuarioID
+     * @param tienePremio
+     * @param idPlatoelejido
+     * @param cantInvitados
+     * @return
+     */
+    public boolean enviarVoto(String nombreUsuarioID, boolean tienePremio, int idPlatoelejido, int cantInvitados);
 }

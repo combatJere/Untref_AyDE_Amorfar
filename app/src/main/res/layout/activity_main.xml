@@ -15,7 +15,7 @@
         android:id="@+id/textView_nombreUsuario"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="30dp" />
+        android:layout_marginTop="20dp" />
 
     <LinearLayout
         android:orientation="vertical"
@@ -36,7 +36,8 @@
             android:text="@string/elegir_menu"
             android:id="@+id/button_elegirMenu"
             style="@style/boton_grande"
-            android:background="#ff99ffb0" />
+            android:background="#ff99ffb0"
+            android:onClick="irAElejirMenu"/>
 
         <Button
             android:text="@string/informe"

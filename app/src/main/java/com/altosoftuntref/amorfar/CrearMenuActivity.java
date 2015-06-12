@@ -202,8 +202,8 @@ public class CrearMenuActivity extends ActionBarActivity implements TimePickerFr
      * Es ejecutado por el Dialog TimePickerDialog, en el momento que este
      * es confirmado.
      * Setea el nuevo horario elegido en los atributos correspondientes.
-     * @param hora
-     * @param minutos
+     * @param hora hora seleccionada por el usuario en Dialog
+     * @param minutos minutos seleccionados por el ususario en Doalog
      */
     @Override
     public void onHorarioSet(int hora, int minutos) {
@@ -226,7 +226,7 @@ public class CrearMenuActivity extends ActionBarActivity implements TimePickerFr
     /**
      * Es ejecutado por el Dialog cantidadDePlatosDialog en el momento que este es confirmado.
      * Setea la cantidad de platos elegidos en el atributo correspondiente.
-     * @param cantidadPlatos
+     * @param cantidadPlatos cantidad de platos seleccionados en Dialog.
      */
     @Override
     public void onCantidadPlatosConfirmarClick(int cantidadPlatos) {

@@ -5,10 +5,8 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
-import android.widget.Toast;
 
-import com.altosoftuntref.amorfar.R;
-
+import Configuraciones.Configuraciones;
 import Persitencia.BaseDeDatosContract;
 import Persitencia.BaseDeDatosHelper;
 import Persitencia.DAOs.UsuariosDAO;
@@ -33,29 +31,53 @@ public class UsuariosDAOImpl implements UsuariosDAO{
     }
 
 
-
+    /**
+     * Guarda los datos obtenidos, junto a datos por defecto en ambas tablas de usuario
+     * En caso de fallar el guardado en la segunda tabla, elimina los datos guardados en la primer tabla.
+     * @param nombreUsuario
+     * @param clave
+     * @param esAdministrador
+     * @return
+     */
     @Override
     public boolean guardarUsuario(String nombreUsuario, String clave, int esAdministrador) {
         boolean usuarioCreadoConExito;
         SQLiteDatabase db = miDbHelper.getWritableDatabase();
 
         try{
-//            SQLiteDatabase db = miDbHelper.getWritableDatabase();
-            // Create a new map of values, where column names are the keys
             ContentValues values = new ContentValues();
             values.put(BaseDeDatosContract.UsuariosYClave.COLUMN_NAME_USUARIO_ID, nombreUsuario);
             values.put(BaseDeDatosContract.UsuariosYClave.COLUMN_NAME_CLAVE, clave);
-            values.put(BaseDeDatosContract.UsuariosYClave.COLUMN_NAME_PREMIO, 1);
             values.put(BaseDeDatosContract.UsuariosYClave.COLUMN_NAME_ES_ADMINISTRDOR, esAdministrador);
-            // Insert the new row, returning the primary key value of the new row
             db.insertOrThrow(BaseDeDatosContract.UsuariosYClave.TABLE_NAME, "null", values);
 
             usuarioCreadoConExito = true;
-        }catch (SQLException e){
-            usuarioCreadoConExito = false;
-        }finally{
-//            miDbHelper.close();
+        }catch (SQLException e) {
             db.close();
+            usuarioCreadoConExito = false;
+        }
+
+        if(usuarioCreadoConExito) {
+            try {
+                ContentValues values = new ContentValues();
+                values.put(BaseDeDatosContract.UsuariosYAvisos.COLUMN_NAME_USUARIO_ID, nombreUsuario);
+                values.put(BaseDeDatosContract.UsuariosYAvisos.COLUMN_NAME_TIENE_PREMIO, Configuraciones.TIENE_PREMIO);
+                values.put(BaseDeDatosContract.UsuariosYAvisos.COLUMN_NAME_COD_PLATO_ELEJIDO, Configuraciones.SIN_PLATO_ELEGIDO);
+                values.put(BaseDeDatosContract.UsuariosYAvisos.COLUMN_NAME_CANTIDAD_INVITADOS, Configuraciones.CANTIDAD_INVITADOS_POR_DEFECTO);
+                db.insertOrThrow(BaseDeDatosContract.UsuariosYAvisos.TABLE_NAME, "null", values);
+
+            } catch (SQLException e) {
+                String whereClause= BaseDeDatosContract.UsuariosYAvisos.COLUMN_NAME_USUARIO_ID + "=?";
+                String[] whereValues = {nombreUsuario};
+                db.delete(
+                        BaseDeDatosContract.UsuariosYClave.TABLE_NAME,
+                        whereClause,
+                        whereValues
+                );
+                usuarioCreadoConExito = false;
+            } finally {
+                db.close();
+            }
         }
         return usuarioCreadoConExito;
     }
@@ -83,22 +105,10 @@ public class UsuariosDAOImpl implements UsuariosDAO{
                     null,                                     // don't filter by row groups
                     null                                 // The sort order
             );
-
             cursor.moveToFirst();
             claveUsuarioObtenida = cursor.getString(cursor.getColumnIndex(BaseDeDatosContract.UsuariosYClave.COLUMN_NAME_CLAVE));
             cursor.close();
 
-            //si el cursor no esta vacio es porque se encontro un usuario con ese nombre.
-//            if (cursor.moveToFirst()) {
-//                String claveObtenida = cursor.getString(cursor.getColumnIndex(BaseDeDatosContract.UsuariosYClave.COLUMN_NAME_CLAVE));
-//                if(claveObtenida.equals(claveIngresada)){
-//                    usuarioEsValido = true;
-//                }else{
-//                    mensaje.setText(R.string.clave_no_correcta);
-//                }
-//            } else {
-//                mensaje.setText("El nombre de usuario \"" + nombreUsuarioIngresado + "\" no existe");
-//            }
         }finally {
             db.close();
         }
@@ -138,5 +148,154 @@ public class UsuariosDAOImpl implements UsuariosDAO{
             db.close();
         }
         return existe;
+    }
+
+    @Override
+    public int getIdPlatoElegido(String nombreUsuarioID) {
+        SQLiteDatabase db = miDbHelper.getReadableDatabase();
+        int codigoPlato;
+
+        String[] columnsToReturn = {
+                BaseDeDatosContract.UsuariosYAvisos.COLUMN_NAME_COD_PLATO_ELEJIDO,
+        };
+
+        String whereClause= BaseDeDatosContract.UsuariosYAvisos.COLUMN_NAME_USUARIO_ID + "=?";
+        String[] whereValues = {nombreUsuarioID};
+
+        try {
+            Cursor cursor = db.query(
+                    BaseDeDatosContract.UsuariosYAvisos.TABLE_NAME,  // The table to query
+                    columnsToReturn,                               // The columns to return
+                    whereClause,                                // The columns for the WHERE clause
+                    whereValues,                            // The values for the WHERE clause
+                    null,                                     // don't group the rows
+                    null,                                     // don't filter by row groups
+                    null                                 // The sort order
+            );
+
+            cursor.moveToFirst();
+            codigoPlato = cursor.getInt(cursor.getColumnIndex(BaseDeDatosContract.UsuariosYAvisos.COLUMN_NAME_COD_PLATO_ELEJIDO));
+            cursor.close();
+
+        }finally {
+            db.close();
+        }
+        return codigoPlato;
+    }
+
+    @Override
+    public boolean platoYaElegido(String nombreUsuarioID) {
+        boolean existe = false;
+        int codigoGuardado = getIdPlatoElegido(nombreUsuarioID);
+        if(codigoGuardado != Configuraciones.SIN_PLATO_ELEGIDO){
+            existe = true;
+        }
+        return existe;
+    }
+
+    @Override
+    public int getCantidadInvitados(String nombreUsuarioID) {
+        SQLiteDatabase db = miDbHelper.getReadableDatabase();
+        int cantidadInvitados;
+
+        String[] columnsToReturn = {
+                BaseDeDatosContract.UsuariosYAvisos.COLUMN_NAME_CANTIDAD_INVITADOS,
+        };
+
+        String whereClause= BaseDeDatosContract.UsuariosYAvisos.COLUMN_NAME_USUARIO_ID + "=?";
+        String[] whereValues = {nombreUsuarioID};
+
+        try {
+            Cursor cursor = db.query(
+                    BaseDeDatosContract.UsuariosYAvisos.TABLE_NAME,  // The table to query
+                    columnsToReturn,                               // The columns to return
+                    whereClause,                                // The columns for the WHERE clause
+                    whereValues,                            // The values for the WHERE clause
+                    null,                                     // don't group the rows
+                    null,                                     // don't filter by row groups
+                    null                                 // The sort order
+            );
+
+            cursor.moveToFirst();
+            cantidadInvitados = cursor.getInt(cursor.getColumnIndex(BaseDeDatosContract.UsuariosYAvisos.COLUMN_NAME_CANTIDAD_INVITADOS));
+            cursor.close();
+
+        }finally {
+            db.close();
+        }
+        return cantidadInvitados;
+    }
+
+    @Override
+    public boolean usuarioTienePremio(String nombreUsuarioID) {
+        SQLiteDatabase db = miDbHelper.getReadableDatabase();
+        int tienePremioInt;
+        boolean tienePremio = false;
+
+        String[] columnsToReturn = {
+                BaseDeDatosContract.UsuariosYAvisos.COLUMN_NAME_TIENE_PREMIO,
+        };
+
+        String whereClause= BaseDeDatosContract.UsuariosYAvisos.COLUMN_NAME_USUARIO_ID + "=?";
+        String[] whereValues = {nombreUsuarioID};
+
+        try {
+            Cursor cursor = db.query(
+                    BaseDeDatosContract.UsuariosYAvisos.TABLE_NAME,  // The table to query
+                    columnsToReturn,                               // The columns to return
+                    whereClause,                                // The columns for the WHERE clause
+                    whereValues,                            // The values for the WHERE clause
+                    null,                                     // don't group the rows
+                    null,                                     // don't filter by row groups
+                    null                                 // The sort order
+            );
+
+            cursor.moveToFirst();
+            tienePremioInt = cursor.getInt(cursor.getColumnIndex(BaseDeDatosContract.UsuariosYAvisos.COLUMN_NAME_TIENE_PREMIO));
+            if(tienePremioInt == 1){
+                tienePremio = true;
+            }
+            cursor.close();
+
+        }finally {
+            db.close();
+        }
+        return tienePremio;
+    }
+
+    @Override
+    public boolean enviarVoto(String nombreUsuarioID, boolean tienePremio, int codPlatoElegido, int cantInvitados) {
+        SQLiteDatabase db = miDbHelper.getReadableDatabase();
+        boolean guardadoExitoso = true;
+
+        int tienePremioInt;
+        if (tienePremio){
+            tienePremioInt = 1;
+        }else{
+            tienePremioInt = 0;
+        }
+
+        try{
+            ContentValues values = new ContentValues();
+            values.put(BaseDeDatosContract.UsuariosYAvisos.COLUMN_NAME_TIENE_PREMIO, tienePremioInt);
+            values.put(BaseDeDatosContract.UsuariosYAvisos.COLUMN_NAME_COD_PLATO_ELEJIDO, codPlatoElegido);
+            values.put(BaseDeDatosContract.UsuariosYAvisos.COLUMN_NAME_CANTIDAD_INVITADOS, cantInvitados);
+
+            String whereClause= BaseDeDatosContract.UsuariosYAvisos.COLUMN_NAME_USUARIO_ID + "=?";
+            String[] whereValues = {nombreUsuarioID};
+
+            db.update(
+                    BaseDeDatosContract.UsuariosYAvisos.TABLE_NAME,
+                    values,
+                    whereClause,
+                    whereValues
+            );
+
+        }catch(SQLException e){
+            guardadoExitoso = false;
+        }finally{
+            db.close();
+        }
+        return guardadoExitoso;
     }
 }
