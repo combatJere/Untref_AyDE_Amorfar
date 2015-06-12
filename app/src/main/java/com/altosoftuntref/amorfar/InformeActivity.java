@@ -1,10 +1,12 @@
 package com.altosoftuntref.amorfar;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 
 
 public class InformeActivity extends Activity {
@@ -13,6 +15,14 @@ public class InformeActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_informe);
+    }
+
+    /**
+     * OnClick
+     */
+    public void irAListaDePremios(View view){
+        Intent intent = new Intent(this, ListaDePremiosActivity.class);
+        startActivity(intent);
     }
 
 //    @Override

@@ -84,4 +84,13 @@ public class MainActivity extends ActionBarActivity {
             Toast.makeText(getBaseContext(), "Todavia no hay almuerzo!", Toast.LENGTH_LONG).show();
         }
     }
+
+    /**
+     * OnClick
+     * @param view
+     */
+    public void irAInforme(View view){
+        Intent intent = new Intent(this, InformeActivity.class);
+        startActivity(intent);
+    }
 }

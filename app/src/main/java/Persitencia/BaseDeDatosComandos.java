@@ -16,7 +16,7 @@ public class BaseDeDatosComandos {
     ;
 
     public static final String SQL_CREATE_USUARIOSYAVISOS = "CREATE TABLE " + BaseDeDatosContract.UsuariosYAvisos.TABLE_NAME + " (" +
-            BaseDeDatosContract.UsuariosYAvisos.COLUMN_NAME_USUARIO_ID + " TEXT PRIMARY KEY NOT NULL," +
+            BaseDeDatosContract.UsuariosYAvisos.COLUMN_NAME_NOMBRE_USUARIO_ID + " TEXT PRIMARY KEY NOT NULL," +
             BaseDeDatosContract.UsuariosYAvisos.COLUMN_NAME_TIENE_PREMIO + " INTEGER NOT NULL, " +
             BaseDeDatosContract.UsuariosYAvisos.COLUMN_NAME_COD_PLATO_ELEJIDO + " INTEGER NOT NULL, " +
             BaseDeDatosContract.UsuariosYAvisos.COLUMN_NAME_CANTIDAD_INVITADOS + " INTEGER NOT NULL"

@@ -43,5 +43,11 @@
     <string name="texto_comserva_premio">Conserva el premio :)</string>
     <string name="texto_no_conserva_premio">Esta semana no hay premio :(</string>
     <string name="title_activity_informe">InformeActivity</string>
+    <string name="title_activity_lista_de_premios">ListaDePremiosActivity</string>
+    <string name="reiniciar_premios">Reiniciar premios</string>
+    <string name="comensales_premiados">Comensales premiados:</string>
+    <string name="desea_reiniciar_premiados">¿Reiniciar lista de premiados?</string>
+    <string name="cancelar">Cancelar</string>
+    <string name="reiniciar">Reiniciar</string>
 
 </resources>

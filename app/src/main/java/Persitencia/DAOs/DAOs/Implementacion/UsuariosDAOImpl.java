@@ -60,14 +60,14 @@ public class UsuariosDAOImpl implements UsuariosDAO{
         if(usuarioCreadoConExito) {
             try {
                 ContentValues values = new ContentValues();
-                values.put(BaseDeDatosContract.UsuariosYAvisos.COLUMN_NAME_USUARIO_ID, nombreUsuario);
+                values.put(BaseDeDatosContract.UsuariosYAvisos.COLUMN_NAME_NOMBRE_USUARIO_ID, nombreUsuario);
                 values.put(BaseDeDatosContract.UsuariosYAvisos.COLUMN_NAME_TIENE_PREMIO, Configuraciones.TIENE_PREMIO);
                 values.put(BaseDeDatosContract.UsuariosYAvisos.COLUMN_NAME_COD_PLATO_ELEJIDO, Configuraciones.SIN_PLATO_ELEGIDO);
                 values.put(BaseDeDatosContract.UsuariosYAvisos.COLUMN_NAME_CANTIDAD_INVITADOS, Configuraciones.CANTIDAD_INVITADOS_POR_DEFECTO);
                 db.insertOrThrow(BaseDeDatosContract.UsuariosYAvisos.TABLE_NAME, "null", values);
 
             } catch (SQLException e) {
-                String whereClause= BaseDeDatosContract.UsuariosYAvisos.COLUMN_NAME_USUARIO_ID + "=?";
+                String whereClause= BaseDeDatosContract.UsuariosYAvisos.COLUMN_NAME_NOMBRE_USUARIO_ID + "=?";
                 String[] whereValues = {nombreUsuario};
                 db.delete(
                         BaseDeDatosContract.UsuariosYClave.TABLE_NAME,
@@ -159,7 +159,7 @@ public class UsuariosDAOImpl implements UsuariosDAO{
                 BaseDeDatosContract.UsuariosYAvisos.COLUMN_NAME_COD_PLATO_ELEJIDO,
         };
 
-        String whereClause= BaseDeDatosContract.UsuariosYAvisos.COLUMN_NAME_USUARIO_ID + "=?";
+        String whereClause= BaseDeDatosContract.UsuariosYAvisos.COLUMN_NAME_NOMBRE_USUARIO_ID + "=?";
         String[] whereValues = {nombreUsuarioID};
 
         try {
@@ -202,7 +202,7 @@ public class UsuariosDAOImpl implements UsuariosDAO{
                 BaseDeDatosContract.UsuariosYAvisos.COLUMN_NAME_CANTIDAD_INVITADOS,
         };
 
-        String whereClause= BaseDeDatosContract.UsuariosYAvisos.COLUMN_NAME_USUARIO_ID + "=?";
+        String whereClause= BaseDeDatosContract.UsuariosYAvisos.COLUMN_NAME_NOMBRE_USUARIO_ID + "=?";
         String[] whereValues = {nombreUsuarioID};
 
         try {
@@ -236,7 +236,7 @@ public class UsuariosDAOImpl implements UsuariosDAO{
                 BaseDeDatosContract.UsuariosYAvisos.COLUMN_NAME_TIENE_PREMIO,
         };
 
-        String whereClause= BaseDeDatosContract.UsuariosYAvisos.COLUMN_NAME_USUARIO_ID + "=?";
+        String whereClause= BaseDeDatosContract.UsuariosYAvisos.COLUMN_NAME_NOMBRE_USUARIO_ID + "=?";
         String[] whereValues = {nombreUsuarioID};
 
         try {
@@ -252,7 +252,7 @@ public class UsuariosDAOImpl implements UsuariosDAO{
 
             cursor.moveToFirst();
             tienePremioInt = cursor.getInt(cursor.getColumnIndex(BaseDeDatosContract.UsuariosYAvisos.COLUMN_NAME_TIENE_PREMIO));
-            if(tienePremioInt == 1){
+            if(tienePremioInt == Configuraciones.TIENE_PREMIO){
                 tienePremio = true;
             }
             cursor.close();
@@ -262,6 +262,43 @@ public class UsuariosDAOImpl implements UsuariosDAO{
         }
         return tienePremio;
     }
+
+
+
+    @Override
+    public Cursor getUsuariosConPremioCursor() {
+        SQLiteDatabase db = miDbHelper.getReadableDatabase();
+        Cursor cursor;
+
+        String[] columnsToReturn = {
+                BaseDeDatosContract.UsuariosYAvisos.COLUMN_NAME_NOMBRE_USUARIO_ID,
+        };
+
+        String whereClause= BaseDeDatosContract.UsuariosYAvisos.COLUMN_NAME_TIENE_PREMIO + "=?";
+
+        String[] whereValues = {String.valueOf(Configuraciones.TIENE_PREMIO)};
+
+        String sortOrder =
+                BaseDeDatosContract.UsuariosYAvisos.COLUMN_NAME_NOMBRE_USUARIO_ID + " ASC";
+
+
+        cursor = db.query(
+                BaseDeDatosContract.UsuariosYAvisos.TABLE_NAME,  // The table to query
+                columnsToReturn,                                 // The columns to return
+                whereClause,                                     // The columns for the WHERE clause
+                whereValues,                                     // The values for the WHERE clause
+                null,                                            // don't group the rows
+                null,                                            // don't filter by row groups
+                sortOrder                                             // The sort order
+        );
+
+        return cursor;
+    }
+
+
+
+
+
 
     @Override
     public boolean enviarVoto(String nombreUsuarioID, boolean tienePremio, int codPlatoElegido, int cantInvitados) {
@@ -281,7 +318,7 @@ public class UsuariosDAOImpl implements UsuariosDAO{
             values.put(BaseDeDatosContract.UsuariosYAvisos.COLUMN_NAME_COD_PLATO_ELEJIDO, codPlatoElegido);
             values.put(BaseDeDatosContract.UsuariosYAvisos.COLUMN_NAME_CANTIDAD_INVITADOS, cantInvitados);
 
-            String whereClause= BaseDeDatosContract.UsuariosYAvisos.COLUMN_NAME_USUARIO_ID + "=?";
+            String whereClause= BaseDeDatosContract.UsuariosYAvisos.COLUMN_NAME_NOMBRE_USUARIO_ID + "=?";
             String[] whereValues = {nombreUsuarioID};
 
             db.update(
@@ -325,7 +362,7 @@ public class UsuariosDAOImpl implements UsuariosDAO{
     }
 
     @Override
-    public boolean reinicairPremios() {
+    public boolean reiniciarPremios() {
         SQLiteDatabase db = miDbHelper.getReadableDatabase();
         boolean reiniciadoExitoso = true;
 
@@ -341,6 +378,7 @@ public class UsuariosDAOImpl implements UsuariosDAO{
             );
 
         }catch(SQLException e){
+            e.printStackTrace();
             reiniciadoExitoso = false;
         }finally{
             db.close();
@@ -348,12 +386,13 @@ public class UsuariosDAOImpl implements UsuariosDAO{
         return reiniciadoExitoso;
     }
 
+    @Override
     public boolean actualizarPremios(){
         SQLiteDatabase db = miDbHelper.getReadableDatabase();
         boolean actualizadoExitoso = true;
 
         String[] columnsToReturn = {
-                BaseDeDatosContract.UsuariosYAvisos.COLUMN_NAME_USUARIO_ID,
+                BaseDeDatosContract.UsuariosYAvisos.COLUMN_NAME_NOMBRE_USUARIO_ID,
                 BaseDeDatosContract.UsuariosYAvisos.COLUMN_NAME_COD_PLATO_ELEJIDO,
         };
 
@@ -375,12 +414,12 @@ public class UsuariosDAOImpl implements UsuariosDAO{
 
             String nombreUsuarioID;
             while(cursor.moveToNext()){
-                nombreUsuarioID = cursor.getString(cursor.getColumnIndex(BaseDeDatosContract.UsuariosYAvisos.COLUMN_NAME_USUARIO_ID));
+                nombreUsuarioID = cursor.getString(cursor.getColumnIndex(BaseDeDatosContract.UsuariosYAvisos.COLUMN_NAME_NOMBRE_USUARIO_ID));
 
                 ContentValues values = new ContentValues();
                 values.put(BaseDeDatosContract.UsuariosYAvisos.COLUMN_NAME_TIENE_PREMIO, Configuraciones.PERDIO_PREMIO);
 
-                whereClause= BaseDeDatosContract.UsuariosYAvisos.COLUMN_NAME_USUARIO_ID + "=?";
+                whereClause= BaseDeDatosContract.UsuariosYAvisos.COLUMN_NAME_NOMBRE_USUARIO_ID + "=?";
                 whereValues[0] = nombreUsuarioID;
 
                 db.update(

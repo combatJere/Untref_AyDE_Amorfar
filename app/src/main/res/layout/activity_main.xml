@@ -43,7 +43,8 @@
             android:text="@string/informe"
             android:id="@+id/button_mostrarInforme"
             style="@style/boton_grande"
-            android:background="#ffacffee" />
+            android:background="#ffacffee"
+            android:onClick="irAInforme"/>
     </LinearLayout>
 
 </RelativeLayout>

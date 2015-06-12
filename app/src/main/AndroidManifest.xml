@@ -44,6 +44,10 @@
             android:name=".InformeActivity"
             android:label="@string/title_activity_informe" >
         </activity>
+        <activity
+            android:name=".ListaDePremiosActivity"
+            android:label="@string/title_activity_lista_de_premios" >
+        </activity>
     </application>
 
 </manifest>

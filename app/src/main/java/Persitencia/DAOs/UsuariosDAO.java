@@ -1,5 +1,7 @@
 package Persitencia.DAOs;
 
+import android.database.Cursor;
+
 import Persitencia.DAOs.DAOs.Implementacion.UsuariosDAOImpl;
 
 /**
@@ -57,6 +59,11 @@ public interface UsuariosDAO {
     public boolean usuarioTienePremio(String nombreUsuarioID);
 
     /**
+     * @return Cursor con todos los nombres de los usuarios que tienen premios hasta el momento.
+     */
+    public Cursor getUsuariosConPremioCursor();
+
+    /**
      * guarda una votacion (eleccion de plato) en la BDD
      * @param nombreUsuarioID
      * @param tienePremio
@@ -78,7 +85,7 @@ public interface UsuariosDAO {
      * (ideado para cuando empieza un nuevo ciclo)
      * @return
      */
-    public boolean reinicairPremios();
+    public boolean reiniciarPremios();
 
     /**
      * usado para calcular si conserva el premio, a partir de la ultima votacion realizada.
