@@ -1,46 +1,40 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
 xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
-android:layout_height="match_parent" android:paddingLeft="@dimen/activity_horizontal_margin"
-android:paddingRight="@dimen/activity_horizontal_margin"
-android:paddingTop="@dimen/activity_vertical_margin"
-android:paddingBottom="@dimen/activity_vertical_margin" tools:context="com.altosoftuntref.amorfar.InformeActivity"
-android:background="#fffffee8">
+android:layout_height="match_parent" tools:context="com.altosoftuntref.amorfar.InformeActivity"
+android:background="#fffffee8" android:layout_centerVertical="true"
+    android:layout_centerHorizontal="true" android:orientation="vertical">
 
-<!--<TextView-->
-    <!--android:layout_width="wrap_content"-->
-    <!--android:layout_height="wrap_content"-->
-    <!--android:textAppearance="?android:attr/textAppearanceLarge"-->
-    <!--android:text="Large Text"-->
-    <!--android:id="@+id/textView_nombreUsuario"-->
-    <!--android:layout_alignParentTop="true"-->
-    <!--android:layout_centerHorizontal="true"-->
-    <!--android:layout_marginTop="20dp" />-->
+    <TextView
+        android:layout_width="fill_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="Large Text"
+        android:id="@+id/textView_informe_resumen"
+        android:background="#fffbffea" />
 
-<LinearLayout
-    android:orientation="vertical"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:layout_centerVertical="true"
-    android:layout_centerHorizontal="true">
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="60dp">
 
-    <Button
-        android:text="@string/crear_menu"
-        android:id="@+id/button_listaDePremios_mostrarListaPremios"
-        style="@style/boton_grande"
-        android:background="#fff5beff"
-        android:onClick="irAListaDePremios"/>
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:text="@string/lista_de_premiados"
+            android:id="@+id/button_informe_lista_premiados"
+            android:background="#ff8fff86"
+            android:onClick="irAListaDePremios"/>
 
-    <Button
-        android:text="@string/elegir_menu"
-        android:id="@+id/button_elegirMenu"
-        style="@style/boton_grande"
-        android:background="#ff99ffb0"/>
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:text="NOSE"
+            android:background="#ffb0cbff"
+            android:id="@+id/button_informe_nose"/>
+    </LinearLayout>
 
-    <Button
-        android:text="@string/informe"
-        android:id="@+id/button_mostrarInforme"
-        style="@style/boton_grande"
-        android:background="#ffacffee" />
+
 </LinearLayout>
-
-</RelativeLayout>

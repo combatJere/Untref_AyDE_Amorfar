@@ -49,5 +49,6 @@
     <string name="desea_reiniciar_premiados">¿Reiniciar lista de premiados?</string>
     <string name="cancelar">Cancelar</string>
     <string name="reiniciar">Reiniciar</string>
+    <string name="lista_de_premiados">Lista de premiados</string>
 
 </resources>
