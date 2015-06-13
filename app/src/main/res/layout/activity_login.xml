@@ -37,11 +37,11 @@
             android:background="#ffb0cbff"
             android:onClick="irAMainActivity" />
 
-        <CheckBox
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/recordar_sesion"
-            android:id="@+id/checkBox_login_recordarSesion" />
+        <!--<CheckBox-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:text="@string/recordar_sesion"-->
+            <!--android:id="@+id/checkBox_login_recordarSesion" />-->
 
         <TextView
             android:layout_width="@dimen/ancho_standard"

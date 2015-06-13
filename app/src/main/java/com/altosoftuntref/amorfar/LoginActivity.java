@@ -18,7 +18,7 @@ import Persitencia.DAOs.DAOs.Implementacion.UsuariosDAOImpl;
 import Persitencia.DAOs.UsuariosDAO;
 import inversiondecontrol.ServiceLocator;
 
-public class LoginActivity extends ActionBarActivity {
+public class LoginActivity extends Activity {
     public final static String EXTRA_NOMBRE_USUARIO = "com.altosoftuntref.amorfar.NOMBRE_USUARIO";
 //    private Map<String,String> usuariosYClaves = new HashMap<String,String>();
 

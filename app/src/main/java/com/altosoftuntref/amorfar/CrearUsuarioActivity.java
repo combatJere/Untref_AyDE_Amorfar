@@ -1,5 +1,6 @@
 package com.altosoftuntref.amorfar;
 
+import android.app.Activity;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -13,7 +14,7 @@ import Persitencia.DAOs.UsuariosDAO;
 import inversiondecontrol.ServiceLocator;
 
 
-public class CrearUsuarioActivity extends ActionBarActivity {
+public class CrearUsuarioActivity extends Activity {
 
     EditText textviewClaveAdminMaestra;
     boolean soyAdminChecked = false;

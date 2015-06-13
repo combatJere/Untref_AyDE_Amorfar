@@ -1,5 +1,6 @@
 package com.altosoftuntref.amorfar;
 
+import android.app.Activity;
 import android.app.Service;
 import android.content.Intent;
 import android.support.v7.app.ActionBarActivity;
@@ -20,7 +21,7 @@ import inversiondecontrol.ServiceLocator;
  * Actividad que permite elegir a que parte del sistema ingresar.
  * Segun el nivel de usuario que ingrese, tendra acceso a distintas funciones.
  */
-public class MainActivity extends ActionBarActivity {
+public class MainActivity extends Activity {
 
     public final static String EXTRA_NOMBRE_USUARIO_ID = "amorfar.mainActivity.NOMBRE_USUARIO_ID";
 

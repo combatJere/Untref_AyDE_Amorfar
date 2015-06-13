@@ -1,5 +1,6 @@
 package com.altosoftuntref.amorfar;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.database.Cursor;
 import android.support.v7.app.ActionBarActivity;
@@ -19,7 +20,7 @@ import dialogs.NombrePlatoDialogFragment;
 import inversiondecontrol.ServiceLocator;
 
 
-public class SeleccionPlatoActivity extends ActionBarActivity implements NombrePlatoDialogFragment.NuevoPlatoDialogListener {
+public class SeleccionPlatoActivity extends Activity implements NombrePlatoDialogFragment.NuevoPlatoDialogListener {
 
     public final static String SAVED_SET_ID_PLATOS = "amorfar.SeleccionPlatoActivity.SET_ID_PLATOS";
     public final static String SAVED_ID_PLATO_A_INTERCAMBIAR = "amorfar.SeleccionPlatoActivity.ID_PLATO_A_INTERCAMBIAR";
