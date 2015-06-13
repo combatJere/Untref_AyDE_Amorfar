@@ -12,7 +12,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerVertical="true"
-        android:layout_centerHorizontal="true">
+        android:layout_centerHorizontal="true"
+        android:id="@+id/linearLayout3">
 
         <EditText
             android:layout_width="@dimen/ancho_standard"
@@ -35,6 +36,14 @@
             android:id="@+id/editText_crearUsuario_claveRepetida"
             android:hint="@string/repetir_clave"/>
 
+        <EditText
+            android:layout_width="@dimen/ancho_standard"
+            android:layout_height="wrap_content"
+            android:hint="@string/clave_administrador"
+            android:inputType="textPassword"
+            android:ems="10"
+            android:id="@+id/editText_crearUSuario_claveAdminMaestra" />
+
         <Button
             style="?android:attr/buttonStyleSmall"
             android:layout_width="@dimen/ancho_standard"
@@ -52,4 +61,25 @@
             android:id="@+id/textView_crearUsuario_mensaje"
             android:textColor="#ffff5a5b" />
     </LinearLayout>
+
+    <CheckBox
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/soy_admin"
+        android:id="@+id/checkBox_crearUsuario_soyAdmin"
+        android:layout_below="@+id/linearLayout3"
+        android:layout_alignLeft="@+id/linearLayout3"
+        android:layout_alignStart="@+id/linearLayout3"
+        android:onClick="onCheckboxClicked"/>
+
+    <!--<EditText-->
+        <!--android:layout_width="@dimen/ancho_standard"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:hint="@string/clave_administrador"-->
+        <!--android:inputType="textPassword"-->
+        <!--android:ems="10"-->
+        <!--android:id="@+id/editText_claveAdminMaestra"-->
+        <!--android:layout_marginTop="20dp"-->
+        <!--android:layout_below="@+id/checkBox_crearUsuario_soyAdmin"-->
+        <!--android:layout_centerHorizontal="true" />-->
 </RelativeLayout>

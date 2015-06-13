@@ -1,33 +1,29 @@
 package com.altosoftuntref.amorfar;
 
-import android.content.ContentValues;
-import android.database.SQLException;
-import android.database.sqlite.SQLiteDatabase;
-import android.graphics.Color;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
-import android.widget.BaseExpandableListAdapter;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import Configuraciones.Configuraciones;
-import Persitencia.BaseDeDatosContract;
-import Persitencia.BaseDeDatosHelper;
-import Persitencia.DAOs.DAOs.Implementacion.UsuariosDAOImpl;
 import Persitencia.DAOs.UsuariosDAO;
 import inversiondecontrol.ServiceLocator;
 
 
 public class CrearUsuarioActivity extends ActionBarActivity {
 
+    EditText textviewClaveAdminMaestra;
+    boolean soyAdminChecked = false;
+    int esAdmin = Configuraciones.NO_ES_ADMIN;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_crear_usuario);
+        this.instanciarEditTextClaveMaestra();
     }
 
     /**
@@ -40,6 +36,9 @@ public class CrearUsuarioActivity extends ActionBarActivity {
         UsuariosDAO usuariosDao = ServiceLocator.getInstance().getUsuariosDAO(getBaseContext());
         boolean usuarioGuardadoConExito = false;
 
+        if(soyAdminChecked){
+            this.comprobarSiEsAdmin();
+        }
 
         TextView mensaje = (TextView) findViewById(R.id.textView_crearUsuario_mensaje);
 
@@ -61,7 +60,7 @@ public class CrearUsuarioActivity extends ActionBarActivity {
         }else{
 
             if(!usuariosDao.usuarioExiste(nombreUsuarioIngresado)){
-                usuariosDao.guardarUsuario(nombreUsuarioIngresado, claveIngresada, Configuraciones.ES_ADMIN); //MODIFICAR PARA CREAR ADMINES
+                usuariosDao.guardarUsuario(nombreUsuarioIngresado, claveIngresada, esAdmin);
                 Toast.makeText(getBaseContext(), R.string.usuario_creado_con_exito, Toast.LENGTH_LONG).show();
                 finish();
             }else{
@@ -69,6 +68,44 @@ public class CrearUsuarioActivity extends ActionBarActivity {
                 editTextClave.getText().clear();
                 editTextClaveRepetida.getText().clear();
             }
+        }
+    }
+
+    /**
+     * Comprueba si un usuario que dice ser admin, lo es realmente.
+     *  -En caso afirmativo, lo guarda como tipo de usuario admin.
+     *  -En caso positivo lo retorna a la actividad anteriori mostrando un mensaje.
+     */
+    private void comprobarSiEsAdmin(){
+        String claveMaestraIngresada = textviewClaveAdminMaestra.getText().toString();
+        if(!claveMaestraIngresada.equals(Configuraciones.CLAVE_ADMIN_MAESTRA)){
+            finish();
+            Toast.makeText(getBaseContext(), R.string.usuario_no_autorizado, Toast.LENGTH_LONG).show();
+        }else{
+            esAdmin = Configuraciones.ES_ADMIN;
+        }
+
+    }
+
+    private void instanciarEditTextClaveMaestra(){
+        textviewClaveAdminMaestra = (EditText) findViewById(R.id.editText_crearUSuario_claveAdminMaestra);
+        textviewClaveAdminMaestra.setVisibility(View.GONE);
+    }
+
+    public void onCheckboxClicked(View view) {
+        // Is the view now checked?
+        boolean checked = ((CheckBox) view).isChecked();
+        // Check which checkbox was clicked
+        switch(view.getId()) {
+            case R.id.checkBox_crearUsuario_soyAdmin:
+                if (checked){
+                    soyAdminChecked = true;
+                    textviewClaveAdminMaestra.setVisibility(View.VISIBLE);
+                }else{
+                    soyAdminChecked = false;
+                    textviewClaveAdminMaestra.setVisibility(View.GONE);
+                }
+                break;
         }
     }
 

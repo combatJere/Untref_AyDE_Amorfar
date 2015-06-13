@@ -12,10 +12,11 @@
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:text="Large Text"
+        android:textAllCaps="true"
         android:id="@+id/textView_nombreUsuario"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="20dp" />
+        android:layout_marginTop="15dp" />
 
     <LinearLayout
         android:orientation="vertical"
@@ -30,14 +31,16 @@
             android:id="@+id/button_irACrearMenu"
             style="@style/boton_grande"
             android:background="#fff5beff"
-            android:onClick="irACrearMenu"/>
+            android:onClick="irACrearMenu"
+            android:layout_marginBottom="2dp"/>
 
         <Button
             android:text="@string/elegir_menu"
             android:id="@+id/button_elegirMenu"
             style="@style/boton_grande"
             android:background="#ff99ffb0"
-            android:onClick="irAElejirMenu"/>
+            android:onClick="irAElejirMenu"
+            android:layout_marginBottom="2dp"/>
 
         <Button
             android:text="@string/informe"
@@ -46,5 +49,17 @@
             android:background="#ffacffee"
             android:onClick="irAInforme"/>
     </LinearLayout>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:text="@string/powered_by_altosoft"
+        android:id="@+id/textView"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:onClick="mostrarDialogAltosoft"
+        android:clickable="true" />
 
 </RelativeLayout>

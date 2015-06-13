@@ -50,5 +50,15 @@
     <string name="cancelar">Cancelar</string>
     <string name="reiniciar">Reiniciar</string>
     <string name="lista_de_premiados">Lista de premiados</string>
+    <string name="powered_by_altosoft">Powered by Altosoft</string>
+    <string name="Altosoft">Altosoft</string>
+    <string name="soy_admin">Soy admin!</string>
+    <string name="clave_administrador">Clave admin</string>
+    <string name="cerrar">Cerrar</string>
+    <string name="usuario_no_autorizado">Usuario no autorizado</string>
+
+
+    <string name="sobre_altosoft">UNTREF \n Analisis y disenio estructurado</string>
+
 
 </resources>

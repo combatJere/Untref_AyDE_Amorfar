@@ -13,6 +13,7 @@ import android.widget.Toast;
 
 import java.util.Calendar;
 
+import dialogs.SobreAltosoftDialog;
 import inversiondecontrol.ServiceLocator;
 
 /**
@@ -106,5 +107,14 @@ public class MainActivity extends ActionBarActivity {
     public void irAInforme(View view){
         Intent intent = new Intent(this, InformeActivity.class);
         startActivity(intent);
+    }
+
+    /**
+     * onClick
+     * muestra el dialog sobre altosoft cuando alguien toca la marca de agua de la empreza
+     */
+    public void mostrarDialogAltosoft(View view){
+        SobreAltosoftDialog dialogAltosoft = new SobreAltosoftDialog();
+        dialogAltosoft.show(this.getFragmentManager(),"dialog_ltosoft");
     }
 }

@@ -6,6 +6,8 @@ package Configuraciones;
  * Created by jeremias on 05/06/2015.
  */
 public class Configuraciones {
+    public static final String CLAVE_ADMIN_MAESTRA = "tugnarelli";
+
     public static final int CANTIDAD_PLATOS_MAX = 5;
     public static final int CANTIDAD_PLATOS_MIN = 1;
     public static final int CANTIDAD_PLATOS_POR_DEFECTO = 2;
