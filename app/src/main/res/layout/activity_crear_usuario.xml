@@ -51,7 +51,7 @@
             android:text="@string/listo"
             android:id="@+id/button_crearUsuario_listo"
             android:background="#ffb0cbff"
-            android:onClick="guardarNuevoUsuario" />
+            android:onClick="guardarClick" />
 
         <TextView
             android:layout_width="@dimen/ancho_standard"
@@ -72,14 +72,4 @@
         android:layout_alignStart="@+id/linearLayout3"
         android:onClick="onCheckboxClicked"/>
 
-    <!--<EditText-->
-        <!--android:layout_width="@dimen/ancho_standard"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:hint="@string/clave_administrador"-->
-        <!--android:inputType="textPassword"-->
-        <!--android:ems="10"-->
-        <!--android:id="@+id/editText_claveAdminMaestra"-->
-        <!--android:layout_marginTop="20dp"-->
-        <!--android:layout_below="@+id/checkBox_crearUsuario_soyAdmin"-->
-        <!--android:layout_centerHorizontal="true" />-->
 </RelativeLayout>

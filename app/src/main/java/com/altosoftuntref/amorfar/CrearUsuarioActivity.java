@@ -1,9 +1,9 @@
 package com.altosoftuntref.amorfar;
 
 import android.app.Activity;
-import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -27,19 +27,35 @@ public class CrearUsuarioActivity extends Activity {
         this.instanciarEditTextClaveMaestra();
     }
 
+
     /**
      * OnClick
-     * Valida los datos ingresados por el Usuario que pretende crear una cuenta, obtenidos de los EditText
-     * Si el usuario no existe y los datos son validos, lo guarda en la BDD.
+     * Comprueba los datos de un admin que pretende darse de alta y lo guarada en caso de ser validos.
+     * En caso en que diga ser admin, lo comprueba, si no es valido, lo saca de la actividad sin guardarlo.
      * @param view
      */
-    public void guardarNuevoUsuario(View view){
-        UsuariosDAO usuariosDao = ServiceLocator.getInstance().getUsuariosDAO(getBaseContext());
-        boolean usuarioGuardadoConExito = false;
+    public void guardarClick(View view){
+        this.ocultarTeclado();
 
         if(soyAdminChecked){
-            this.comprobarSiEsAdmin();
+            if(adminValidado()){
+                guardarNuevoUsuario();
+            }else{
+                Toast.makeText(getBaseContext(), R.string.usuario_no_autorizado, Toast.LENGTH_LONG).show();
+                finish();
+            }
+        }else{
+            guardarNuevoUsuario();
         }
+    }
+
+
+    /**
+     * Valida los datos ingresados por el Usuario que pretende crear una cuenta, obtenidos de los EditText
+     * Si el usuario no existe y los datos son validos, lo guarda en la BDD.
+     */
+    private void guardarNuevoUsuario(){
+        UsuariosDAO usuariosDao = ServiceLocator.getInstance().getUsuariosDAO(getBaseContext());
 
         TextView mensaje = (TextView) findViewById(R.id.textView_crearUsuario_mensaje);
 
@@ -72,27 +88,34 @@ public class CrearUsuarioActivity extends Activity {
         }
     }
 
+
     /**
      * Comprueba si un usuario que dice ser admin, lo es realmente.
-     *  -En caso afirmativo, lo guarda como tipo de usuario admin.
-     *  -En caso positivo lo retorna a la actividad anteriori mostrando un mensaje.
      */
-    private void comprobarSiEsAdmin(){
+    private boolean adminValidado(){
+        boolean comprobado;
         String claveMaestraIngresada = textviewClaveAdminMaestra.getText().toString();
         if(!claveMaestraIngresada.equals(Configuraciones.CLAVE_ADMIN_MAESTRA)){
-            finish();
-            Toast.makeText(getBaseContext(), R.string.usuario_no_autorizado, Toast.LENGTH_LONG).show();
+            comprobado = false;
         }else{
+            comprobado = true;
             esAdmin = Configuraciones.ES_ADMIN;
         }
-
+        return comprobado;
     }
+
 
     private void instanciarEditTextClaveMaestra(){
         textviewClaveAdminMaestra = (EditText) findViewById(R.id.editText_crearUSuario_claveAdminMaestra);
         textviewClaveAdminMaestra.setVisibility(View.GONE);
     }
 
+
+    /**
+     * Muestra el campo "Clave administrador" en caso de tildarse, y lo oculta si se destilda.
+     * tambien setea el atributo usado para comprobar si quiere entrar como administrador.
+     * @param view
+     */
     public void onCheckboxClicked(View view) {
         // Is the view now checked?
         boolean checked = ((CheckBox) view).isChecked();
@@ -109,6 +132,13 @@ public class CrearUsuarioActivity extends Activity {
                 break;
         }
     }
+
+
+    private void ocultarTeclado(){
+        InputMethodManager inputMethodManager = (InputMethodManager) this.getSystemService(Activity.INPUT_METHOD_SERVICE);
+        inputMethodManager.hideSoftInputFromWindow(this.getCurrentFocus().getWindowToken(), 0);
+    }
+
 
 //    @Override
 //    public boolean onCreateOptionsMenu(Menu menu) {

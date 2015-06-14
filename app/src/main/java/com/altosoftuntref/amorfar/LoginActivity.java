@@ -31,7 +31,7 @@ public class LoginActivity extends Activity {
     @Override
     protected void onResume() {
         TextView mensaje = (TextView)findViewById(R.id.textView_login_mensaje);
-        mensaje.setText("");
+//        mensaje.setText("");
         super.onResume();
     }
 
