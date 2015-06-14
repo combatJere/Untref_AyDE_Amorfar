@@ -2,20 +2,15 @@ package com.altosoftuntref.amorfar;
 
 import android.app.Activity;
 import android.database.Cursor;
-import android.graphics.Bitmap;
-import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
-import android.widget.FrameLayout;
 import android.widget.GridView;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import java.util.Calendar;
 import java.util.Set;
-
 import Configuraciones.Configuraciones;
 import Utilidades.TransformadorFechasSingleton;
 import Utilidades.TransformadorHorariosSingleton;
@@ -23,23 +18,11 @@ import Utilidades.TransformadorIntSetArray;
 import adapter.PlatosSingleChoiceAdapter;
 import dialogs.CantidadInvitadosDialogFragment;
 import inversiondecontrol.ServiceLocator;
-import layouts.customs.GridViewItem;
 
 /**
  * @Pre El menu debe existir.
  */
 public class ElejirMenuActivity extends Activity implements CantidadInvitadosDialogFragment.CantidadInvitadosDialogListener{
-
-//    public final static String EXTRA_HORA_TIMEPICKER = "com.altosoftuntref.amorfar.HORA_TIMEPICKER";
-//    public final static String EXTRA_MINUTOS_TIMEPICKER = "com.altosoftuntref.amorfar.MINUTOS_TIMEPICKER";
-//    public final static String EXTRA_CANTIDAD_PLATOS = "com.altosoftuntref.amorfar.CANTIDAD_PLATOS";
-//    public final static String EXTRA_DIA = "com.altosoftuntref.amorfar.DIA";
-//    public final static String EXTRA_MES = "com.altosoftuntref.amorfar.MES";
-//    public final static String EXTRA_ANIO = "com.altosoftuntref.amorfar.ANIO";
-//    public final static String EXTRA_ID_PLATO_A_INTERCAMBIAR = "com.altosoftuntref.amorfar.PLATO_A_INTERCAMBIAR";
-//    public final static String EXTRA_ID_PLATOS_ACTUALES_A_INTERC = "com.altosoftuntref.amorfar.ID_PLATOS_ACTUALES";
-//    public final static int OBTENER_PLATOS = 10;
-//    public final static int OBTENER_PLATOS_CAMBIADOS = 11;
 
     public final static String EXTRA_CANTIDAD_INVITADOS = "amorfar.elejirMenu.CANTIDAD_INVITADOS";
 
@@ -55,7 +38,6 @@ public class ElejirMenuActivity extends Activity implements CantidadInvitadosDia
     private final static String SAVED_HAY_CAMBIOS = "com.altosoftuntref.amorfar.HAY_CAMBIOS";
 
     private PlatosSingleChoiceAdapter platosCursorAdapter;
-
     private Set<Integer> idPlatosDelMenu;
     private String nombreUsuarioID;
     private int idPlatoElejido;
@@ -81,19 +63,17 @@ public class ElejirMenuActivity extends Activity implements CantidadInvitadosDia
             nombreUsuarioID = getIntent().getStringExtra(MainActivity.EXTRA_NOMBRE_USUARIO_ID);
             this.obtenerFecha();
             this.obtenerMenu();
-            this.instanciarConValoresGuardados();  //VER SI QUEDA!!!
+            this.instanciarConValoresGuardados();
 
             boolean platoYaElejido = ServiceLocator.getInstance().getUsuariosDAO(getBaseContext()).platoYaElegido(nombreUsuarioID);
+
             if(platoYaElejido){
                 hayCambios = false;
-//                this.instanciarConValoresGuardados();  //VER SI QUEDA!!
                 Toast.makeText(getBaseContext(), "Plato ya elegido!", Toast.LENGTH_LONG).show();
             }else {
                 hayCambios = true;
-//                this.instanciarConNuevosValores();  //VER SI QUEDA!!
             }
         }
-
         setContentView(R.layout.activity_elejir_menu);
         this.actualizarTextviewFecha();
         this.actualizarTextviewHorario();
@@ -101,6 +81,7 @@ public class ElejirMenuActivity extends Activity implements CantidadInvitadosDia
         this.cambiarEstadoBotonNoComo();
         this.crearGridViewPlatos();
     }
+
 
     @Override
     public void onSaveInstanceState(Bundle savedInstanceState) {
@@ -117,6 +98,7 @@ public class ElejirMenuActivity extends Activity implements CantidadInvitadosDia
         savedInstanceState.putBoolean(SAVED_HAY_CAMBIOS, hayCambios);
         super.onSaveInstanceState(savedInstanceState);
     }
+
 
     /**
      * Recupera los valores de una Instancia anterior.
@@ -136,6 +118,7 @@ public class ElejirMenuActivity extends Activity implements CantidadInvitadosDia
         hayCambios = savedInstanceState.getBoolean(SAVED_HAY_CAMBIOS);
     }
 
+
     /**
      * llamado cuando el voto ya existia, Obtiene los datos del mismo
      */
@@ -144,13 +127,15 @@ public class ElejirMenuActivity extends Activity implements CantidadInvitadosDia
         cantidadInvitados = ServiceLocator.getInstance().getUsuariosDAO(getBaseContext()).getCantidadInvitados(nombreUsuarioID);
     }
 
+
     /**
      * llamado si el almuerzo no existia, le asigna valores por defecto.
      */
-    private void instanciarConNuevosValores(){
-        idPlatoElejido = Configuraciones.SIN_PLATO_ELEGIDO;
-        cantidadInvitados = Configuraciones.CANTIDAD_INVITADOS_POR_DEFECTO;
-    }
+//    private void instanciarConNuevosValores(){
+//        idPlatoElejido = Configuraciones.SIN_PLATO_ELEGIDO;
+//        cantidadInvitados = Configuraciones.CANTIDAD_INVITADOS_POR_DEFECTO;
+//    }
+
 
     /**
      * Obtiene los datos del almuerzo
@@ -159,6 +144,7 @@ public class ElejirMenuActivity extends Activity implements CantidadInvitadosDia
         this.obtenerHorarioComida();
         this.obtenerIdPlatosDelMenu();
     }
+
 
     /**
      * Obtiene la fecha y se la setea a los atributos correspondientes.
@@ -170,15 +156,31 @@ public class ElejirMenuActivity extends Activity implements CantidadInvitadosDia
         this.anio = c.get(Calendar.YEAR);
     }
 
+
     private void obtenerIdPlatosDelMenu() {
         idPlatosDelMenu = ServiceLocator.getInstance().getMenuesDao(getBaseContext()).getCodigosDePlatosDelMenuSet(dia, mes, anio);
     }
+
 
     private void obtenerHorarioComida(){
         int[] horario = ServiceLocator.getInstance().getMenuesDao(getBaseContext()).getHorarioAlmuerzo(dia, mes, anio);
         this.horaComida = horario[0];
         this.minutosComida = horario[1];
     }
+
+
+    /**
+     * @Pre: Necesita que ya se hayan obtenido todos los valores (atributos)
+     * Instancia todos los componentes visuales de la activity, una vez.
+     */
+    private void instanciarComponentes(){
+        this.actualizarTextviewFecha();
+        this.actualizarTextviewHorario();
+        this.actualizarTextViewCantidadInvitados();
+        this.cambiarEstadoBotonNoComo();
+        this.crearGridViewPlatos();
+    }
+
 
     /**
      * Actualiza el TextView que muestra la hora a partir de los atributos de la actividad
@@ -191,6 +193,7 @@ public class ElejirMenuActivity extends Activity implements CantidadInvitadosDia
         textViewHoraComida.setText(horaComidaEnTexto);
     }
 
+
     /**
      * Setea la fecha correspondiente, en el TextView que muestra la fecha del menu.
      */
@@ -199,6 +202,7 @@ public class ElejirMenuActivity extends Activity implements CantidadInvitadosDia
         String fechaEnString = TransformadorFechasSingleton.getInstance().getFechaEnTexto(dia, mes, anio);
         textViewFecha.setText(fechaEnString);
     }
+
 
     /**
      * Crea e instancia el gridview.
@@ -221,15 +225,10 @@ public class ElejirMenuActivity extends Activity implements CantidadInvitadosDia
         public void onItemClick(AdapterView<?> parent, View view,int position, long id) {
 
             int idNuevoPlatoElejido = (int) id;
-//            GridViewItem itemElegido = (GridViewItem) view;
-//            FrameLayout centroBoton = (FrameLayout) itemElegido.findViewById(R.id.centro_boton);
 
             if(idNuevoPlatoElejido != idPlatoElejido){
                 idPlatoElejido = idNuevoPlatoElejido;
                 actualizarGridView();
-//                platosCursorAdapter.cambiarPlatoElegido(idNuevoPlatoElejido);
-//                platosCursorAdapter.notifyDataSetChanged();
-
                 idPlatoElejido = idNuevoPlatoElejido;
                 cambiarEstadoBotonNoComo();
                 hayCambios = true;
@@ -315,7 +314,12 @@ public class ElejirMenuActivity extends Activity implements CantidadInvitadosDia
 
 
     /**
+     * CAMBIAR POR HISTORIA DE USUARIO CAMBIAR
+     * Sergio quiere que se pueda votar despues de las 11, pero que pierda el premio y aparesca un
+     * cartelito (dialog) que te informe que estubiste mal y lo perdiste.
+     *
      * Envia la votacion, si es que no se voto o se hizo algun cambio
+     * Siempre y cuando el horario no pase de las 11hs (CAMBIAR POR HISTORIA DE USUARIO CAMBIAR)
      * @param view
      */
     public void enviarVotacion(View view){
@@ -361,6 +365,7 @@ public class ElejirMenuActivity extends Activity implements CantidadInvitadosDia
         }
         return textoConservaPremio;
     }
+
 
     /**
      * //CUIDADO LA HORA DEBE COMPROBARLA DE OTRO LADO, NO DEL CELULAR. ARREGLAR

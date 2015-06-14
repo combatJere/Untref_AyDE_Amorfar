@@ -3,7 +3,6 @@ package com.altosoftuntref.amorfar;
 import android.app.Activity;
 import android.content.Intent;
 import android.database.Cursor;
-import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
@@ -64,7 +63,9 @@ public class SeleccionPlatoActivity extends Activity implements NombrePlatoDialo
         idPlatosElejidos = TransformadorIntSetArray.getInstance().arrayIntASetInt(platosGuardadosArray);
     }
 
+
     /**
+     * Recive el conjunto de platos elegidos actuales.
      * Si la actividad recien inicia, se obtienen los valores recividos de CrearMenuActivity.
      */
     private void instanciarConNuevosValores(){
@@ -73,31 +74,31 @@ public class SeleccionPlatoActivity extends Activity implements NombrePlatoDialo
         idPlatosElejidos = TransformadorIntSetArray.getInstance().arrayIntASetInt(idPlatosElejidosArray);
     }
 
+
     /**
      * Instancia el GridView que muestra los platos previamente creados que pueden elegirse.
+     * Solo muestra los platos que no estan elegidos.
      */
     private void instanciarGridViewPlatos(){
-//        Cursor cursorAllPlatos = ServiceLocator.getInstance().getMenuesDao(getBaseContext()).getAllPlatosGuardadosCursor();
         Cursor cursorAllPlatos = ServiceLocator.getInstance().getMenuesDao(getBaseContext()).
                 getPlatosGuardadosExcepto(idPlatosElejidos);
-//        cursor.moveToFirst();
-//        String s = cursor.getString(cursor.getColumnIndex(BaseDeDatosContract.Platos.COLUM_NAME_NOMBRE));
-//        Toast.makeText(getBaseContext(), s, Toast.LENGTH_LONG).show();
+
         GridView gridViewPlatos = (GridView) findViewById(R.id.gridView_seleccionPlato_platos);
         platosCursorAdapter = new PlatosCursorAdapter(getBaseContext(), cursorAllPlatos, 0);
         gridViewPlatos.setAdapter(platosCursorAdapter);
         gridViewPlatos.setOnItemClickListener(onPlatoClick);
     }
 
+
     /**
-     *
+     * actualiza el Gridview.
      */
     private void actualizarGridViewPlatos(){
-//        Cursor cursorPlatosActualizados = ServiceLocator.getInstance().getMenuesDao(getBaseContext()).getAllPlatosGuardadosCursor();
         Cursor cursorPlatosActualizados = ServiceLocator.getInstance().getMenuesDao(getBaseContext()).
                 getPlatosGuardadosExcepto(idPlatosElejidos);
         platosCursorAdapter.changeCursor(cursorPlatosActualizados);
     }
+
 
     /**
      * Muestra el Dialo CrearNuevoPlatoDialog, que permite crear un nuevo plato
@@ -108,6 +109,7 @@ public class SeleccionPlatoActivity extends Activity implements NombrePlatoDialo
         nombrePlatoDialogFragment.show(getFragmentManager(), "nombrePlatoDialog");
     }
 
+
     /**
      * Es ejecutado por el dialog CrearNuevoPlatoDialog en el momento en que este es confirmado.
      * Recive el nombre del plato a Guardar en la BDD
@@ -117,6 +119,7 @@ public class SeleccionPlatoActivity extends Activity implements NombrePlatoDialo
     public void onConfirmarDialogClick(String nombrePlato) {
         this.guardarNuevoPlato(nombrePlato);
     }
+
 
     /**
      * Si no existe un plato con este nombre en la BDD, lo guarda como un nuevo plato
@@ -144,6 +147,11 @@ public class SeleccionPlatoActivity extends Activity implements NombrePlatoDialo
         }
     }
 
+
+    /**
+     * Quita el plato que se reemplazo del conjunto de platos elegidos y agrega el nuevo plato elegido
+     * y cierra la actividad devolviendo el nuevo conjunto de platos.
+     */
     private AdapterView.OnItemClickListener onPlatoClick = new AdapterView.OnItemClickListener() {
         public void onItemClick(AdapterView<?> parent, View view,int position, long id) {
 
@@ -159,7 +167,6 @@ public class SeleccionPlatoActivity extends Activity implements NombrePlatoDialo
                 }
             }
             idPlatosElejidos.remove(idAPlatoARemover);
-
             idPlatosElejidos.add(idPlatoElejido);
 
             Intent intent = new Intent();
@@ -170,20 +177,6 @@ public class SeleccionPlatoActivity extends Activity implements NombrePlatoDialo
         }
     };
 
-//    private boolean nombreYaExiste(String nombrePlatoAAnalizar){
-//        boolean nombreExiste = false;
-//        Cursor cursor = MenuesDAOImpl.getInstance(getBaseContext()).getAllNombrePlatosCursor();
-//        String nombrePlatoActual;
-//
-//        while(cursor.moveToNext() && !nombreExiste) {
-//            nombrePlatoActual = cursor.getString(cursor.getColumnIndex(BaseDeDatosContract.Platos.COLUM_NAME_NOMBRE));
-//            nombreExiste = nombrePlatoAAnalizar.equals(nombrePlatoActual);
-//        }
-//        cursor.close();
-//
-//        return nombreExiste;
-//
-//    }
 
 //    @Override
 //    public boolean onCreateOptionsMenu(Menu menu) {

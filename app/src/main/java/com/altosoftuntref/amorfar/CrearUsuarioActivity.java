@@ -8,7 +8,6 @@ import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import Configuraciones.Configuraciones;
 import Persitencia.DAOs.UsuariosDAO;
 import inversiondecontrol.ServiceLocator;

@@ -1,23 +1,19 @@
 package com.altosoftuntref.amorfar;
 
 import android.app.Activity;
-import android.app.Service;
 import android.content.Intent;
-import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
-
 import java.util.Calendar;
 import java.util.Iterator;
 import java.util.Set;
-
-import Persitencia.DAOs.DAOs.Implementacion.MenuesDAOImpl;
 import inversiondecontrol.ServiceLocator;
 
-
+/**
+ * CAMBIAR POR HISTORIA DE USUARIO CAMBIAR
+ * Sergio nos pidio la presentacion de la informacion de maenera mas amigable.
+ */
 public class InformeActivity extends Activity {
 
     @Override
@@ -60,7 +56,6 @@ public class InformeActivity extends Activity {
         String nombrePlato = ServiceLocator.getInstance().getMenuesDao(getBaseContext()).getNombrePlato(idPlato);
         int cantidadPlatos = ServiceLocator.getInstance().getMenuesDao(getBaseContext()).getCantidadDelPlato(idPlato);
         return nombrePlato + ":  " + cantidadPlatos + "\n";
-
     }
 
     /**

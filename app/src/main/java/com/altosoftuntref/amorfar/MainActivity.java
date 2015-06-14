@@ -1,12 +1,8 @@
 package com.altosoftuntref.amorfar;
 
 import android.app.Activity;
-import android.app.Service;
 import android.content.Intent;
-import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -42,6 +38,72 @@ public class MainActivity extends Activity {
         this.ocultarBotonesSiNoEsAdmin();
     }
 
+
+    /**
+     * Si el usuario no es administrador, no ve los botones ni la iformacion que no le compete.
+     * Oculta los botones Crear Menu e Informe.
+     */
+    public void ocultarBotonesSiNoEsAdmin(){
+        if(!esAdmin) {
+            Button botonIrACrearMenu = (Button) findViewById(R.id.button_irACrearMenu);
+            botonIrACrearMenu.setVisibility(View.GONE);
+            Button botonIrAInforme = (Button) findViewById(R.id.button_mostrarInforme);
+            botonIrAInforme.setVisibility(View.GONE);
+        }
+    }
+
+
+    /**
+     * OnClick
+     * Inicia la actividad CrearMEnu.activity
+     */
+    public void irACrearMenu(View view){
+        Intent intent = new Intent(this, CrearMenuActivity.class);
+        startActivity(intent);
+    }
+
+
+    /**
+     * OnClick
+     * Inicia la actividad ElejirMenu.activity
+     * @param view
+     */
+    public void irAElejirMenu(View view){
+        Calendar c = Calendar.getInstance();
+        int dia = c.get(Calendar.DAY_OF_MONTH);
+        int mes = c.get(Calendar.MONTH) + 1;
+        int anio = c.get(Calendar.YEAR);
+        if(ServiceLocator.getInstance().getMenuesDao(getBaseContext()).existeAlmuerzo(dia, mes, anio)) {
+            Intent intent = new Intent(this, ElejirMenuActivity.class);
+            intent.putExtra(EXTRA_NOMBRE_USUARIO_ID, nombreUsuarioID);
+            startActivity(intent);
+        }else{
+            Toast.makeText(getBaseContext(), "Todavia no hay almuerzo!", Toast.LENGTH_LONG).show();
+        }
+    }
+
+
+    /**
+     * OnClick
+     * Inicia la actividad InforeActivity.
+     * @param view
+     */
+    public void irAInforme(View view){
+        Intent intent = new Intent(this, InformeActivity.class);
+        startActivity(intent);
+    }
+
+
+    /**
+     * onClick
+     * muestra el dialog sobre altosoft cuando alguien toca la marca de agua de la empreza
+     */
+    public void mostrarDialogAltosoft(View view){
+        SobreAltosoftDialog dialogAltosoft = new SobreAltosoftDialog();
+        dialogAltosoft.show(this.getFragmentManager(),"dialog_ltosoft");
+    }
+
+
 //    @Override
 //    public boolean onCreateOptionsMenu(Menu menu) {
 //        // Inflate the menu; this adds items to the action bar if it is present.
@@ -63,59 +125,4 @@ public class MainActivity extends Activity {
 //
 //        return super.onOptionsItemSelected(item);
 //    }
-
-    public void ocultarBotonesSiNoEsAdmin(){
-        if(!esAdmin) {
-            Button botonIrACrearMenu = (Button) findViewById(R.id.button_irACrearMenu);
-            botonIrACrearMenu.setVisibility(View.GONE);
-            Button botonIrAInforme = (Button) findViewById(R.id.button_mostrarInforme);
-            botonIrAInforme.setVisibility(View.GONE);
-        }
-    }
-
-    /**
-     * OnClick
-     * Inicia la actividad CrearMEnu.activity
-     */
-    public void irACrearMenu(View view){
-        Intent intent = new Intent(this, CrearMenuActivity.class);
-        startActivity(intent);
-    }
-
-    /**
-     * OnClick
-     * Inicia la actividad ElejirMenu.activity
-     * @param view
-     */
-    public void irAElejirMenu(View view){
-        Calendar c = Calendar.getInstance();
-        int dia = c.get(Calendar.DAY_OF_MONTH);
-        int mes = c.get(Calendar.MONTH) + 1;
-        int anio = c.get(Calendar.YEAR);
-        if(ServiceLocator.getInstance().getMenuesDao(getBaseContext()).existeAlmuerzo(dia, mes, anio)) {
-            Intent intent = new Intent(this, ElejirMenuActivity.class);
-            intent.putExtra(EXTRA_NOMBRE_USUARIO_ID, nombreUsuarioID);
-            startActivity(intent);
-        }else{
-            Toast.makeText(getBaseContext(), "Todavia no hay almuerzo!", Toast.LENGTH_LONG).show();
-        }
-    }
-
-    /**
-     * OnClick
-     * @param view
-     */
-    public void irAInforme(View view){
-        Intent intent = new Intent(this, InformeActivity.class);
-        startActivity(intent);
-    }
-
-    /**
-     * onClick
-     * muestra el dialog sobre altosoft cuando alguien toca la marca de agua de la empreza
-     */
-    public void mostrarDialogAltosoft(View view){
-        SobreAltosoftDialog dialogAltosoft = new SobreAltosoftDialog();
-        dialogAltosoft.show(this.getFragmentManager(),"dialog_ltosoft");
-    }
 }

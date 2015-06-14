@@ -34,6 +34,7 @@ public class SeleccionMultiplesPlatos extends Activity implements NombrePlatoDia
     private GridView gridViewPlatosMultiCheck;
     private PlatosMultipleChoiceAdapter platosCursorAdapter;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -50,13 +51,13 @@ public class SeleccionMultiplesPlatos extends Activity implements NombrePlatoDia
             idPlatosElejidos = new HashSet<Integer>();
         }
 
-
         setContentView(R.layout.activity_seleccion_multiples_platos);
 //        cantPlatosRestantes = getIntent().getIntExtra(CrearMenuActivity.EXTRA_CANTIDAD_PLATOS, 0);
 
         this.instanciarGridViewSeleccionMultiple();
         this.instanciarTextViewPlatosRestantes();
     }
+
 
     @Override
     public void onSaveInstanceState(Bundle savedInstanceState) {
@@ -65,10 +66,12 @@ public class SeleccionMultiplesPlatos extends Activity implements NombrePlatoDia
         super.onSaveInstanceState(savedInstanceState);
     }
 
+
     private void instanciarTextViewPlatosRestantes(){
         textViewCantidadPlatosRestantes = (TextView) findViewById(R.id.textView_seleccionMultiplesPlatos_CANTplatosRestantes);
         textViewCantidadPlatosRestantes.setText(String.valueOf(cantPlatosRestantes));
     }
+
 
     private void instanciarGridViewSeleccionMultiple(){
         Cursor cursorAllPlatos = ServiceLocator.getInstance().getMenuesDao(getBaseContext()).getAllPlatosGuardadosCursor();
@@ -78,6 +81,10 @@ public class SeleccionMultiplesPlatos extends Activity implements NombrePlatoDia
         gridViewPlatosMultiCheck.setOnItemClickListener(onPlatoClick);
     }
 
+    /**
+     * Se ejecuta cada vez que se toca en algun item del gridview.
+     * Agrega (o quita) el plato del conjunto de platos elejidos, y resalta el elemento en el gridview.
+     */
     private AdapterView.OnItemClickListener onPlatoClick = new AdapterView.OnItemClickListener() {
         public void onItemClick(AdapterView<?> parent, View view,int position, long id) {
 
@@ -109,6 +116,7 @@ public class SeleccionMultiplesPlatos extends Activity implements NombrePlatoDia
         }
     };
 
+
     /**
      * OnCLick
      * Si la cantidad de platos elejidos es la correcta, cierra la actividad y devuelve los id de
@@ -127,6 +135,11 @@ public class SeleccionMultiplesPlatos extends Activity implements NombrePlatoDia
         }
     }
 
+
+    /**
+     * Para que la actividad padre, CrearMenu, sepa que no fue cancelado y por lo tanto nunca
+     * se envio el menu.
+     */
     @Override
     public void onBackPressed() {
         setResult(RESULT_CANCELED);
@@ -134,12 +147,13 @@ public class SeleccionMultiplesPlatos extends Activity implements NombrePlatoDia
     }
 
     /**
-     *
+     * Refresca el gridview
      */
     private void actualizarGridViewPlatos(){
         Cursor cursorPlatosActualizados = ServiceLocator.getInstance().getMenuesDao(getBaseContext()).getAllPlatosGuardadosCursor();
         platosCursorAdapter.changeCursor(cursorPlatosActualizados);
     }
+
 
     /**
      * Muestra el Dialo CrearNuevoPlatoDialog, que permite crear un nuevo plato
@@ -150,6 +164,7 @@ public class SeleccionMultiplesPlatos extends Activity implements NombrePlatoDia
         nombrePlatoDialogFragment.show(getFragmentManager(), "nombrePlatoDialog");
     }
 
+
     /**
      * Es ejecutado por el dialog CrearNuevoPlatoDialog en el momento en que este es confirmado.
      * Recive el nombre del plato a Guardar en la BDD
@@ -159,6 +174,7 @@ public class SeleccionMultiplesPlatos extends Activity implements NombrePlatoDia
     public void onConfirmarDialogClick(String nombrePlato) {
         this.guardarNuevoPlato(nombrePlato);
     }
+
 
     /**
      * Si no existe un plato con este nombre en la BDD, lo guarda como un nuevo plato
@@ -185,7 +201,6 @@ public class SeleccionMultiplesPlatos extends Activity implements NombrePlatoDia
             }
         }
     }
-
 
 
 //    @Override

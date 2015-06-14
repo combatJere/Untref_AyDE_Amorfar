@@ -2,10 +2,8 @@ package com.altosoftuntref.amorfar;
 
 import android.app.Activity;
 import android.app.DialogFragment;
-import android.app.Service;
 import android.content.Intent;
 import android.database.Cursor;
-import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
@@ -31,11 +29,9 @@ public class CrearMenuActivity extends Activity implements TimePickerFragment.Ti
     public final static String EXTRA_HORA_TIMEPICKER = "com.altosoftuntref.amorfar.HORA_TIMEPICKER";
     public final static String EXTRA_MINUTOS_TIMEPICKER = "com.altosoftuntref.amorfar.MINUTOS_TIMEPICKER";
     public final static String EXTRA_CANTIDAD_PLATOS = "com.altosoftuntref.amorfar.CANTIDAD_PLATOS";
-    public final static String EXTRA_DIA = "com.altosoftuntref.amorfar.DIA";
-    public final static String EXTRA_MES = "com.altosoftuntref.amorfar.MES";
-    public final static String EXTRA_ANIO = "com.altosoftuntref.amorfar.ANIO";
     public final static String EXTRA_ID_PLATO_A_INTERCAMBIAR = "com.altosoftuntref.amorfar.PLATO_A_INTERCAMBIAR";
     public final static String EXTRA_ID_PLATOS_ACTUALES_A_INTERC = "com.altosoftuntref.amorfar.ID_PLATOS_ACTUALES";
+
     public final static int OBTENER_PLATOS = 10;
     public final static int OBTENER_PLATOS_CAMBIADOS = 11;
 
@@ -50,15 +46,14 @@ public class CrearMenuActivity extends Activity implements TimePickerFragment.Ti
 
     private PlatosCursorAdapter platosCursorAdapter;
     private Set<Integer> idPlatosDelMenu;
-
     private int cantidadPlatos;
     private int dia;
     private int mes;
     private int anio;
     private Integer horaComida;
     private Integer minutosComida;
-
     private boolean hayCambios;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -91,6 +86,7 @@ public class CrearMenuActivity extends Activity implements TimePickerFragment.Ti
         this.crearGridViewPlatos();
     }
 
+
     @Override
     public void onSaveInstanceState(Bundle savedInstanceState) {
         savedInstanceState.putInt(SAVED_DIA, dia);
@@ -104,6 +100,8 @@ public class CrearMenuActivity extends Activity implements TimePickerFragment.Ti
         savedInstanceState.putBoolean(SAVED_HAY_CAMBIOS, hayCambios);
         super.onSaveInstanceState(savedInstanceState);
     }
+
+
 //    NO SIRVE PORQUE ESTO LO EJECUTA EN EL onStart() Y LOS VALORES LOS USO EN onCreate().
 //    @Override
 //    public void onRestoreInstanceState(Bundle savedInstanceState){
@@ -111,6 +109,7 @@ public class CrearMenuActivity extends Activity implements TimePickerFragment.Ti
 //        horaComida = savedInstanceState.getInt(SAVED_HORA);
 //        minutosComida = savedInstanceState.getInt(SAVED_MINUTOS);
 //    }
+
 
     /**
      * Recupera los valores de una Instancia anterior.
@@ -129,6 +128,7 @@ public class CrearMenuActivity extends Activity implements TimePickerFragment.Ti
         hayCambios = savedInstanceState.getBoolean(SAVED_HAY_CAMBIOS);
     }
 
+
     /**
      * llamado cuando el almuerzo ya existia, Obtiene los datos del mismo
      */
@@ -137,6 +137,7 @@ public class CrearMenuActivity extends Activity implements TimePickerFragment.Ti
         this.obtenerHorarioComida();
         this.obtenerIdPlatosDelMenu();
     }
+
 
     /**
      * llamado si el almuerzo no existia, le asigna valores por defecto.
@@ -148,6 +149,7 @@ public class CrearMenuActivity extends Activity implements TimePickerFragment.Ti
         idPlatosDelMenu = new HashSet<Integer>();
     }
 
+
     /**
      * Obtiene la fecha y se la setea a los atributos correspondientes.
      */
@@ -158,19 +160,23 @@ public class CrearMenuActivity extends Activity implements TimePickerFragment.Ti
         this.anio = c.get(Calendar.YEAR);
     }
 
+
     private void obtenerCantidadPlatos() {
         cantidadPlatos = ServiceLocator.getInstance().getMenuesDao(getBaseContext()).getCantidadPlatos(dia, mes, anio);
     }
 
+
     private void obtenerIdPlatosDelMenu() {
             idPlatosDelMenu = ServiceLocator.getInstance().getMenuesDao(getBaseContext()).getCodigosDePlatosDelMenuSet(dia, mes, anio);
     }
+
 
     private void obtenerHorarioComida(){
         int[] horario = ServiceLocator.getInstance().getMenuesDao(getBaseContext()).getHorarioAlmuerzo(dia, mes, anio);
         this.horaComida = horario[0];
         this.minutosComida = horario[1];
     }
+
 
     /**
      * OnClick.
@@ -187,6 +193,7 @@ public class CrearMenuActivity extends Activity implements TimePickerFragment.Ti
         miTimepicker.show(this.getFragmentManager(), "timePicker");
     }
 
+
     public void crearGridViewPlatos(){
         Cursor platosDelMenu = ServiceLocator.getInstance().getMenuesDao(getBaseContext()).getPlatos(idPlatosDelMenu);
         GridView platosGridView = (GridView) findViewById(R.id.gridView_crearMenu_platos);
@@ -195,10 +202,12 @@ public class CrearMenuActivity extends Activity implements TimePickerFragment.Ti
         platosGridView.setOnItemClickListener(onPlatoClick);
     }
 
+
     public void actualizarGridViewPlatos(){
         Cursor platosDelMenu = ServiceLocator.getInstance().getMenuesDao(getBaseContext()).getPlatos(idPlatosDelMenu);
         platosCursorAdapter.changeCursor(platosDelMenu);
     }
+
 
     /**
      * Es ejecutado por el Dialog TimePickerDialog, en el momento que este
@@ -215,6 +224,7 @@ public class CrearMenuActivity extends Activity implements TimePickerFragment.Ti
         hayCambios = true;
     }
 
+
     /**
      * lleva al proceso de elejir la cantidad de platos que se ofrecera (Dialog) en ese menu, y cuando esto
      * se ha hecho, a la eleccion de los mismos SeleccionMultiplesPatos.activity.
@@ -224,6 +234,7 @@ public class CrearMenuActivity extends Activity implements TimePickerFragment.Ti
         cantidadPlatosDialog.setCancelable(false);
         cantidadPlatosDialog.show(getFragmentManager(), "CantidadPlatosDialog");
     }
+
 
     /**
      * Es ejecutado por el Dialog cantidadDePlatosDialog en el momento que este es confirmado.
@@ -237,6 +248,7 @@ public class CrearMenuActivity extends Activity implements TimePickerFragment.Ti
         this.irASeleccionMultiplesPlatos();
     }
 
+
     /**
      * Inicia la actividad SeleccionMultiplesPlatos.activity
      */
@@ -245,6 +257,7 @@ public class CrearMenuActivity extends Activity implements TimePickerFragment.Ti
         intent.putExtra(EXTRA_CANTIDAD_PLATOS, this.cantidadPlatos);
         startActivityForResult(intent, OBTENER_PLATOS);
     }
+
 
     /**
      * Actualiza el TextView que muestra la hora a partir de los atributos de la actividad
@@ -259,6 +272,7 @@ public class CrearMenuActivity extends Activity implements TimePickerFragment.Ti
         textViewHoraComida.setText(horaComidaEnTexto);
     }
 
+
     /**
      * Setea la fecha correspondiente, en el TextView que muestra la fecha del menu.
      */
@@ -267,6 +281,7 @@ public class CrearMenuActivity extends Activity implements TimePickerFragment.Ti
         String fechaEnString = TransformadorFechasSingleton.getInstance().getFechaEnTexto(dia, mes, anio);
         textViewFecha.setText(fechaEnString);
     }
+
 
     /**
      * OnClick.
@@ -280,6 +295,7 @@ public class CrearMenuActivity extends Activity implements TimePickerFragment.Ti
         startActivityForResult(intent, OBTENER_PLATOS_CAMBIADOS);
     }
 
+
     private AdapterView.OnItemClickListener onPlatoClick = new AdapterView.OnItemClickListener() {
         public void onItemClick(AdapterView<?> parent, View view,int position, long id) {
 
@@ -287,6 +303,7 @@ public class CrearMenuActivity extends Activity implements TimePickerFragment.Ti
             irACambiarPlato(idPlatoElejido);
         }
     };
+
 
     /**
      * Realiza distintas acciones, dependiendo lo sucedido en SeleccionMultiplesPlatos.activity
@@ -353,12 +370,14 @@ public class CrearMenuActivity extends Activity implements TimePickerFragment.Ti
         ServiceLocator.getInstance().getUsuariosDAO(getBaseContext()).reiniciarVotacion();
     }
 
+
     /**
      * actualiza los premios dependiendo de la votacion actual, si no votaste te quita el premio
      */
     public void actualizarPremios(){
         ServiceLocator.getInstance().getUsuariosDAO(getBaseContext()).actualizarPremios();
     }
+
 
     //    @Override
 //    public boolean onCreateOptionsMenu(Menu menu) {

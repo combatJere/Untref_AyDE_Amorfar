@@ -22,6 +22,9 @@ public class ListaDePremiosActivity extends Activity implements ReiniciarPremiad
         this.instanciarListViewPremiados();
     }
 
+    /**
+     * Muestra el ListView de personas que conservan el permio.
+     */
     private void instanciarListViewPremiados(){
         Cursor cursor = ServiceLocator.getInstance().getUsuariosDAO(getBaseContext()).getUsuariosConPremioCursor();
         ListView listViewPremiados = (ListView) findViewById(R.id.listView_listaDePremios_usuariosConPremios);
@@ -30,17 +33,23 @@ public class ListaDePremiosActivity extends Activity implements ReiniciarPremiad
         instanciarTextViewCantPremiados(cursor.getCount());
     }
 
+
     private void instanciarTextViewCantPremiados(int cantidadPremiados){
         TextView textViewCantPremiados = (TextView) findViewById(R.id.textView_listaDePremios_cantidadConPremio);
         textViewCantPremiados.setText(String.valueOf(cantidadPremiados));
     }
 
+
+    /**
+     * Actualiza el ListView, usado cuando hay cambios (se reinician los premiados)
+     */
     private void actualizarListViewPremiados(){
         Cursor cursor = ServiceLocator.getInstance().getUsuariosDAO(getBaseContext()).getUsuariosConPremioCursor();
         premiadosAdapter.changeCursor(cursor);
         premiadosAdapter.notifyDataSetChanged();
         instanciarTextViewCantPremiados(cursor.getCount());
     }
+
 
     /**
      * Onclick
@@ -51,6 +60,7 @@ public class ListaDePremiosActivity extends Activity implements ReiniciarPremiad
         dialogReiniciar.show(this.getFragmentManager(), "ReiniciarPremiosDialog");
     }
 
+
     /**
      * si se confirma el ReiniciarPremiadosDialog
      */
@@ -59,6 +69,7 @@ public class ListaDePremiosActivity extends Activity implements ReiniciarPremiad
         ServiceLocator.getInstance().getUsuariosDAO(getBaseContext()).reiniciarPremios();
         actualizarListViewPremiados();
     }
+
 
 //    @Override
 //    public boolean onCreateOptionsMenu(Menu menu) {

@@ -2,25 +2,17 @@ package com.altosoftuntref.amorfar;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
-import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.TextView;
-import Persitencia.BaseDeDatosContract;
-import Persitencia.BaseDeDatosHelper;
-import Persitencia.DAOs.DAOs.Implementacion.UsuariosDAOImpl;
 import Persitencia.DAOs.UsuariosDAO;
 import inversiondecontrol.ServiceLocator;
 
 public class LoginActivity extends Activity {
     public final static String EXTRA_NOMBRE_USUARIO = "com.altosoftuntref.amorfar.NOMBRE_USUARIO";
-//    private Map<String,String> usuariosYClaves = new HashMap<String,String>();
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,12 +20,6 @@ public class LoginActivity extends Activity {
         setContentView(R.layout.activity_login);
     }
 
-    @Override
-    protected void onResume() {
-        TextView mensaje = (TextView)findViewById(R.id.textView_login_mensaje);
-//        mensaje.setText("");
-        super.onResume();
-    }
 
     /**
      * Si los datos del usuario que pretende logearse son validos, y pertenecen a un usuario
@@ -70,6 +56,7 @@ public class LoginActivity extends Activity {
         editTextClave.getText().clear();
     }
 
+
     /**
      * @param nombreUsuarioIngresado
      * @param claveIngresada
@@ -99,6 +86,7 @@ public class LoginActivity extends Activity {
         InputMethodManager inputMethodManager = (InputMethodManager) this.getSystemService(Activity.INPUT_METHOD_SERVICE);
         inputMethodManager.hideSoftInputFromWindow(this.getCurrentFocus().getWindowToken(), 0);
     }
+
 
     /**
      * OnClick
