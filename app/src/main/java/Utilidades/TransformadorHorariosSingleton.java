@@ -4,6 +4,7 @@ package Utilidades;
  * Created by jeremias on 03/06/2015.
  */
 public class TransformadorHorariosSingleton {
+
     private static TransformadorHorariosSingleton miTransformadorHorarios;
 
     private TransformadorHorariosSingleton(){
@@ -17,6 +18,7 @@ public class TransformadorHorariosSingleton {
         return miTransformadorHorarios;
     }
 
+
     /**
      * Recive en forma de Int lo elementos que conforman una hora.
      * Devuelve la hora en String, del tipo "HH:MM"
@@ -27,6 +29,7 @@ public class TransformadorHorariosSingleton {
     public String getHorarioEnTexto(int hora, int minutos){
          return this.getHoraEnTexto(hora) + ":" + this.getMinutosEnTexto(minutos);
     }
+
 
     /**
      * Recive un Int representando una hora.
@@ -43,6 +46,7 @@ public class TransformadorHorariosSingleton {
         }
         return horaEnTexto;
     }
+
 
     /**
      * Recive un Int representando los minutos.

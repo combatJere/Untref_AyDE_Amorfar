@@ -23,11 +23,13 @@ import Configuraciones.Configuraciones;
 public class CantidadPlatosDialogFragment extends DialogFragment {
 
     NumberPicker numberPicker;
+
     private CantidadPlatosDialogListener cantidadPlatosListener;
 
     public interface CantidadPlatosDialogListener {
         public void onCantidadPlatosConfirmarClick(int cantidadPlatos);
     }
+
 
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         // Use the Builder class for convenient dialog construction
@@ -51,6 +53,7 @@ public class CantidadPlatosDialogFragment extends DialogFragment {
         // Create the AlertDialog object and return it
         return builder.create();
     }
+
 
     @Override
     public void onAttach(Activity activity) {

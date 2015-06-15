@@ -5,15 +5,13 @@ package Persitencia;
  * Created by jeremias on 01/06/2015.
  */
 public class BaseDeDatosComandos {
-    private static final String TEXT_TYPE = " TEXT";
-    private static final String COMMA_SEP = ",";
 
     public static final String SQL_CREATE_USUARIOSYCLAVES = "CREATE TABLE " + BaseDeDatosContract.UsuariosYClave.TABLE_NAME + " (" +
             BaseDeDatosContract.UsuariosYClave.COLUMN_NAME_USUARIO_ID + " TEXT PRIMARY KEY NOT NULL," +
             BaseDeDatosContract.UsuariosYClave.COLUMN_NAME_CLAVE + " TEXT NOT NULL, " +
             BaseDeDatosContract.UsuariosYClave.COLUMN_NAME_ES_ADMINISTRDOR + " INTEGER NOT NULL"
             + " )";
-    ;
+
 
     public static final String SQL_CREATE_USUARIOSYAVISOS = "CREATE TABLE " + BaseDeDatosContract.UsuariosYAvisos.TABLE_NAME + " (" +
             BaseDeDatosContract.UsuariosYAvisos.COLUMN_NAME_NOMBRE_USUARIO_ID + " TEXT PRIMARY KEY NOT NULL," +

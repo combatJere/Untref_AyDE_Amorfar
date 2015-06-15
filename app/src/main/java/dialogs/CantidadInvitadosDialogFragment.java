@@ -23,11 +23,13 @@ import Configuraciones.Configuraciones;
 public class CantidadInvitadosDialogFragment extends DialogFragment {
 
     NumberPicker numberPicker;
+
     private CantidadInvitadosDialogListener cantidadInvitadosListener;
 
     public interface CantidadInvitadosDialogListener {
         public void onCantidadInvitadosConfirmarClick(int cantidadInvitados);
     }
+
 
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         // Use the Builder class for convenient dialog construction
@@ -54,6 +56,7 @@ public class CantidadInvitadosDialogFragment extends DialogFragment {
         return builder.create();
     }
 
+
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
@@ -66,4 +69,5 @@ public class CantidadInvitadosDialogFragment extends DialogFragment {
                     + " must implement TimePickerFragmentListenerJer");
         }
     }
+
 }

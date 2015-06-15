@@ -17,14 +17,17 @@ import com.altosoftuntref.amorfar.CrearMenuActivity;
 public class TimePickerFragment extends DialogFragment
         implements TimePickerDialog.OnTimeSetListener {
 
+    private int horaRecivida;
+    private int minutosRecividos;
+    int callcount = 0; //por bug de android que llama onTimeSet aunque se aprete el boton atras o el se cierre el dialog.
+
+
     private TimePickerFragmentListenerJer timePickerListener;
 
     public interface TimePickerFragmentListenerJer {
         public void onHorarioSet(int hora, int minutos);
     }
 
-    private int horaRecivida;
-    private int minutosRecividos;
 
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
@@ -39,7 +42,6 @@ public class TimePickerFragment extends DialogFragment
                 DateFormat.is24HourFormat(getActivity()));
     }
 
-    int callcount = 0; //por bug de android que llama onTimeSet aunque se aprete el boton atras o el se cierre el dialog.
 
     @Override
     public void onTimeSet(TimePicker view, int hourOfDay, int minute) {

@@ -20,6 +20,7 @@ import layouts.customs.GridViewItem;
  * Created by jeremias on 08/06/2015.
  */
 public class PlatosMultipleChoiceAdapter extends CursorAdapter{
+
     private Set<Integer> platosElejidos;
 
 
@@ -35,6 +36,7 @@ public class PlatosMultipleChoiceAdapter extends CursorAdapter{
         this.platosElejidos = platosElejidos;
     }
 
+
     /**
      * @Edu Solo inflar la vista (View) y devolverla.
      */
@@ -44,6 +46,7 @@ public class PlatosMultipleChoiceAdapter extends CursorAdapter{
         View v = inflater.inflate(R.layout.plato_gridview_element, parent, false);
         return v;
     }
+
 
     /**
      * @Edu Instanciar los elementos de la vista (View)
@@ -68,5 +71,6 @@ public class PlatosMultipleChoiceAdapter extends CursorAdapter{
             centroBoton.setBackgroundColor(view.getResources().getColor(R.color.gridViewItemCentro_background));
         }
     }
+
 }
 

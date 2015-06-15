@@ -36,6 +36,7 @@ public class PlatosSingleChoiceAdapter extends CursorAdapter{
         this.platoElejido = platoElegido;
     }
 
+
     /**
      * @param nuevoPlatoElegido el id del plato a resaltarse.
      */
@@ -53,6 +54,7 @@ public class PlatosSingleChoiceAdapter extends CursorAdapter{
         View v = inflater.inflate(R.layout.plato_gridview_element, parent, false);
         return v;
     }
+
 
     /**
      * @Edu Instanciar los elementos de la vista (View)
@@ -77,4 +79,5 @@ public class PlatosSingleChoiceAdapter extends CursorAdapter{
             centroBoton.setBackgroundColor(view.getResources().getColor(R.color.gridViewItemCentro_background));
         }
     }
+
 }

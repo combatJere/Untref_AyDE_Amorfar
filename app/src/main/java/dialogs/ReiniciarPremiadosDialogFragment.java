@@ -40,6 +40,7 @@ public class ReiniciarPremiadosDialogFragment extends DialogFragment {
         return builder.create();
     }
 
+
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
@@ -52,4 +53,5 @@ public class ReiniciarPremiadosDialogFragment extends DialogFragment {
                     + " must implement TimePickerFragmentListenerJer");
         }
     }
+
 }

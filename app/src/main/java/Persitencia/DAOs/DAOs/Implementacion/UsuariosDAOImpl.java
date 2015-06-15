@@ -31,14 +31,6 @@ public class UsuariosDAOImpl implements UsuariosDAO{
     }
 
 
-    /**
-     * Guarda los datos obtenidos, junto a datos por defecto en ambas tablas de usuario
-     * En caso de fallar el guardado en la segunda tabla, elimina los datos guardados en la primer tabla.
-     * @param nombreUsuario
-     * @param clave
-     * @param esAdministrador
-     * @return
-     */
     @Override
     public boolean guardarUsuario(String nombreUsuario, String clave, int esAdministrador) {
         boolean usuarioCreadoConExito;
@@ -82,6 +74,7 @@ public class UsuariosDAOImpl implements UsuariosDAO{
         return usuarioCreadoConExito;
     }
 
+
     @Override
     public String obtenerClaveUsuario(String nombreUsuario){
         SQLiteDatabase db = miDbHelper.getReadableDatabase();
@@ -114,6 +107,7 @@ public class UsuariosDAOImpl implements UsuariosDAO{
         }
         return claveUsuarioObtenida;
     }
+
 
     @Override
     public boolean usuarioExiste(String nombreUsuario){
@@ -150,6 +144,7 @@ public class UsuariosDAOImpl implements UsuariosDAO{
         return existe;
     }
 
+
     @Override
     public int getIdPlatoElegido(String nombreUsuarioID) {
         SQLiteDatabase db = miDbHelper.getReadableDatabase();
@@ -183,6 +178,7 @@ public class UsuariosDAOImpl implements UsuariosDAO{
         return codigoPlato;
     }
 
+
     @Override
     public boolean platoYaElegido(String nombreUsuarioID) {
         boolean existe = false;
@@ -192,6 +188,7 @@ public class UsuariosDAOImpl implements UsuariosDAO{
         }
         return existe;
     }
+
 
     @Override
     public int getCantidadInvitados(String nombreUsuarioID) {
@@ -225,6 +222,7 @@ public class UsuariosDAOImpl implements UsuariosDAO{
         }
         return cantidadInvitados;
     }
+
 
     @Override
     public boolean usuarioTienePremio(String nombreUsuarioID) {
@@ -264,7 +262,6 @@ public class UsuariosDAOImpl implements UsuariosDAO{
     }
 
 
-
     @Override
     public Cursor getUsuariosConPremioCursor() {
         SQLiteDatabase db = miDbHelper.getReadableDatabase();
@@ -280,7 +277,6 @@ public class UsuariosDAOImpl implements UsuariosDAO{
 
         String sortOrder =
                 BaseDeDatosContract.UsuariosYAvisos.COLUMN_NAME_NOMBRE_USUARIO_ID + " ASC";
-
 
         cursor = db.query(
                 BaseDeDatosContract.UsuariosYAvisos.TABLE_NAME,  // The table to query
@@ -307,9 +303,9 @@ public class UsuariosDAOImpl implements UsuariosDAO{
 
         int tienePremioInt;
         if (tienePremio){
-            tienePremioInt = 1;
+            tienePremioInt = Configuraciones.TIENE_PREMIO;
         }else{
-            tienePremioInt = 0;
+            tienePremioInt = Configuraciones.PERDIO_PREMIO;
         }
 
         try{
@@ -336,6 +332,7 @@ public class UsuariosDAOImpl implements UsuariosDAO{
         return guardadoExitoso;
     }
 
+
     @Override
     public boolean reiniciarVotacion() {
         SQLiteDatabase db = miDbHelper.getReadableDatabase();
@@ -360,6 +357,7 @@ public class UsuariosDAOImpl implements UsuariosDAO{
         }
         return reiniciadoExitoso;
     }
+
 
     @Override
     public boolean reiniciarPremios() {
@@ -386,6 +384,7 @@ public class UsuariosDAOImpl implements UsuariosDAO{
         return reiniciadoExitoso;
     }
 
+
     @Override
     public boolean actualizarPremios(){
         SQLiteDatabase db = miDbHelper.getReadableDatabase();
@@ -399,7 +398,6 @@ public class UsuariosDAOImpl implements UsuariosDAO{
         String whereClause= BaseDeDatosContract.UsuariosYAvisos.COLUMN_NAME_COD_PLATO_ELEJIDO + "=?";
 
         String[] whereValues = {String.valueOf(Configuraciones.SIN_PLATO_ELEGIDO)};
-
 
         try {
             Cursor cursor = db.query(
@@ -440,6 +438,7 @@ public class UsuariosDAOImpl implements UsuariosDAO{
         return actualizadoExitoso;
     }
 
+
     @Override
     public int getCantidadNoComen(int dia, int mes, int anio) {
         SQLiteDatabase db = miDbHelper.getReadableDatabase();
@@ -472,6 +471,7 @@ public class UsuariosDAOImpl implements UsuariosDAO{
         }
         return cantidadNoComen;
     }
+
 
     @Override
     public int getCantidadNoVotaron(int dia, int mes, int anio) {
@@ -506,6 +506,7 @@ public class UsuariosDAOImpl implements UsuariosDAO{
         return cantidadNoVotaron;
     }
 
+
     @Override
     public int getCantidadDeInvitadosTotales(int dia, int mes, int anio) {
         SQLiteDatabase db = miDbHelper.getReadableDatabase();
@@ -522,8 +523,10 @@ public class UsuariosDAOImpl implements UsuariosDAO{
         }finally {
             db.close();
         }
+
         return cantidadInviadosTotales;
     }
+
 
     @Override
     public boolean esAdmin(String nombreUsuarioID) {
@@ -561,4 +564,5 @@ public class UsuariosDAOImpl implements UsuariosDAO{
         }
         return esAdmin;
     }
+
 }

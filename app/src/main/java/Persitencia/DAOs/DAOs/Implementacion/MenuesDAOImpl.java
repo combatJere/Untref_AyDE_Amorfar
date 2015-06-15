@@ -41,10 +41,6 @@ public class MenuesDAOImpl implements MenuesDAO {
         SQLiteDatabase db = miDbHelper.getReadableDatabase();
         boolean existeAlmuerzo = false;
 
-//        String[] columnsToReturn = {
-//                BaseDeDatosContract.Almuerzo.COLUMN_NAME_DIA, //CAMBIAR
-//        };
-
         String whereClause= BaseDeDatosContract.Almuerzo.COLUMN_NAME_DIA + "=? " + "AND " + BaseDeDatosContract.Almuerzo.COLUMN_NAME_MES + "=? "
                 + "AND " + BaseDeDatosContract.Almuerzo.COLUMN_NAME_ANIO + "=?";
 
@@ -78,6 +74,7 @@ public class MenuesDAOImpl implements MenuesDAO {
     @Override
     public Cursor getPlatosDelMenu(int dia, int mes, int anio) {
 //      SQLiteDatabase db = miDbHelper.getReadableDatabase(); // si lo dejo aca, se cierra con el db.close de .getCodigosDePlatosDelMenu(dia, mes, anio);
+
         int[] codigosPlatosDelMenu = this.getCodigosDePlatosDelMenu(dia, mes, anio);
         int cantidadPlatos = codigosPlatosDelMenu.length; // number of IN arguments
 
@@ -129,7 +126,6 @@ public class MenuesDAOImpl implements MenuesDAO {
 
         String[] whereValues = {String.valueOf(dia), String.valueOf(mes), String.valueOf(anio)};
 
-
         try{
             cursorIdPlatosDelMenu = db.query(
                     BaseDeDatosContract.MenuConPlatos.TABLE_NAME,  // The table to query
@@ -144,11 +140,6 @@ public class MenuesDAOImpl implements MenuesDAO {
             int cantidadPlatos =  cursorIdPlatosDelMenu.getCount();
             clavesPlatos = new int[cantidadPlatos];
 
-
-//            for(int i = 0; cursorIdPlatosDelMenu.moveToNext(); i++){
-//                clavesPlatos[i] = cursorIdPlatosDelMenu.getInt(cursorIdPlatosDelMenu.
-//                        getColumnIndex(BaseDeDatosContract.MenuConPlatos.COLUM_NAME_CODIGO_PLATO));
-//            }
             int contador = 0;
             while(cursorIdPlatosDelMenu.moveToNext()){
                 clavesPlatos[contador] = cursorIdPlatosDelMenu.getInt(cursorIdPlatosDelMenu.
@@ -207,16 +198,15 @@ public class MenuesDAOImpl implements MenuesDAO {
         return clavesPlatosADevolver;
     }
 
+
     @Override
     public boolean guardarPlato(String nombreplato){
         boolean platoGuardadoConExito;
         SQLiteDatabase db = miDbHelper.getWritableDatabase();
 
         try{
-            // Create a new map of values, where column names are the keys
             ContentValues values = new ContentValues();
             values.put(BaseDeDatosContract.Platos.COLUM_NAME_NOMBRE, nombreplato);
-            // Insert the new row, returning the primary key value of the new row
             db.insertOrThrow(BaseDeDatosContract.Platos.TABLE_NAME, "null", values);
             platoGuardadoConExito = true;
 
@@ -278,24 +268,19 @@ public class MenuesDAOImpl implements MenuesDAO {
         String sortOrder =
                 BaseDeDatosContract.Platos.COLUM_NAME_NOMBRE + " ASC";
 
-//        try {
-            cursor = db.query(
-                    BaseDeDatosContract.Platos.TABLE_NAME,  // The table to query
-                    columnsToReturn,                               // The columns to return
-                    null,                                // The columns for the WHERE clause
-                    null,                            // The values for the WHERE clause
-                    null,                                     // don't group the rows
-                    null,                                     // don't filter by row groups
-                    sortOrder                                 // The sort order
-            );
+        cursor = db.query(
+                BaseDeDatosContract.Platos.TABLE_NAME,  // The table to query
+                columnsToReturn,                               // The columns to return
+                null,                                // The columns for the WHERE clause
+                null,                            // The values for the WHERE clause
+                null,                                     // don't group the rows
+                null,                                     // don't filter by row groups
+                sortOrder                                 // The sort order
+        );
 
-//            cursor.close(); //No cerrar porque lo tengo que pasar
-
-//        }finally {
-//            db.close();
-//        }
         return cursor;
     }
+
 
     @Override
     public Cursor getPlatosGuardadosExcepto(Set<Integer> idPlatosEscluidos) {
@@ -345,22 +330,16 @@ public class MenuesDAOImpl implements MenuesDAO {
         String sortOrder =
                 BaseDeDatosContract.Platos.COLUM_NAME_NOMBRE + " ASC";
 
-//        try {
-            cursor = db.query(
-                    BaseDeDatosContract.Platos.TABLE_NAME,  // The table to query
-                    columnsToReturn,                               // The columns to return
-                    null,                                // The columns for the WHERE clause
-                    null,                            // The values for the WHERE clause
-                    null,                                     // don't group the rows
-                    null,                                     // don't filter by row groups
-                    sortOrder                                 // The sort order
-            );
+        cursor = db.query(
+                BaseDeDatosContract.Platos.TABLE_NAME,  // The table to query
+                columnsToReturn,                               // The columns to return
+                null,                                // The columns for the WHERE clause
+                null,                            // The values for the WHERE clause
+                null,                                     // don't group the rows
+                null,                                     // don't filter by row groups
+                sortOrder                                 // The sort order
+        );
 
-//            cursor.close(); //No cerrar porque lo tengo que pasar
-
-//        }finally {
-//            db.close();
-//        }
         return cursor;
     }
 
@@ -534,7 +513,6 @@ public class MenuesDAOImpl implements MenuesDAO {
 
             // Insert the new row, returning the primary key value of the new row
             db.insertOrThrow(BaseDeDatosContract.Almuerzo.TABLE_NAME, "null", values);
-//            guardadoExitoso = true;
 
         }catch (SQLException e) {
             guardadoExitoso = false;
@@ -567,7 +545,7 @@ public class MenuesDAOImpl implements MenuesDAO {
     @Override
     public void eliminarAlmuerzo(int dia, int mes, int anio) {
         SQLiteDatabase db = miDbHelper.getReadableDatabase();
-        boolean eliminadoExitoso = false;
+//        boolean eliminadoExitoso = false; No se si el .delete(); tira excepcion...
 
         String whereClause= BaseDeDatosContract.Almuerzo.COLUMN_NAME_DIA + "=? " + "AND " + BaseDeDatosContract.Almuerzo.COLUMN_NAME_MES + "=? "
                 + "AND " + BaseDeDatosContract.Almuerzo.COLUMN_NAME_ANIO + "=?";
@@ -594,6 +572,7 @@ public class MenuesDAOImpl implements MenuesDAO {
             db.close();
         }
     }
+
 
     @Override
     public int getCantidadDelPlato(int idPlato) {
@@ -625,9 +604,9 @@ public class MenuesDAOImpl implements MenuesDAO {
         }finally {
             db.close();
         }
+
     return cantidadDePedidos;
     }
-
 
 
 //    public void cerrarDB(){

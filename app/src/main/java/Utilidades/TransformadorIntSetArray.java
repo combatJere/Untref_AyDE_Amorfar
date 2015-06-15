@@ -22,6 +22,7 @@ public class TransformadorIntSetArray {
         return miTransformadorIntSetArray;
     }
 
+
     /**
      * Transforma un conjunto de Integers en un Array de Integers
      * @param conjuntoATransformar
@@ -41,6 +42,12 @@ public class TransformadorIntSetArray {
         return conjuntoTransformado;
     }
 
+
+    /**
+     * Transforma un array de integers a un conjunto de integers
+     * @param arrayATransformar
+     * @return conjunto de integers.
+     */
     public Set<Integer> arrayIntASetInt(int[] arrayATransformar){
         Set<Integer> conjuntoADevolver = new HashSet<Integer>();
         int tamanioArray = arrayATransformar.length;

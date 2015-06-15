@@ -20,7 +20,6 @@ public class BaseDeDatosContract {
     public static abstract class UsuariosYAvisos implements BaseColumns{
         public static final String TABLE_NAME = "usuariosYavisos";
         public static final String COLUMN_NAME_NOMBRE_USUARIO_ID = "_id";
-//        public static final String COLUMN_NAME_NOMBRE_USUARIO_ID = "usuarioIdFK";
         public static final String COLUMN_NAME_TIENE_PREMIO = "tienePremio";
         public static final String COLUMN_NAME_COD_PLATO_ELEJIDO = "codigoPlatoElejido";
         public static final String COLUMN_NAME_CANTIDAD_INVITADOS = "cantidadInvitados";
@@ -31,7 +30,6 @@ public class BaseDeDatosContract {
         public static final String COLUMN_NAME_DIA = "dia";
         public static final String COLUMN_NAME_MES = "mes";
         public static final String COLUMN_NAME_ANIO = "anio";
-//        public static final String COLUMN_NAME_CODIGO_MENU = "codigo_menu";
         public static final String COLUM_NAME_HORA = "hora";
         public static final String COLUM_NAME_MINUTOS = "minutos";
     }

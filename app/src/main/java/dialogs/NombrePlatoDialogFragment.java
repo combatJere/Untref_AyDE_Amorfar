@@ -20,11 +20,13 @@ import com.altosoftuntref.amorfar.R;
 public class NombrePlatoDialogFragment extends DialogFragment {
 
     EditText editText;
+
     private NuevoPlatoDialogListener nuevoPlatoAAgregarListener;
 
     public interface NuevoPlatoDialogListener {
         public void onConfirmarDialogClick(String nombrePlato);
     }
+
 
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         // Use the Builder class for convenient dialog construction
@@ -47,10 +49,10 @@ public class NombrePlatoDialogFragment extends DialogFragment {
         return builder.create();
     }
 
+
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
-
         // This makes sure that the container activity has implemented
         // the TimePickerFragmentListener interface. If not, it throws an exception
         try {
@@ -60,6 +62,5 @@ public class NombrePlatoDialogFragment extends DialogFragment {
                     + " must implement TimePickerFragmentListenerJer");
         }
     }
-
 
 }

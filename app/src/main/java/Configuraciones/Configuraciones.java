@@ -25,7 +25,7 @@ public class Configuraciones {
     public static final int MINUTOS_LIMITE_VOTACION = 00;
 
 
-   //no son configuraciones.
+   //no son configuraciones (pasar a enum o algo parecido)
     public static final int ES_ADMIN = 1;
     public static final int NO_ES_ADMIN = 0;
     public static final int PERDIO_PREMIO = 0;

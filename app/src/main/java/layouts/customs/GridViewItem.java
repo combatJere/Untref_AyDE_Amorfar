@@ -9,6 +9,7 @@ import android.widget.RelativeLayout;
  * Created by jeremias on 06/06/2015.
  */
 public class GridViewItem extends RelativeLayout {
+
     public GridViewItem(Context context) {
         super(context);
     }

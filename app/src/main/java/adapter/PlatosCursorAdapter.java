@@ -21,6 +21,7 @@ public class PlatosCursorAdapter extends CursorAdapter {
         super(context, c, flags);
     }
 
+
     /**
      * @Edu Solo inflar la vista (View) y devolverla.
      */
@@ -30,6 +31,7 @@ public class PlatosCursorAdapter extends CursorAdapter {
         View v = inflater.inflate(R.layout.plato_gridview_element, parent, false);
         return v;
     }
+
 
     /**
      * @Edu Instanciar los elementos de la vista (View)
@@ -41,4 +43,5 @@ public class PlatosCursorAdapter extends CursorAdapter {
         nombrePlato = cursor.getString(cursor.getColumnIndex(BaseDeDatosContract.Platos.COLUM_NAME_NOMBRE));
         nombrePlatoTextView.setText(nombrePlato);
     }
+
 }

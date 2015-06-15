@@ -9,15 +9,18 @@ import Persitencia.DAOs.DAOs.Implementacion.UsuariosDAOImpl;
  */
 public interface UsuariosDAO {
 
+
     /**
-     * Recive los datos de un nuevo usuario, previamente validados, y lo guarda en la BDD.
-     * CUIDADO: los datos deben ser previamente validados.
+     * Guarda los datos obtenidos, junto a datos por defecto en ambas tablas de usuario
+     * En caso de fallar el guardado en la segunda tabla, elimina los datos guardados en la primer tabla.
+     * CUIDADO: los datos deben estar previamente validados.
      * @param nombreUsuario
      * @param clave
      * @param esAdministrador
-     * @return true si fue guardado exitosamente.
+     * @return
      */
     public boolean guardarUsuario(String nombreUsuario, String clave, int esAdministrador);
+
 
     /**
      * CUIDADO: El nombreUsuario ingresado debe existir.
@@ -33,6 +36,7 @@ public interface UsuariosDAO {
      */
     public boolean usuarioExiste(String nombreUsuario);
 
+
     /**
      *
      * @param nombreUsuarioID
@@ -40,11 +44,13 @@ public interface UsuariosDAO {
      */
     public int getIdPlatoElegido(String nombreUsuarioID);
 
+
     /**
      * @param nombreUsuarioID
      * @return true, si el usuario ya tiene voto registrado para ese almuerzo.
      */
     public boolean platoYaElegido(String nombreUsuarioID);
+
 
     /**
      * @param nombreUsuarioID
@@ -52,16 +58,19 @@ public interface UsuariosDAO {
      */
     public int getCantidadInvitados(String nombreUsuarioID);
 
+
     /**
      * @param nombreUsuarioID
      * @return true si el usuario conserva el premio
      */
     public boolean usuarioTienePremio(String nombreUsuarioID);
 
+
     /**
      * @return Cursor con todos los nombres de los usuarios que tienen premios hasta el momento.
      */
     public Cursor getUsuariosConPremioCursor();
+
 
     /**
      * guarda una votacion (eleccion de plato) en la BDD
@@ -73,12 +82,14 @@ public interface UsuariosDAO {
      */
     public boolean enviarVoto(String nombreUsuarioID, boolean tienePremio, int idPlatoelejido, int cantInvitados);
 
+
     /**
      * reinicia las votaciones, platoElejido y cantidad de Invitados
      * (ideado para cuando empieza un nuevo dia)
      * @return
      */
     public boolean reiniciarVotacion();
+
 
     /**
      * Asigna a todos los usuarios el premio en verdadero
@@ -87,11 +98,13 @@ public interface UsuariosDAO {
      */
     public boolean reiniciarPremios();
 
+
     /**
      * usado para calcular si conserva el premio, a partir de la ultima votacion realizada.
      * @return
      */
     public boolean actualizarPremios();
+
 
     /**
      *
@@ -102,6 +115,7 @@ public interface UsuariosDAO {
      */
     public int getCantidadNoComen(int dia, int mes, int anio);
 
+
     /**
      *
      * @param dia
@@ -110,6 +124,7 @@ public interface UsuariosDAO {
      * @return
      */
     public int getCantidadNoVotaron(int dia, int mes, int anio);
+
 
     /**
      *
@@ -120,10 +135,12 @@ public interface UsuariosDAO {
      */
     public int getCantidadDeInvitadosTotales(int dia, int mes, int anio);
 
+
     /**
      *
      * @param nombreUsuarioID
      * @return true si el usuario es admin.
      */
     public boolean esAdmin(String nombreUsuarioID);
+
 }

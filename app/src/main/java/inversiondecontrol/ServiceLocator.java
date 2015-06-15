@@ -29,6 +29,7 @@ public class ServiceLocator {
         return instance;
     }
 
+
     public MenuesDAO getMenuesDao(Context context){
         if(menuesDAO == null){
             menuesDAO = MenuesDAOImpl.getInstance(context); //Si cambia la conexion, Esta mal que el MenuesDAOImpl tambien sea Singleton?
@@ -36,10 +37,12 @@ public class ServiceLocator {
         return menuesDAO;
     }
 
+
     public UsuariosDAO getUsuariosDAO(Context context){
         if(usuariosDAO == null){
             usuariosDAO = UsuariosDAOImpl.getInstance(context); //Si cambia la conexion. Esta mal que el UsuariosDAOImpl tambien sea Singleton?
         }
         return usuariosDAO;
     }
+
 }

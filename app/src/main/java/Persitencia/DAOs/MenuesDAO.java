@@ -18,6 +18,7 @@ public interface MenuesDAO {
      */
     public boolean existeAlmuerzo(int dia, int mes, int anio);
 
+
     /**
      * Recive los valores correspondientes a la fecha de un menu. (id de un menu)
      * @param dia
@@ -26,6 +27,7 @@ public interface MenuesDAO {
      * @return un cursor conteniendo los platos correspondientes a ese almuerzo.
      */
     public Cursor getPlatosDelMenu(int dia, int mes, int anio);
+
 
     /**
      * Recive los valores correspondientes a la fecha de un menu (id de un menu)
@@ -46,6 +48,7 @@ public interface MenuesDAO {
      */
     public Set<Integer> getCodigosDePlatosDelMenuSet(int dia, int mes, int anio);
 
+
     /**
      * Recive el nombre de un plato y lo guarda en la BDD.
      * CUIDADO: No comprueba que un plato con ese nombre ya exista.
@@ -54,17 +57,20 @@ public interface MenuesDAO {
      */
     public boolean guardarPlato(String nombreplato);
 
+
     /**
      * @param nombrePlato
      * @return true si ya existe un plato con ese nombre en la BDD.
      */
     public boolean existePlato(String nombrePlato);
 
+
     /**
      * CUIDADO: Recordar cerrar el cursor al finalizar su uso.
      * @return un Cursor con todos los platos (id, nombrePlato) guardados.
      */
     public Cursor getAllPlatosGuardadosCursor();
+
 
     /**
      * CUIDADO: Recordar cerrar el cursor al finalizar su uso.
@@ -73,11 +79,13 @@ public interface MenuesDAO {
      */
     public Cursor getPlatosGuardadosExcepto(Set<Integer> idPlatosEscluidos);
 
+
     /**
      * CUIDADO: Recordar cerrer el cursor al finalizar su uso.
      * @return un Cursor con el nombre de todos los platos guardados.
      */
     public Cursor getAllNombrePlatosCursor();
+
 
     /**
      * CUIDADO: El plato debe existir en la BDD.
@@ -86,12 +94,14 @@ public interface MenuesDAO {
      */
     public String getNombrePlato(int idPlatoElejido);
 
+
     /**
      * Devuelve un Cursor con los platos correspondientes a los id solicitados;
      * @param idPlatosDelMenu los id de los platos que se quieren obtener
      * @return un Cursor con los platos correspondientes.
      */
     public Cursor getPlatos(Set<Integer> idPlatosDelMenu);
+
 
     /**
      * Recive los valores correspondientes a la fecha de un menu. (id de un menu)
@@ -102,6 +112,7 @@ public interface MenuesDAO {
      */
     public int[] getHorarioAlmuerzo(int dia, int mes, int anio);
 
+
     /**
      * Recive los valores correspondientes a la fecha de un menu. (id de un menu)
      * @param dia
@@ -110,6 +121,7 @@ public interface MenuesDAO {
      * @return Un int representando la cantidad de platos del almuerzo correspondiente.
      */
     public int getCantidadPlatos(int dia, int mes, int anio);
+
 
     /**
      * Recivetodos los datos correspondientes a un nuevo almuerzo y lo guarda en la BDD.
@@ -123,14 +135,16 @@ public interface MenuesDAO {
      */
     public boolean guardarAlmuerzo(int dia, int mes, int anio, int hora, int minutos, Set<Integer> idPlatos);
 
+
     /**
      * Elimina un Almuerzo completo de la BDD.
      * @param dia
      * @param mes
      * @param anio
-     * @return
+     * @return true si fue eliminado correctamente.
      */
     public void eliminarAlmuerzo(int dia, int mes, int anio);
+
 
     /**
      * @param idPlato id del plato que se quiere saber la cantidad.

@@ -21,12 +21,14 @@ public class ComensalesConPremioAdapter extends CursorAdapter {
         super(context, c, flags);
     }
 
+
     @Override
     public View newView(Context context, Cursor cursor, ViewGroup parent) {
         LayoutInflater inflater = LayoutInflater.from(context);
         View v = inflater.inflate(R.layout.persona_premio_gridview_element, parent, false);
         return v;
     }
+
 
     /**
      * @Edu Instanciar los elementos de la vista (View)
