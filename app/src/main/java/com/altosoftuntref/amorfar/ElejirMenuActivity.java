@@ -1,8 +1,8 @@
 package com.altosoftuntref.amorfar;
 
-import android.app.Activity;
 import android.database.Cursor;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
@@ -19,10 +19,11 @@ import adapter.PlatosSingleChoiceAdapter;
 import dialogs.CantidadInvitadosDialogFragment;
 import inversiondecontrol.ServiceLocator;
 
+
 /**
- * @Pre El menu debe existir.
+ * @Pre El menu debe existir. de lo contrario, la actividad fallara.
  */
-public class ElejirMenuActivity extends Activity implements CantidadInvitadosDialogFragment.CantidadInvitadosDialogListener{
+public class ElejirMenuActivity extends AppCompatActivity implements CantidadInvitadosDialogFragment.CantidadInvitadosDialogListener{
 
     public final static String EXTRA_CANTIDAD_INVITADOS = "amorfar.elejirMenu.CANTIDAD_INVITADOS";
 
@@ -129,6 +130,8 @@ public class ElejirMenuActivity extends Activity implements CantidadInvitadosDia
 
 
     /**
+     * @deprecated El menu debe existir. No se puede ingresar hasta que le mismo exista.
+     *
      * llamado si el almuerzo no existia, le asigna valores por defecto.
      */
 //    private void instanciarConNuevosValores(){

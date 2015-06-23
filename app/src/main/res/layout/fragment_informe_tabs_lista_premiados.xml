@@ -1,0 +1,82 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="barra_informe.Fragmentos.InformeTabsListaPremiados" >
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <!--android:layout_centerVertical="true"-->
+        <!--android:layout_centerHorizontal="true">-->
+
+        <RelativeLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="55dp"
+            android:background="#ffffe2e0">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:text="@string/comensales_premiados"
+                android:id="@+id/textView_listaDePremios_tienenPremio"
+                android:layout_gravity="right|center_vertical"
+                android:layout_alignTop="@+id/textView_listaDePremios_cantidadConPremio"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"
+                android:layout_marginLeft="10dp"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:text="cant_error!"
+                android:id="@+id/textView_listaDePremios_cantidadConPremio"
+                android:layout_gravity="left|center_vertical"
+                android:layout_marginLeft="8dp"
+                android:layout_marginStart="8dp"
+                android:layout_centerVertical="true"
+                android:layout_toRightOf="@+id/textView_listaDePremios_tienenPremio" />
+
+        </RelativeLayout>
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:background="#fffff6e2">
+
+            <ListView
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:id="@+id/listView_listaDePremios_usuariosConPremios2"
+                android:layout_gravity="center" />
+        </FrameLayout>
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:background="#ffe9ffdc">
+
+            <Button
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:text="@string/reiniciar_premios"
+                android:id="@+id/button_listaDePremios_reiniciarPremios"
+                android:background="#ff8fff86" />
+
+            <Button
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:text="NOSE"
+                android:background="#ffb0cbff"
+                android:id="@+id/button_listaDePremios_nose"/>
+        </LinearLayout>
+    </LinearLayout>
+
+</FrameLayout>

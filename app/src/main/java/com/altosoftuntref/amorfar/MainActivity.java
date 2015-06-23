@@ -65,7 +65,7 @@ public class MainActivity extends Activity {
 
     /**
      * OnClick
-     * Inicia la actividad ElejirMenu.activity
+     * Inicia la actividad ElejirMenu.activity solo si existe menu creado para ese dia.
      * @param view
      */
     public void irAElejirMenu(View view){
@@ -88,8 +88,8 @@ public class MainActivity extends Activity {
      * Inicia la actividad InforeActivity.
      * @param view
      */
-    public void irAInforme(View view){
-        Intent intent = new Intent(this, InformeActivity.class);
+    public void irAInformeTabs(View view){
+        Intent intent = new Intent(this, InformeActivityTabs.class);
         startActivity(intent);
     }
 

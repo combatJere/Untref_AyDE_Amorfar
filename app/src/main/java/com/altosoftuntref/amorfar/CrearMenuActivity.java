@@ -1,10 +1,10 @@
 package com.altosoftuntref.amorfar;
 
-import android.app.Activity;
 import android.app.DialogFragment;
 import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.GridView;
@@ -25,7 +25,7 @@ import dialogs.TimePickerFragment;
 import inversiondecontrol.ServiceLocator;
 
 
-public class CrearMenuActivity extends Activity implements TimePickerFragment.TimePickerFragmentListenerJer, CantidadPlatosDialogFragment.CantidadPlatosDialogListener {
+public class CrearMenuActivity extends AppCompatActivity implements TimePickerFragment.TimePickerFragmentListenerJer, CantidadPlatosDialogFragment.CantidadPlatosDialogListener {
 
     public final static String EXTRA_HORA_TIMEPICKER = "com.altosoftuntref.amorfar.HORA_TIMEPICKER";
     public final static String EXTRA_MINUTOS_TIMEPICKER = "com.altosoftuntref.amorfar.MINUTOS_TIMEPICKER";

@@ -47,7 +47,7 @@
             android:id="@+id/button_mostrarInforme"
             style="@style/boton_grande"
             android:background="#ffacffee"
-            android:onClick="irAInforme"/>
+            android:onClick="irAInformeTabs"/>
     </LinearLayout>
 
     <TextView

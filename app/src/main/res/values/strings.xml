@@ -56,9 +56,21 @@
     <string name="clave_administrador">Clave admin</string>
     <string name="cerrar">Cerrar</string>
     <string name="usuario_no_autorizado">Usuario no autorizado</string>
+    <string name="no_votaron">No votaron</string>
+    <string name="no_comen">Invitados</string>
+    <string name="total_aproximado">Total aproximado:</string>
 
 
     <string name="sobre_altosoft">UNTREF \n Analisis y disenio estructurado</string>
+    <string name="title_activity_informe_tabs">InformeTabs</string>
+
+    <string name="title_section1">Section 1</string>
+    <string name="title_section2">Section 2</string>
+    <string name="title_section3">Section 3</string>
+
+<!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="title_activity_informe_activity_tabs">InformeActivityTabs</string>
 
 
 </resources>

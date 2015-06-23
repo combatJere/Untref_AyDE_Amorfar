@@ -1,9 +1,8 @@
 package dialogs;
 
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
-import android.app.DialogFragment;
+import android.support.v4.app.DialogFragment;
 import android.content.DialogInterface;
 import android.os.Bundle;
 
@@ -17,7 +16,7 @@ public class ReiniciarPremiadosDialogFragment extends DialogFragment {
     private ReiniciarPremiadosDialogListener reiniciarPremiadosListener;
 
     public interface ReiniciarPremiadosDialogListener {
-        public void onCantidadPlatosConfirmarClick();
+        public void confirmarReiniciarPremiadosClick();
     }
 
 
@@ -28,12 +27,13 @@ public class ReiniciarPremiadosDialogFragment extends DialogFragment {
         builder.setMessage(R.string.desea_reiniciar_premiados)
                 .setPositiveButton(R.string.reiniciar, new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
-                        reiniciarPremiadosListener.onCantidadPlatosConfirmarClick();
+                        reiniciarPremiadosListener.confirmarReiniciarPremiadosClick();
                     }
                 })
                 .setNegativeButton(R.string.cancelar, new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
                         // User cancelled the dialog
+                        // No lo uso en este caso, no hace nada si cancela.
                     }
                 });
         // Create the AlertDialog object and return it
@@ -41,17 +41,38 @@ public class ReiniciarPremiadosDialogFragment extends DialogFragment {
     }
 
 
+    /**
+     * Se asegura de que el Fragment que muestre este Dialog, implemente la interfaz correspondiente
+     * para obtener el resultado del mismo.
+     * @param savedInstanceState
+     */
     @Override
-    public void onAttach(Activity activity) {
-        super.onAttach(activity);
-        // This makes sure that the container activity has implemented
-        // the TimePickerFragmentListener interface. If not, it throws an exception
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
         try {
-            reiniciarPremiadosListener = (ReiniciarPremiadosDialogListener) activity;
+            reiniciarPremiadosListener = (ReiniciarPremiadosDialogListener) getTargetFragment();
         } catch (ClassCastException e) {
-            throw new ClassCastException(activity.toString()
-                    + " must implement TimePickerFragmentListenerJer");
+            throw new ClassCastException("El fragmento que pretende reiniciar los premiados debe implementar ReiniciarPremiadosDialogListene");
         }
     }
+
+    /**
+     * @Edu Esto solo sirve para cuando el dialog lo ejecuta la actividad, si lo ejecuta el fragment
+     * debo hacerlo en el onCreate()  Ver arriba ^ el onCreate()
+     */
+//    @Override
+//    public void onAttach(Activity activity) {
+//        super.onAttach(activity);
+//        // This makes sure that the container activity has implemented
+//        // the TimePickerFragmentListener interface. If not, it throws an exception
+//        try {
+//            reiniciarPremiadosListener = (ReiniciarPremiadosDialogListener) activity;
+//        } catch (ClassCastException e) {
+//            throw new ClassCastException(activity.toString()
+//                    + " must implement TimePickerFragmentListenerJer");
+//        }
+//    }
+
 
 }

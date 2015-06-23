@@ -13,8 +13,8 @@ tools:context="com.altosoftuntref.amorfar.ElejirMenuActivity">
     <LinearLayout
         android:orientation="horizontal"
         android:layout_width="match_parent"
-        android:layout_height="60dp"
-        android:background="#ffffe2e0">
+        android:layout_height="@dimen/abc_action_bar_default_height_material"
+        android:background="@color/elegirMenu_Header">
 
         <FrameLayout
             android:id="@+id/linearLayout_elejirMenu_fecha"
@@ -25,11 +25,19 @@ tools:context="com.altosoftuntref.amorfar.ElejirMenuActivity">
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:textAppearance="?android:attr/textAppearanceMedium"
                 android:text="Large Text"
+                android:textColor="@color/primary_text_default_material_dark"
                 android:id="@+id/textView_elejirMenu_fecha"
                 android:layout_gravity="center" />
         </FrameLayout>
+
+        <FrameLayout
+            android:layout_width="1px"
+            android:layout_height="match_parent"
+            android:layout_marginBottom="10dp"
+            android:layout_marginTop="10dp"
+            android:background="#66bb6a"></FrameLayout>
 
         <FrameLayout
             android:id="@+id/linearLayout_elejirMenu_hora"
@@ -40,8 +48,9 @@ tools:context="com.altosoftuntref.amorfar.ElejirMenuActivity">
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:textAppearance="?android:attr/textAppearanceMedium"
                 android:text="hora_error"
+                android:textColor="@color/primary_text_default_material_dark"
                 android:id="@+id/textView_elejirMenu_hora"
                 android:layout_gravity="center" />
         </FrameLayout>
