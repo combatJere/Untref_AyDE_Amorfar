@@ -20,7 +20,7 @@ import com.altosoftuntref.amorfar.R;
 
 /**
  * IMPORTANTE
- *              ¡DE LIBRERIA DESCARGADA!
+ *              DE LIBRERIA DESCARGADA!
  */
 
 /**

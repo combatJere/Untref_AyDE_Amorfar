@@ -37,7 +37,7 @@ tools:context="com.altosoftuntref.amorfar.ElejirMenuActivity">
             android:layout_height="match_parent"
             android:layout_marginBottom="10dp"
             android:layout_marginTop="10dp"
-            android:background="#66bb6a"></FrameLayout>
+            android:background="#ff008274"></FrameLayout>
 
         <FrameLayout
             android:id="@+id/linearLayout_elejirMenu_hora"
@@ -73,7 +73,7 @@ tools:context="com.altosoftuntref.amorfar.ElejirMenuActivity">
     <LinearLayout
         android:orientation="horizontal"
         android:layout_width="match_parent"
-        android:layout_height="60dp"
+        android:layout_height="56dp"
         android:background="#ffe9ffdc">
 
         <RelativeLayout
@@ -81,7 +81,7 @@ tools:context="com.altosoftuntref.amorfar.ElejirMenuActivity">
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:background="#ffffe2e0"
+            android:background="@color/elegirMenu_Header"
             android:onClick="cambiarCantidadInvitados">
 
             <TextView
@@ -94,7 +94,8 @@ tools:context="com.altosoftuntref.amorfar.ElejirMenuActivity">
                 android:layout_alignTop="@+id/textView_elejirMenu_cantidadInvitados"
                 android:layout_alignParentLeft="true"
                 android:layout_alignParentStart="true"
-                android:layout_marginLeft="10dp"/>
+                android:layout_marginLeft="10dp"
+                android:textColor="@color/blanco_puro"/>
 
             <TextView
                 android:layout_width="wrap_content"
@@ -106,7 +107,8 @@ tools:context="com.altosoftuntref.amorfar.ElejirMenuActivity">
                 android:layout_marginLeft="6dp"
                 android:layout_marginStart="6dp"
                 android:layout_centerVertical="true"
-                android:layout_toRightOf="@+id/textView_elejirMenu_invitados" />
+                android:layout_toRightOf="@+id/textView_elejirMenu_invitados"
+                android:textColor="@color/blanco_puro"/>
 
         </RelativeLayout>
 
@@ -115,16 +117,16 @@ tools:context="com.altosoftuntref.amorfar.ElejirMenuActivity">
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:text="@string/no_como"
-            android:background="#ffb0cbff"
+            android:background="@color/fondo_cremita"
             android:id="@+id/button_elejirMenu_hoyNoComo"
             android:onClick="votacionNoComo"/>
     </LinearLayout>
 
-    <LinearLayout
+    <!--<LinearLayout
         android:orientation="horizontal"
         android:layout_width="match_parent"
         android:layout_height="60dp"
-        android:background="#ffe9ffdc"
+        android:background="#ffb0cbff"
         android:onClick="enviarVotacion"
         android:gravity="center">
 
@@ -134,7 +136,7 @@ tools:context="com.altosoftuntref.amorfar.ElejirMenuActivity">
             android:textAppearance="?android:attr/textAppearanceLarge"
             android:text="@string/enviar_voto"
             android:id="@+id/textView_elejirMenu_enviarVoto"/>
-    </LinearLayout>
+    </LinearLayout>-->
 
 </LinearLayout>
 

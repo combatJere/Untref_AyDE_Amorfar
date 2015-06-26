@@ -1,39 +1,65 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
     tools:context="com.altosoftuntref.amorfar.SeleccionPlatoActivity"
     android:background="#fff7d7ff">
 
 
-    <GridView
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"
-        android:numColumns="2"
-        android:id="@+id/gridView_seleccionPlato_platos"
-        android:layout_gravity="center_horizontal"
-        android:background="#fffff6e2" />
-
     <LinearLayout
-        android:orientation="horizontal"
+        android:orientation="vertical"
         android:layout_width="match_parent"
-        android:layout_height="60dp">
+        android:layout_height="match_parent">
 
-        <!--<Button-->
-            <!--android:layout_width="0dp"-->
-            <!--android:layout_height="match_parent"-->
-            <!--android:text="New Button"-->
-            <!--android:id="@+id/button"-->
-            <!--android:layout_weight="1"/>-->
-
-        <Button
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:text="@string/nuevo_plato"
-            android:id="@+id/button_seleccionPlato_nuevoPlato"
+        <GridView
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
             android:layout_weight="1"
-            android:background="#ff8fff86"
-            android:onClick="showCrearNuevoPlatoDialog"/>
+            android:numColumns="2"
+            android:id="@+id/gridView_seleccionPlato_platos"
+            android:layout_gravity="center_horizontal"
+            android:background="#fffff6e2" />
+
+        <!--<LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="60dp">
+
+            &lt;!&ndash;<Button&ndash;&gt;
+                &lt;!&ndash;android:layout_width="0dp"&ndash;&gt;
+                &lt;!&ndash;android:layout_height="match_parent"&ndash;&gt;
+                &lt;!&ndash;android:text="New Button"&ndash;&gt;
+                &lt;!&ndash;android:id="@+id/button"&ndash;&gt;
+                &lt;!&ndash;android:layout_weight="1"/>&ndash;&gt;
+
+            <Button
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:text="@string/nuevo_plato"
+                android:id="@+id/button_seleccionPlato_nuevoPlato"
+                android:layout_weight="1"
+                android:background="#ff8fff86"
+                android:onClick="showCrearNuevoPlatoDialog"/>
+
+
+        </LinearLayout>-->
     </LinearLayout>
-</LinearLayout>
+
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/floatingActionButton_seleccionDePlato_nuevPlato"
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        app:elevation="4dp"
+        app:borderWidth="0dp"
+        android:src="@mipmap/nuevo_mas"
+        android:layout_gravity="bottom|right"
+        android:layout_marginBottom="3dp"
+        android:layout_marginRight="6dp"
+        app:backgroundTint="@color/floating_action_button"
+        android:clickable="true"
+        android:onClick="showCrearNuevoPlatoDialog"/>
+
+
+</FrameLayout>

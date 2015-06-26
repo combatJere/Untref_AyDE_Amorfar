@@ -1,20 +1,29 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="gridViewItem_background">#52fff0c5</color>
-    <color name="gridViewItemCentro_background">#569070ff</color>
-    <color name="gridViewItem_background_checked">#37a93400</color>
-    <color name="gridViewItemCentro_background_checked">#879070ff</color>
+    <color name="fondo_cremita">#fffff6e2</color>
+    <color name="gridViewItem_background">#82b2dfdb</color>
+    <color name="gridViewItemCentro_background">#80cbc4</color>
+    <color name="gridViewItem_background_checked">#80cbc4</color>
+    <color name="gridViewItemCentro_background_checked">#ffe57876</color>
 
-    <color name="crearMenu_Header">#7e57c2</color>
-    <color name="elegirMenu_Header">#43a047</color>
-    <color name="informe_Header">#0097a7</color>
+    <color name="botonIrACrearMenu">#c8e57373</color>
+    <color name="botonIrAElegirMenu">#c84db6ac</color>
+    <!--<color name="botonIrAElegirMenu">#81c784</color>-->
+    <color name="botonIrAInforme">#c84dd0e1</color>
+
+    <color name="crearMenu_Header">#ff5252</color> <!--#7e57c2--> <!--#ff5252-->
+    <color name="elegirMenu_Header">#00695c</color> <!--#43a047--> <!--#2e7d32-->
+    <color name="informe_Header">#00838f</color> <!--#0097a7-->
 
     <color name="blanco_puro">#ffffff</color>
 
 <!--Colores Toolbar InformeActivityTabs-->
     <color name="ColorPrimary">#0097a7</color>
-    <color name="ColorPrimaryDark">#0053AA</color>
-    <color name="tabsScrollColor">#005335</color>
-    <color name="textNotSelectedColor">#005335</color>
+    <color name="ColorPrimaryDark">#0053AA</color> <!--No se usa-->
+    <color name="tabsScrollColor">#fffff6e2</color>
+    <color name="textNotSelectedColor">#bdbdbd</color> <!--#005335-->
+
+    <color name="botones_principales">#ffb0cbff</color> <!--#ffb0cbff-->
+    <color name="floating_action_button">#ff5722</color>
 
 </resources>

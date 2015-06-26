@@ -4,7 +4,7 @@
 
     <application
         android:allowBackup="true"
-        android:icon="@mipmap/ic_launcher"
+        android:icon="@mipmap/logo_sobre_amorfar"
         android:label="@string/app_name"
         android:theme="@style/AppTheme" >
         <activity
@@ -23,7 +23,8 @@
         <activity
             android:name=".CrearMenuActivity"
             android:label="@string/crear_menu"
-            android:theme="@style/CrearMenuActionBar" >
+            android:theme="@style/CrearMenuActionBar"
+            android:parentActivityName=".MainActivity">
         </activity>
         <activity
             android:name=".CrearUsuarioActivity"

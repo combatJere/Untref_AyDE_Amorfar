@@ -34,7 +34,7 @@
             android:layout_height="wrap_content"
             android:text="@string/entrar"
             android:id="@+id/button_login_login"
-            android:background="#ffb0cbff"
+            android:background="@color/botones_principales"
             android:onClick="irAMainActivity" />
 
         <!--<CheckBox-->

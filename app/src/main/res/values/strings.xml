@@ -38,7 +38,7 @@
     <string name="enviar_voto">Enviar Voto</string>
     <string name="title_activity_elejir_menu">ElejirMenuActivity</string>
     <string name="cantidad_de_invitados">Cantidad de invitados</string>
-    <string name="invitados">Ivitados:</string>
+    <string name="invitados">Invitados:</string>
     <string name="no_como">No, gracias</string>
     <string name="texto_comserva_premio">Conserva el premio :)</string>
     <string name="texto_no_conserva_premio">Esta semana no hay premio :(</string>
@@ -70,7 +70,7 @@
 
 <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
-    <string name="title_activity_informe_activity_tabs">InformeActivityTabs</string>
+    <string name="title_activity_informe_activity_tabs">INFORME</string>
 
 
 </resources>

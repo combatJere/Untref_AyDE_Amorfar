@@ -39,7 +39,7 @@
                 android:layout_height="match_parent"
                 android:layout_marginBottom="10dp"
                 android:layout_marginTop="10dp"
-                android:background="#b39ddb"></FrameLayout>
+                android:background="#ffff6d69"></FrameLayout>
 
             <FrameLayout
                 android:id="@+id/linearLayout_crarMenu_hora"
@@ -73,19 +73,19 @@
                 android:layout_gravity="center" />
         </FrameLayout>
 
-        <LinearLayout
+        <!--<LinearLayout
             android:orientation="horizontal"
             android:layout_width="match_parent"
             android:layout_height="60dp"
             android:background="#ffe9ffdc">
 
-            <Button
+            &lt;!&ndash;<Button
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:text=""
                 android:id="@+id/button_crearMenu_nuevoPlato"
-                android:background="#ff8fff86"/>
+                android:background="#ff8fff86"/>&ndash;&gt;
 
             <Button
                 android:layout_width="match_parent"
@@ -95,7 +95,7 @@
                 android:background="#ffb0cbff"
                 android:id="@+id/button_crearMenu_confirmarAlmuerzo"
                 android:onClick="enviarMenu"/>
-        </LinearLayout>
+        </LinearLayout>-->
     </LinearLayout>
 
 </RelativeLayout>

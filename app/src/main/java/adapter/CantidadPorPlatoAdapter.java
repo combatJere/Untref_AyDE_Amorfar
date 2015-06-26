@@ -47,7 +47,10 @@ public class CantidadPorPlatoAdapter extends CursorAdapter {
         TextView textViewNombrePlato = (TextView) view.findViewById(R.id.textView_platoCantidadListItem_nombrePlato);
         TextView textViewCantidadDelPlato = (TextView) view.findViewById(R.id.textView_platoCantidadListItem_cantidadDelPlato);
 
-        textViewNombrePlato.setText(nombrePlato.toUpperCase());
+//        String nombrePlatoMayusc = nombrePlato.substring(0,1).toUpperCase() + nombrePlato.substring(1);
+        String nombrePlatoMayusc = nombrePlato.toUpperCase();
+
+        textViewNombrePlato.setText(nombrePlatoMayusc);
         textViewCantidadDelPlato.setText(String.valueOf(cantidadQueComenPlato));
     }
 }

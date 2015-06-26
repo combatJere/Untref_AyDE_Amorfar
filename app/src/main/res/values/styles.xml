@@ -7,7 +7,7 @@
         <!-- customize the color palette -->
         <item name="colorPrimary">#0097a7</item>
         <item name="colorPrimaryDark">#fbc02d</item>
-        <item name="colorAccent">#009688</item>
+        <item name="colorAccent">#00c853</item>
     </style>
 
     <style name="CrearMenuActionBar"

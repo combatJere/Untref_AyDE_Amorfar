@@ -30,7 +30,7 @@
             android:text="@string/crear_menu"
             android:id="@+id/button_irACrearMenu"
             style="@style/boton_grande"
-            android:background="#fff5beff"
+            android:background="@color/botonIrACrearMenu"
             android:onClick="irACrearMenu"
             android:layout_marginBottom="2dp"/>
 
@@ -38,7 +38,7 @@
             android:text="@string/elegir_menu"
             android:id="@+id/button_elegirMenu"
             style="@style/boton_grande"
-            android:background="#ff99ffb0"
+            android:background="@color/botonIrAElegirMenu"
             android:onClick="irAElejirMenu"
             android:layout_marginBottom="2dp"/>
 
@@ -46,7 +46,7 @@
             android:text="@string/informe"
             android:id="@+id/button_mostrarInforme"
             style="@style/boton_grande"
-            android:background="#ffacffee"
+            android:background="@color/botonIrAInforme"
             android:onClick="irAInformeTabs"/>
     </LinearLayout>
 

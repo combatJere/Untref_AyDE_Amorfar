@@ -1,20 +1,24 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="barra_informe.Fragmentos.InformeTabsListaPremiados" >
+    tools:context="barra_informe.Fragmentos.InformeTabsListaPremiados"
+    android:background="@color/fondo_cremita">
+
 
     <LinearLayout
         android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
+        <!--android:background="#ff888587"-->
         <!--android:layout_centerVertical="true"-->
         <!--android:layout_centerHorizontal="true">-->
 
         <RelativeLayout
             android:orientation="horizontal"
             android:layout_width="match_parent"
-            android:layout_height="55dp"
-            android:background="#ffffe2e0">
+            android:layout_height="56dp"> <!--#ffffe2e0-->
 
             <TextView
                 android:layout_width="wrap_content"
@@ -42,20 +46,28 @@
 
         </RelativeLayout>
 
+        <!--TODO cambiar por Divider.-->
+        <View
+            android:layout_width="fill_parent"
+            android:layout_height="1px"
+            android:background="#ffc9c9c9"/> <!--#ff888587-->
+
         <FrameLayout
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_weight="1"
-            android:background="#fffff6e2">
+            android:layout_weight="1">
 
             <ListView
                 android:layout_width="fill_parent"
                 android:layout_height="fill_parent"
                 android:id="@+id/listView_listaDePremios_usuariosConPremios2"
-                android:layout_gravity="center" />
+                android:layout_gravity="center"
+                android:clickable="false"
+                android:listSelector="@android:color/transparent"
+                android:divider="@null"/>
         </FrameLayout>
 
-        <LinearLayout
+        <!--<LinearLayout
             android:orientation="horizontal"
             android:layout_width="match_parent"
             android:layout_height="60dp"
@@ -67,16 +79,29 @@
                 android:layout_weight="1"
                 android:text="@string/reiniciar_premios"
                 android:id="@+id/button_listaDePremios_reiniciarPremios"
-                android:background="#ff8fff86" />
+                android:background="#ffb0cbff" /> &lt;!&ndash;#ff8fff86&ndash;&gt;
 
-            <Button
+           &lt;!&ndash; <Button
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:text="NOSE"
                 android:background="#ffb0cbff"
-                android:id="@+id/button_listaDePremios_nose"/>
-        </LinearLayout>
+                android:id="@+id/button_listaDePremios_nose"/>&ndash;&gt;
+        </LinearLayout>-->
     </LinearLayout>
+
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/floatingActionButton_listaPremiados"
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        app:elevation="4dp"
+        app:borderWidth="0dp"
+        android:src="@mipmap/reiniciar_premiados"
+        android:layout_gravity="bottom|right"
+        android:layout_marginBottom="3dp"
+        android:layout_marginRight="6dp"
+        app:backgroundTint="@color/floating_action_button"
+        android:clickable="true"/>
 
 </FrameLayout>

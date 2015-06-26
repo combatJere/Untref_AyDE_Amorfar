@@ -3,6 +3,8 @@ package com.altosoftuntref.amorfar;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
@@ -54,6 +56,7 @@ public class ElejirMenuActivity extends AppCompatActivity implements CantidadInv
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         //Check whether we are recreating a previously destroyed instance.
         if (savedInstanceState != null) {
@@ -130,7 +133,7 @@ public class ElejirMenuActivity extends AppCompatActivity implements CantidadInv
 
 
     /**
-     * @deprecated El menu debe existir. No se puede ingresar hasta que le mismo exista.
+     * @deprecado El menu debe existir. No se puede ingresar hasta que le mismo exista.
      *
      * llamado si el almuerzo no existia, le asigna valores por defecto.
      */
@@ -274,9 +277,9 @@ public class ElejirMenuActivity extends AppCompatActivity implements CantidadInv
     private void cambiarEstadoBotonNoComo(){
         Button botonNoComo = (Button) findViewById(R.id.button_elejirMenu_hoyNoComo);
         if(idPlatoElejido == Configuraciones.NO_COME){
-            botonNoComo.setBackgroundColor(getResources().getColor(R.color.gridViewItem_background_checked));
+            botonNoComo.setBackgroundColor(getResources().getColor(R.color.gridViewItemCentro_background_checked));
         }else{
-            botonNoComo.setBackgroundColor(getResources().getColor(R.color.gridViewItem_background));
+            botonNoComo.setBackgroundColor(getResources().getColor(R.color.gridViewItemCentro_background));
         }
     }
 
@@ -323,9 +326,8 @@ public class ElejirMenuActivity extends AppCompatActivity implements CantidadInv
      *
      * Envia la votacion, si es que no se voto o se hizo algun cambio
      * Siempre y cuando el horario no pase de las 11hs (CAMBIAR POR HISTORIA DE USUARIO CAMBIAR)
-     * @param view
      */
-    public void enviarVotacion(View view){
+    public void enviarVotacion(){
         if(!horaDeVotacionPermitida()){
             Toast.makeText(getBaseContext(), "El tiempo para votar era hasta las " +Configuraciones.HORA_LIMITE_VOTACION + ":" + Configuraciones.MINUTOS_LIMITE_VOTACION , Toast.LENGTH_LONG).show();
             finish();
@@ -392,25 +394,33 @@ public class ElejirMenuActivity extends AppCompatActivity implements CantidadInv
     }
 
 
-//    @Override
-//    public boolean onCreateOptionsMenu(Menu menu) {
-//        // Inflate the menu; this adds items to the action bar if it is present.
-//        getMenuInflater().inflate(R.menu.menu_elejir_menu, menu);
-//        return true;
-//    }
-//
-//    @Override
-//    public boolean onOptionsItemSelected(MenuItem item) {
-//        // Handle action bar item clicks here. The action bar will
-//        // automatically handle clicks on the Home/Up button, so long
-//        // as you specify a parent activity in AndroidManifest.xml.
-//        int id = item.getItemId();
-//
-//        //noinspection SimplifiableIfStatement
-//        if (id == R.id.action_settings) {
-//            return true;
-//        }
-//
-//        return super.onOptionsItemSelected(item);
-//    }
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.menu_elejir_menu, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle action bar item clicks here. The action bar will
+        // automatically handle clicks on the Home/Up button, so long
+        // as you specify a parent activity in AndroidManifest.xml.
+        int id = item.getItemId();
+
+        //noinspection SimplifiableIfStatement
+        if (id == R.id.action_settings) {
+            return true;
+        }
+        if (id == android.R.id.home) {
+            onBackPressed();
+            return true;
+        }
+        if (id == R.id.action_elegirMenu_Enviar){
+            this.enviarVotacion();
+            return true;
+        }
+
+        return super.onOptionsItemSelected(item);
+    }
 }

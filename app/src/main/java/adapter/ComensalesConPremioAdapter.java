@@ -38,7 +38,8 @@ public class ComensalesConPremioAdapter extends CursorAdapter {
         String nombreUsuario;
         TextView nombreUsuarioTextView = (TextView) view.findViewById(R.id.textView_personaPremioGridView_nombreUsuarioID);
         nombreUsuario = cursor.getString(cursor.getColumnIndex(BaseDeDatosContract.UsuariosYAvisos.COLUMN_NAME_NOMBRE_USUARIO_ID));
-        nombreUsuarioTextView.setText(nombreUsuario);
+        String nombreUsuarioMayusc = nombreUsuario.substring(0,1).toUpperCase() + nombreUsuario.substring(1);
+        nombreUsuarioTextView.setText(nombreUsuarioMayusc);
     }
 
 }

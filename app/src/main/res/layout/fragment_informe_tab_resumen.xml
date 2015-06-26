@@ -1,6 +1,7 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
-    android:layout_height="match_parent" tools:context="barra_informe.Fragmentos.InformeTabResumen">
+    android:layout_height="match_parent" tools:context="barra_informe.Fragmentos.InformeTabResumen"
+    android:background="@color/fondo_cremita">
 
 
     <LinearLayout
@@ -12,8 +13,9 @@
         <LinearLayout
             android:orientation="horizontal"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="56dp"
             android:layout_gravity="center_horizontal">
+
 
             <LinearLayout
                 android:orientation="vertical"
@@ -58,12 +60,27 @@
             </LinearLayout>
         </LinearLayout>
 
+        <!--TODO remplazar por divider-->
+        <View
+            android:layout_width="fill_parent"
+            android:layout_height="1px"
+            android:background="#ffc9c9c9"/>
+
         <ListView
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:id="@+id/listView_inforem_resmuen_cantidadPorPlato"
             android:layout_gravity="center_horizontal"
-            android:layout_weight="1"/>
+            android:layout_weight="1"
+            android:clickable="false"
+            android:listSelector="@android:color/transparent"
+            android:divider="@null"/>
+
+        <!--TODO remplazar por divider-->
+        <View
+            android:layout_width="fill_parent"
+            android:layout_height="1px"
+            android:background="#ffc9c9c9"/>
 
         <FrameLayout
             android:layout_width="match_parent"
