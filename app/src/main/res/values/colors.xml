@@ -5,6 +5,7 @@
     <color name="gridViewItemCentro_background">#80cbc4</color>
     <color name="gridViewItem_background_checked">#80cbc4</color>
     <color name="gridViewItemCentro_background_checked">#ffe57876</color>
+    <color name="sombra_gridViewElement">#49c4c4c4</color>
 
     <color name="botonIrACrearMenu">#c8e57373</color>
     <color name="botonIrAElegirMenu">#c84db6ac</color>
