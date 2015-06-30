@@ -3,11 +3,14 @@ package com.altosoftuntref.amorfar;
 import android.app.Activity;
 import android.content.Intent;
 import android.database.Cursor;
+import android.graphics.Color;
+import android.graphics.PorterDuff;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.FrameLayout;
 import android.widget.GridView;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -56,6 +59,7 @@ public class SeleccionMultiplesPlatos extends Activity implements NombrePlatoDia
 
         this.instanciarGridViewSeleccionMultiple();
         this.instanciarTextViewPlatosRestantes();
+        this.actualizarEstadoIcono();
     }
 
 
@@ -96,25 +100,37 @@ public class SeleccionMultiplesPlatos extends Activity implements NombrePlatoDia
 
                 if (cantPlatosRestantes > 0) {
 
-                    itemElegido.setBackgroundColor(getResources().getColor(R.color.gridViewItem_background_checked));
+                    itemElegido.setBackgroundColor(getResources().getColor(R.color.sombra_gridViewElement));
                     centroBoton.setBackgroundColor(getResources().getColor(R.color.gridViewItemCentro_background_checked));
                     idPlatosElejidos.add(idPlatoElejido);
                     cantPlatosRestantes--;
                     textViewCantidadPlatosRestantes.setText(String.valueOf(cantPlatosRestantes));
 
                 }else{
-                    Toast.makeText(getApplicationContext(), "Ya se eligiron todos los platos", Toast.LENGTH_LONG).show();
+                    Toast.makeText(getApplicationContext(), "Ya se eligiron todos los platos", Toast.LENGTH_SHORT).show();
                 }
 
             }else{
-                itemElegido.setBackgroundColor(getResources().getColor(R.color.gridViewItem_background));
+                itemElegido.setBackgroundColor(Color.TRANSPARENT);
                 centroBoton.setBackgroundColor(getResources().getColor(R.color.gridViewItemCentro_background));
                 idPlatosElejidos.remove(idPlatoElejido);
                 cantPlatosRestantes++;
                 textViewCantidadPlatosRestantes.setText(String.valueOf(cantPlatosRestantes));
             }
+
+            actualizarEstadoIcono();
         }
     };
+
+
+    private void actualizarEstadoIcono(){
+        ImageView botonContinuarImageView = (ImageView)findViewById(R.id.imageView_seleccionMultiplesPlatos_continuar);
+        if(cantPlatosRestantes == 0){
+            botonContinuarImageView.clearColorFilter();
+        }else{
+            botonContinuarImageView.setColorFilter(R.color.floating_action_button, PorterDuff.Mode.MULTIPLY);
+        }
+    }
 
 
     /**
@@ -131,7 +147,7 @@ public class SeleccionMultiplesPlatos extends Activity implements NombrePlatoDia
             setResult(RESULT_OK, intent);
             finish();
         }else{
-            Toast.makeText(getApplicationContext(), "Faltan elejir " +cantPlatosRestantes +" platos.", Toast.LENGTH_LONG).show();
+            Toast.makeText(getApplicationContext(), "Faltan elejir " +cantPlatosRestantes +" platos.", Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -145,6 +161,7 @@ public class SeleccionMultiplesPlatos extends Activity implements NombrePlatoDia
         setResult(RESULT_CANCELED);
         super.onBackPressed();
     }
+
 
     /**
      * Refresca el gridview
@@ -186,17 +203,17 @@ public class SeleccionMultiplesPlatos extends Activity implements NombrePlatoDia
         MenuesDAO menuesDao = ServiceLocator.getInstance().getMenuesDao(getBaseContext());
 
         if(nombrePlato.length() < 4){
-            Toast.makeText(getBaseContext(), R.string.nombre_plato_invalido, Toast.LENGTH_LONG).show();
+            Toast.makeText(getBaseContext(), R.string.nombre_plato_invalido, Toast.LENGTH_SHORT).show();
         }else {
             if (menuesDao.existePlato(nombrePlato)) {
-                Toast.makeText(getBaseContext(), R.string.plato_existente, Toast.LENGTH_LONG).show();
+                Toast.makeText(getBaseContext(), R.string.plato_existente, Toast.LENGTH_SHORT).show();
             } else {
 
                 guardadoExitoso = menuesDao.guardarPlato(nombrePlato);
                 if (guardadoExitoso) {
                     this.actualizarGridViewPlatos();
                 }else{
-                    Toast.makeText(getBaseContext(), R.string.error_al_guardar_plato, Toast.LENGTH_LONG).show();
+                    Toast.makeText(getBaseContext(), R.string.error_al_guardar_plato, Toast.LENGTH_SHORT).show();
                 }
             }
         }

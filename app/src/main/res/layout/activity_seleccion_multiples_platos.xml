@@ -48,7 +48,7 @@
             <ImageView
                 android:layout_width="36dp"
                 android:layout_height="36dp"
-                android:id="@+id/imageView2"
+                android:id="@+id/imageView_seleccionMultiplesPlatos_continuar"
                 android:layout_centerVertical="true"
                 android:layout_alignParentRight="true"
                 android:layout_alignParentEnd="true"
@@ -73,30 +73,6 @@
                 android:layout_gravity="center" />
         </FrameLayout>
 
-        <!--<LinearLayout
-            android:orientation="horizontal"
-            android:layout_width="match_parent"
-            android:layout_height="60dp"
-            android:background="#ffe9ffdc">
-
-            <Button
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:text="@string/nuevo_plato"
-                android:id="@+id/button_seleccionMultiplesPlatos_nuevoPlato"
-                android:background="#ff8fff86"
-                android:onClick="showCrearNuevoPlatoDialog"/>
-
-            <Button
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:text="@string/confirmar"
-                android:background="#ffb0cbff"
-                android:id="@+id/button_seleccionMultiplesPlatos_confirmarAlmuerzo"
-                android:onClick="devolverPlatosElejidos"/>
-        </LinearLayout>-->
     </LinearLayout>
 
     <android.support.design.widget.FloatingActionButton

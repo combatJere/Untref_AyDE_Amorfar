@@ -1,6 +1,7 @@
 package com.altosoftuntref.amorfar;
 
 import android.database.Cursor;
+import android.graphics.PorterDuff;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
@@ -18,6 +19,7 @@ import Utilidades.TransformadorFechasSingleton;
 import Utilidades.TransformadorHorariosSingleton;
 import Utilidades.TransformadorIntSetArray;
 import adapter.PlatosSingleChoiceAdapter;
+import dialogs.AdvertenciaVotoTardeDialog;
 import dialogs.CantidadInvitadosDialogFragment;
 import inversiondecontrol.ServiceLocator;
 
@@ -40,6 +42,7 @@ public class ElejirMenuActivity extends AppCompatActivity implements CantidadInv
     private final static String SAVED_CANTIDAD_INVITADOS = "amorfar.elejirMenu.CANTIDAD_INVITADOS";
     private final static String SAVED_HAY_CAMBIOS = "com.altosoftuntref.amorfar.HAY_CAMBIOS";
 
+    private Menu menu;
     private PlatosSingleChoiceAdapter platosCursorAdapter;
     private Set<Integer> idPlatosDelMenu;
     private String nombreUsuarioID;
@@ -237,7 +240,7 @@ public class ElejirMenuActivity extends AppCompatActivity implements CantidadInv
                 actualizarGridView();
                 idPlatoElejido = idNuevoPlatoElejido;
                 cambiarEstadoBotonNoComo();
-                hayCambios = true;
+                cambioRealizado();
             }
         }
     };
@@ -262,11 +265,9 @@ public class ElejirMenuActivity extends AppCompatActivity implements CantidadInv
     public void votacionNoComo(View view){
         if(idPlatoElejido != Configuraciones.NO_COME){
             idPlatoElejido = Configuraciones.NO_COME;
-            hayCambios = true;
+            cambioRealizado();
             cambiarEstadoBotonNoComo();
             this.actualizarGridView();
-//            platosCursorAdapter.cambiarPlatoElegido(idPlatoElejido);
-//            platosCursorAdapter.notifyDataSetChanged();
         }
     }
 
@@ -306,7 +307,7 @@ public class ElejirMenuActivity extends AppCompatActivity implements CantidadInv
     public void onCantidadInvitadosConfirmarClick(int cantidadInvitados) {
         this.cantidadInvitados = cantidadInvitados;
         this.actualizarTextViewCantidadInvitados();
-        hayCambios = true;
+        cambioRealizado();
     }
 
 
@@ -320,39 +321,63 @@ public class ElejirMenuActivity extends AppCompatActivity implements CantidadInv
 
 
     /**
-     * CAMBIAR POR HISTORIA DE USUARIO CAMBIAR
-     * Sergio quiere que se pueda votar despues de las 11, pero que pierda el premio y aparesca un
-     * cartelito (dialog) que te informe que estubiste mal y lo perdiste.
-     *
      * Envia la votacion, si es que no se voto o se hizo algun cambio
      * Siempre y cuando el horario no pase de las 11hs (CAMBIAR POR HISTORIA DE USUARIO CAMBIAR)
      */
     public void enviarVotacion(){
-        if(!horaDeVotacionPermitida()){
-            Toast.makeText(getBaseContext(), "El tiempo para votar era hasta las " +Configuraciones.HORA_LIMITE_VOTACION + ":" + Configuraciones.MINUTOS_LIMITE_VOTACION , Toast.LENGTH_LONG).show();
-            finish();
-        }else {
-            if (hayCambios) {
-                boolean guardadoExitoso;
-                //si conservava el premio, y voto, lo sigue conservando.
-                boolean conservaPremio = ServiceLocator.getInstance().getUsuariosDAO(getBaseContext())
-                        .usuarioTienePremio(nombreUsuarioID);
 
-                guardadoExitoso = ServiceLocator.getInstance().getUsuariosDAO(getBaseContext()).
-                        enviarVoto(nombreUsuarioID, conservaPremio, idPlatoElejido, cantidadInvitados);
+        if (hayCambios) {
+            boolean guardadoExitoso;
+            //si conservava el premio, y voto, lo sigue conservando.
+            boolean conservaPremio;
 
-                String textoConservaPremio = getTextoConservaPremio(conservaPremio);
+//            if(!horaDeVotacionPermitida()){
+//                conservaPremio = false;
+//            }else{
+//                conservaPremio = ServiceLocator.getInstance().getUsuariosDAO(getBaseContext())
+//                        .usuarioTienePremio(nombreUsuarioID);
+//            }
+            conservaPremio = this.analizarEstadoPremio();
 
-                if (guardadoExitoso) {
-                    Toast.makeText(getBaseContext(), "Votacion enviada!\n" + textoConservaPremio, Toast.LENGTH_LONG).show();
-                } else {
-                    Toast.makeText(getBaseContext(), "Upss, vuelva a intentarlo", Toast.LENGTH_LONG).show();
+            guardadoExitoso = ServiceLocator.getInstance().getUsuariosDAO(getBaseContext()).
+                    enviarVoto(nombreUsuarioID, conservaPremio, idPlatoElejido, cantidadInvitados);
+
+            String textoConservaPremio = getTextoConservaPremio(conservaPremio);
+
+            if (guardadoExitoso) {
+                if(horaDeVotacionPermitida()){
+                    Toast.makeText(getBaseContext(), "Votacion enviada!\n" + textoConservaPremio, Toast.LENGTH_SHORT).show();
+                    finish();
+                }else{
+                    showAdvertenciaTardeDialogYEnviar();
                 }
-                finish();
+
             } else {
-                Toast.makeText(getBaseContext(), "No hay cambios que enviar", Toast.LENGTH_LONG).show();
+                Toast.makeText(getBaseContext(), "Upss, vuelva a intentarlo", Toast.LENGTH_SHORT).show();
+                finish();
             }
+
+        } else {
+            Toast.makeText(getBaseContext(), "No hay cambios que enviar", Toast.LENGTH_SHORT).show();
         }
+    }
+
+
+    /**
+     * Analiza si el usuario conserva el premio luego de esta votacion.
+     * Si voto despues de las la hora de cierre de votacion, o si ya lo havia perdido anteriormente,
+     * lo pierde.
+     * @return
+     */
+    public boolean analizarEstadoPremio(){
+        boolean conservaPremio;
+        if(!horaDeVotacionPermitida()){
+            conservaPremio = false;
+        }else{
+            conservaPremio = ServiceLocator.getInstance().getUsuariosDAO(getBaseContext())
+                    .usuarioTienePremio(nombreUsuarioID);
+        }
+        return conservaPremio;
     }
 
 
@@ -394,12 +419,53 @@ public class ElejirMenuActivity extends AppCompatActivity implements CantidadInv
     }
 
 
+    /**
+     * Muestra un mensaje de advertencia para los usuarios que votaron despues del horario permitido
+     * y finaliza la actividad.
+     */
+    private void showAdvertenciaTardeDialogYEnviar(){
+        AdvertenciaVotoTardeDialog votoTardeDialog = new AdvertenciaVotoTardeDialog();
+        votoTardeDialog.show(getFragmentManager(),"advertencia_dialog");
+    }
+
+
+    /**
+     * Llamar cuando se hace algun cambio.
+     * Setea la variable hayCambio como verdadera y cambia el icono de enviar a activado (blanco).
+     */
+    private void cambioRealizado(){
+        hayCambios = true;
+        MenuItem itemEnviar = menu.findItem(R.id.action_elegirMenu_Enviar);
+        itemEnviar.getIcon().clearColorFilter();
+//        itemEnviar.setIcon(R.mipmap.hecho);
+//        itemEnviar.setVisible(true);
+    }
+
+
+    /**
+     * Setea cada icono en el estado que le corresponde (colores)
+     */
+    private void setearEstadoIconos(){
+        if(!hayCambios){
+            MenuItem itemEnviar = menu.findItem(R.id.action_elegirMenu_Enviar);
+            itemEnviar.getIcon().setColorFilter(R.color.floating_action_button, PorterDuff.Mode.MULTIPLY);
+//            itemEnviar.setIcon(R.mipmap.hecho_desactivado_osc);
+//            itemEnviar.setVisible(false);
+        }
+    }
+
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_elejir_menu, menu);
-        return true;
+        this.menu = menu;
+        setearEstadoIconos();
+
+        return super.onCreateOptionsMenu(menu);
+//        return true;
     }
+
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -423,4 +489,6 @@ public class ElejirMenuActivity extends AppCompatActivity implements CantidadInv
 
         return super.onOptionsItemSelected(item);
     }
+
+
 }

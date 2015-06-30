@@ -143,4 +143,20 @@ public interface UsuariosDAO {
      */
     public boolean esAdmin(String nombreUsuarioID);
 
+
+    /**
+     * @return La cantidad de usuarios (comensales) en el sistema.
+     */
+    public int getCantidadComensalesEnSistema();
+
+
+//    /**
+//     * SACADO POR MEDIO DE CUENTA
+//     * @param dia
+//     * @param mes
+//     * @param anio
+//     * @return
+//     */
+//    public int getCantidadSiComen(int dia, int mes, int anio);
+
 }

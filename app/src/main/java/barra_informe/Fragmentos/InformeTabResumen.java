@@ -176,14 +176,18 @@ public class InformeTabResumen extends Fragment {
      * Recibe  la fecha para saber cual es el menu del que debe obtener y mostrar los valores.
      */
     private void instanciarTextViews(int dia, int mes, int anio){
+        int cantidadComensalesTotales = ServiceLocator.getInstance().getUsuariosDAO(getActivity().getBaseContext()).
+                getCantidadComensalesEnSistema();
         int cantNoVotaron = ServiceLocator.getInstance().getUsuariosDAO(getActivity().getBaseContext())
                 .getCantidadNoVotaron(dia, mes, anio);
         int cantInvitados = ServiceLocator.getInstance().getUsuariosDAO(getActivity().getBaseContext())
                 .getCantidadDeInvitadosTotales(dia, mes, anio);
         int cantidadNoComen = ServiceLocator.getInstance().getUsuariosDAO(getActivity().getBaseContext())
                 .getCantidadNoComen(dia, mes, anio);
-        int cantidadPlatosTotales = ServiceLocator.getInstance().getMenuesDao(getActivity().getBaseContext()).getCantidadPlatos(dia, mes, anio);
-        int cantidadTotalAprox = cantNoVotaron + cantInvitados + cantidadPlatosTotales - cantidadNoComen;
+
+        int cantidadSiComen = cantidadComensalesTotales - cantidadNoComen - cantNoVotaron;
+
+        int cantidadTotalAprox = cantidadSiComen + cantInvitados + cantNoVotaron;
 
 
         TextView textViewCantNoVotaron = (TextView) getView().findViewById(R.id.textView_Informe_resumen_CANTnoVotaron);

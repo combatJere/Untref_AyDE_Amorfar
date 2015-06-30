@@ -2,6 +2,7 @@ package adapter;
 
 import android.content.Context;
 import android.database.Cursor;
+import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -64,10 +65,10 @@ public class PlatosMultipleChoiceAdapter extends CursorAdapter{
 
         //logica para resaltar los platos correspondientes, los elejidos.
         if(platosElejidos.contains(idPlato)){
-            itemElegido.setBackgroundColor(view.getResources().getColor(R.color.gridViewItem_background_checked));
+            itemElegido.setBackgroundColor(view.getResources().getColor(R.color.sombra_gridViewElement));
             centroBoton.setBackgroundColor(view.getResources().getColor(R.color.gridViewItemCentro_background_checked));
         }else{
-            itemElegido.setBackgroundColor(view.getResources().getColor(R.color.gridViewItem_background));
+            itemElegido.setBackgroundColor(Color.TRANSPARENT);
             centroBoton.setBackgroundColor(view.getResources().getColor(R.color.gridViewItemCentro_background));
         }
     }

@@ -27,4 +27,8 @@
     <color name="botones_principales">#ffb0cbff</color> <!--#ffb0cbff-->
     <color name="floating_action_button">#ff5722</color>
 
+    <color name="enviarDesactivado">#ff929092</color>
+
+    <color name="informe_card_background">#ffe9ffe9</color>
+
 </resources>

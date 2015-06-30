@@ -565,4 +565,35 @@ public class UsuariosDAOImpl implements UsuariosDAO{
         return esAdmin;
     }
 
+
+    @Override
+    public int getCantidadComensalesEnSistema() {
+        SQLiteDatabase db = miDbHelper.getReadableDatabase();
+        int cantidadUsuariosEnSistema;
+
+        String[] columnsToReturn = {
+                BaseDeDatosContract.UsuariosYClave.COLUMN_NAME_USUARIO_ID,
+        };
+
+        try {
+            Cursor cursor = db.query(
+                    BaseDeDatosContract.UsuariosYClave.TABLE_NAME,  // The table to query
+                    columnsToReturn,                               // The columns to return
+                    null,                                // The columns for the WHERE clause
+                    null,                            // The values for the WHERE clause
+                    null,                                     // don't group the rows
+                    null,                                     // don't filter by row groups
+                    null                                 // The sort order
+            );
+
+            cantidadUsuariosEnSistema = cursor.getCount();
+            cursor.close();
+
+        }finally {
+            db.close();
+        }
+        return cantidadUsuariosEnSistema;
+    }
+
+
 }

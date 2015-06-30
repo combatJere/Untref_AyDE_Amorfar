@@ -1,35 +1,285 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
+xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
+android:layout_height="match_parent" tools:context="barra_informe.Fragmentos.InformeTabDetalle"
+android:background="@color/fondo_cremita">
+
+
+<LinearLayout
+    android:orientation="vertical"
+    android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="barra_informe.Fragmentos.InformeTabsDetalle"
-    android:background="@color/fondo_cremita"
-    xmlns:card_view="http://schemas.android.com/apk/res-auto">
+    android:layout_gravity="center">
 
-    <!-- TODO: Update blank fragment layout -->
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1">
 
-    <android.support.v7.widget.CardView
-        xmlns:card_view="http://schemas.android.com/apk/res-auto"
-        android:layout_width="200dp"
-        android:layout_height="200dp"
-        card_view:cardElevation="4dp"
-        card_view:cardBackgroundColor="#ff0000"
-        card_view:cardCornerRadius="0dp">
-
-        <FrameLayout
+        <LinearLayout
+            android:orientation="horizontal"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_gravity="center"
-            android:background="#00ff00">
-        </FrameLayout>
+            android:layout_height="168dp"
+            android:layout_gravity="center_horizontal">
 
-    </android.support.v7.widget.CardView>
+            <android.support.v7.widget.CardView
+                xmlns:card_view="http://schemas.android.com/apk/res-auto"
+                android:layout_width="0dp"
+                android:layout_height="fill_parent"
+                card_view:cardBackgroundColor="@color/informe_card_background"
+                card_view:cardElevation="6dp"
+                card_view:cardCornerRadius="6dp"
+                android:layout_weight="1">
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textAppearance="?android:attr/textAppearanceLarge"
+                        android:text="Votaron"
+                        android:id="@+id/textView_Informe_detalle_votaronTitulo"
+                        android:layout_alignParentTop="true"
+                        android:layout_centerHorizontal="true"
+                        android:layout_marginTop="16dp" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textAppearance="?android:attr/textAppearanceMedium"
+                        android:text="Si"
+                        android:id="@+id/textView_Informe_detalle_noVotaron"
+                        android:layout_centerVertical="true"
+                        android:layout_toLeftOf="@+id/textView_Informe_detalle_votaronTitulo"
+                        android:layout_toStartOf="@+id/textView_Informe_detalle_votaronTitulo" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textAppearance="?android:attr/textAppearanceMedium"
+                        android:text="No"
+                        android:id="@+id/textView_informe_detalle_siVotaron"
+                        android:layout_marginTop="15dp"
+                        android:layout_below="@+id/textView_Informe_detalle_noVotaron"
+                        android:layout_alignLeft="@+id/textView_Informe_detalle_noVotaron"
+                        android:layout_alignStart="@+id/textView_Informe_detalle_noVotaron" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textAppearance="?android:attr/textAppearanceMedium"
+                        android:text="error"
+                        android:id="@+id/textView_informe_detalle_CANTsiVotaron"
+                        android:layout_alignTop="@+id/textView_Informe_detalle_noVotaron"
+                        android:layout_alignLeft="@+id/textView_Informe_detalle_votaronTitulo"
+                        android:layout_alignStart="@+id/textView_Informe_detalle_votaronTitulo"
+                        android:layout_marginLeft="24dp"
+                        android:layout_marginStart="24dp" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textAppearance="?android:attr/textAppearanceMedium"
+                        android:text="error"
+                        android:id="@+id/textView_informe_detalle_CANTnoVotaron"
+                        android:layout_alignTop="@+id/textView_informe_detalle_siVotaron"
+                        android:layout_alignLeft="@+id/textView_informe_detalle_CANTsiVotaron"
+                        android:layout_alignStart="@+id/textView_informe_detalle_CANTsiVotaron" />
+
+                </RelativeLayout>
+
+            </android.support.v7.widget.CardView>
 
 
-    <FrameLayout
-        android:layout_width="100dp"
+            <android.support.v7.widget.CardView
+                xmlns:card_view="http://schemas.android.com/apk/res-auto"
+                android:layout_width="0dp"
+                android:layout_height="fill_parent"
+                card_view:cardBackgroundColor="@color/informe_card_background"
+                card_view:cardElevation="6dp"
+                card_view:cardCornerRadius="6dp"
+                android:layout_weight="1">
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textAppearance="?android:attr/textAppearanceLarge"
+                        android:text="Comen"
+                        android:id="@+id/textView_Informe_detalle_comenTitulo"
+                        android:layout_alignParentTop="true"
+                        android:layout_centerHorizontal="true"
+                        android:layout_marginTop="16dp" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textAppearance="?android:attr/textAppearanceMedium"
+                        android:text="Si"
+                        android:id="@+id/textView_Informe_detalle_noComen"
+                        android:layout_centerVertical="true"
+                        android:layout_toLeftOf="@+id/textView_Informe_detalle_comenTitulo"
+                        android:layout_toStartOf="@+id/textView_Informe_detalle_comenTitulo" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textAppearance="?android:attr/textAppearanceMedium"
+                        android:text="No"
+                        android:id="@+id/textView_informe_detalle_siComen"
+                        android:layout_marginTop="15dp"
+                        android:layout_below="@+id/textView_Informe_detalle_noComen"
+                        android:layout_alignLeft="@+id/textView_Informe_detalle_noComen"
+                        android:layout_alignStart="@+id/textView_Informe_detalle_noComen" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textAppearance="?android:attr/textAppearanceMedium"
+                        android:text="error"
+                        android:id="@+id/textView_informe_detalle_CANTsiComen"
+                        android:layout_alignTop="@+id/textView_Informe_detalle_noComen"
+                        android:layout_alignLeft="@+id/textView_Informe_detalle_comenTitulo"
+                        android:layout_alignStart="@+id/textView_Informe_detalle_comenTitulo"
+                        android:layout_marginLeft="24dp"
+                        android:layout_marginStart="24dp" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textAppearance="?android:attr/textAppearanceMedium"
+                        android:text="error"
+                        android:id="@+id/textView_informe_detalle_CANTnoComen"
+                        android:layout_alignTop="@+id/textView_informe_detalle_siComen"
+                        android:layout_alignLeft="@+id/textView_informe_detalle_CANTsiComen"
+                        android:layout_alignStart="@+id/textView_informe_detalle_CANTsiComen" />
+
+                </RelativeLayout>
+
+            </android.support.v7.widget.CardView>
+
+        </LinearLayout>
+
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1">
+
+            <android.support.v7.widget.CardView
+                xmlns:card_view="http://schemas.android.com/apk/res-auto"
+                android:layout_width="200dp"
+                android:layout_height="fill_parent"
+                card_view:cardBackgroundColor="@color/informe_card_background"
+                card_view:cardElevation="6dp"
+                card_view:cardCornerRadius="6dp"
+                android:layout_weight="1.5"
+                android:layout_gravity="center_horizontal">
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                    <LinearLayout
+                        android:orientation="horizontal"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_centerHorizontal="true">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textAppearance="?android:attr/textAppearanceLarge"
+                            android:text="Invitados"
+                            android:layout_gravity="center_vertical"/>
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="16dp"
+                            android:textAppearance="?android:attr/textAppearanceMedium"
+                            android:text="error"
+                            android:id="@+id/textView_informe_detalle_CANTinvitados"
+                            android:layout_gravity="center_vertical"/>
+
+                    </LinearLayout>
+
+                </RelativeLayout>
+
+
+        </android.support.v7.widget.CardView>
+
+            <android.support.v7.widget.CardView
+                xmlns:card_view="http://schemas.android.com/apk/res-auto"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                card_view:cardBackgroundColor="@color/informe_card_background"
+                card_view:cardElevation="10dp"
+                card_view:cardCornerRadius="6dp"
+                android:layout_weight="1">
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                    <LinearLayout
+                        android:orientation="horizontal"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_centerHorizontal="true">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textAppearance="?android:attr/textAppearanceLarge"
+                            android:text="Total aproximado"
+                            android:layout_gravity="center_vertical" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="24dp"
+                            android:textAppearance="?android:attr/textAppearanceLarge"
+                            android:text="Medium Text"
+                            android:id="@+id/textView_informe_detalle_CANTtotalAprox"
+                            android:layout_gravity="center_vertical" />
+
+                    </LinearLayout>
+
+                </RelativeLayout>
+
+            </android.support.v7.widget.CardView>
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+
+<!--    &lt;!&ndash;TODO remplazar por divider&ndash;&gt;
+    <View
+        android:layout_width="fill_parent"
+        android:layout_height="1px"
+        android:background="#ffc9c9c9"/>-->
+
+    <ListView
+        android:layout_width="match_parent"
         android:layout_height="100dp"
-        android:layout_gravity="center">
-    </FrameLayout>
+        android:id="@+id/listView_inforem_detalle_cantidadPorPlato"
+        android:layout_gravity="center_horizontal"
+        android:clickable="false"
+        android:listSelector="@android:color/transparent"
+        android:divider="@null">
+    </ListView>
 
+
+</LinearLayout>
 
 </FrameLayout>

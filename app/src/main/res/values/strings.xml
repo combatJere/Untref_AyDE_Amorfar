@@ -59,7 +59,9 @@
     <string name="no_votaron">No votaron</string>
     <string name="no_comen">Invitados</string>
     <string name="total_aproximado">Total aproximado:</string>
-
+    <string name="cuidado">Cuidado!</string>
+    <string name="advertencia_mensaje">Votaste despues de la hora permitida. Esta semana no hay premio :(</string>
+    <string name="entendido">Entendido</string>
 
     <string name="sobre_altosoft">UNTREF \n Analisis y disenio estructurado</string>
     <string name="title_activity_informe_tabs">InformeTabs</string>

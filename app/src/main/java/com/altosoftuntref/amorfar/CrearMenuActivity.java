@@ -3,6 +3,7 @@ package com.altosoftuntref.amorfar;
 import android.app.DialogFragment;
 import android.content.Intent;
 import android.database.Cursor;
+import android.graphics.PorterDuff;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
@@ -47,6 +48,7 @@ public class CrearMenuActivity extends AppCompatActivity implements TimePickerFr
     private final static String SAVED_SET_ID_PLATOS_MENU = "com.altosoftuntref.amorfar.SET_ID_PLATOS_MENU";
     private final static String SAVED_HAY_CAMBIOS = "com.altosoftuntref.amorfar.HAY_CAMBIOS";
 
+    private Menu menu;
     private PlatosCursorAdapter platosCursorAdapter;
     private Set<Integer> idPlatosDelMenu;
     private int cantidadPlatos;
@@ -225,7 +227,7 @@ public class CrearMenuActivity extends AppCompatActivity implements TimePickerFr
         this.horaComida = hora;
         this.minutosComida = minutos;
         this.actualizarTextviewHorario();
-        hayCambios = true;
+        cambioRealizado();
     }
 
 
@@ -337,7 +339,7 @@ public class CrearMenuActivity extends AppCompatActivity implements TimePickerFr
                 int[] idPlatosArray = data.getIntArrayExtra(SeleccionPlatoActivity.EXTRA_RETURNED_IDPLATOS_ACTUALIZADOS);
                 idPlatosDelMenu = TransformadorIntSetArray.getInstance().arrayIntASetInt(idPlatosArray);
                 this.actualizarGridViewPlatos();
-                hayCambios = true;
+                cambioRealizado();
             }
         }
     }
@@ -382,11 +384,41 @@ public class CrearMenuActivity extends AppCompatActivity implements TimePickerFr
     }
 
 
+    /**
+     * Llamar cuando se hace algun cambio.
+     * Setea la variable hayCambio como verdadera y cambia el icono de enviar a activado (blanco).
+     */
+    private void cambioRealizado(){
+        hayCambios = true;
+        MenuItem itemEnviar = menu.findItem(R.id.action_crearMenu_Enviar);
+        itemEnviar.getIcon().clearColorFilter();
+//        itemEnviar.setIcon(R.mipmap.hecho);
+//        itemEnviar.setVisible(true);
+    }
+
+
+    /**
+     * Setea cada icono en el estado que le corresponde (colores)
+     */
+    private void setearEstadoIconos(){
+        if(!hayCambios){
+            MenuItem itemEnviar = menu.findItem(R.id.action_crearMenu_Enviar);
+            itemEnviar.getIcon().setColorFilter(R.color.blanco_puro, PorterDuff.Mode.MULTIPLY);
+//            itemEnviar.setIcon(R.mipmap.hecho_desactivado_osc);
+//            itemEnviar.setVisible(false);
+        }
+    }
+
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_crear_menu, menu);
-        return true;
+        this.menu = menu;
+        setearEstadoIconos();
+
+        return super.onCreateOptionsMenu(menu);
+//        return true;
     }
 
 
@@ -412,4 +444,6 @@ public class CrearMenuActivity extends AppCompatActivity implements TimePickerFr
 
         return super.onOptionsItemSelected(item);
     }
+
+
 }

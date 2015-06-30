@@ -1,14 +1,22 @@
 package barra_informe.Fragmentos;
 
 import android.app.Activity;
+import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ListView;
+import android.widget.TextView;
 
 import com.altosoftuntref.amorfar.R;
+
+import java.util.Calendar;
+
+import adapter.CantidadPorPlatoAdapter;
+import inversiondecontrol.ServiceLocator;
 
 
 /**
@@ -36,6 +44,8 @@ public class InformeTabsDetalle extends Fragment {
     private String mParam2;
 
     private OnFragmentInteractionListener mListener;
+
+    private CantidadPorPlatoAdapter cantidadPorPlatoAdapter;
 
     /**
      * Use this factory method to create a new instance of
@@ -75,6 +85,14 @@ public class InformeTabsDetalle extends Fragment {
         return inflater.inflate(R.layout.fragment_informe_tabs_detalle, container, false);
     }
 
+
+    @Override
+    public void onActivityCreated(Bundle savedInstanceState){
+        super.onActivityCreated(savedInstanceState);
+        this.instanciarComponentes();
+    }
+
+
     // TODO: Rename method, update argument and hook method into UI event
     public void onButtonPressed(Uri uri) {
         if (mListener != null) {
@@ -112,6 +130,79 @@ public class InformeTabsDetalle extends Fragment {
     public interface OnFragmentInteractionListener {
         // TODO: Update argument type and name
         public void onFragmentInteraction(Uri uri);
+    }
+
+
+    /**
+     * Instanca todos los componenetes
+     */
+    private void instanciarComponentes(){
+        Calendar c = Calendar.getInstance();
+        int dia = c.get(Calendar.DAY_OF_MONTH);
+        int mes = c.get(Calendar.MONTH) + 1;
+        int anio = c.get(Calendar.YEAR);
+
+        this.instanciarListViewPlatosConCantidad(dia, mes, anio);
+        this.instanciarTextViews(dia, mes, anio);
+    }
+
+
+    /**
+     * Instancia el listview que mostrara el nombre de cada plato junto a la cantidad pedida.
+     * @param dia
+     * @param mes
+     * @param anio
+     * Recibe la fecha para saber cuales son los platos del menu correspondientes
+     */
+    private void instanciarListViewPlatosConCantidad(int dia, int mes, int anio){
+        Cursor cursor = ServiceLocator.getInstance().getMenuesDao(getActivity().getBaseContext()).getPlatosDelMenu(dia, mes, anio);
+        cantidadPorPlatoAdapter = new CantidadPorPlatoAdapter(getActivity(), cursor, 0);
+        ListView listViewCantPorPlato = (ListView) getView().findViewById(R.id.listView_inforem_detalle_cantidadPorPlato);
+        listViewCantPorPlato.setAdapter(cantidadPorPlatoAdapter);
+    }
+
+
+    /**
+     * Instancia todos los textview que mostrara el fragment.
+     * @param dia
+     * @param mes
+     * @param anio
+     * Recibe  la fecha para saber cual es el menu del que debe obtener y mostrar los valores.
+     */
+    private void instanciarTextViews(int dia, int mes, int anio){
+        int cantidadComensalesTotales = ServiceLocator.getInstance().getUsuariosDAO(getActivity().getBaseContext()).
+                getCantidadComensalesEnSistema();
+
+        int cantNoVotaron = ServiceLocator.getInstance().getUsuariosDAO(getActivity().getBaseContext())
+                .getCantidadNoVotaron(dia, mes, anio);
+
+        int cantidadNoComen = ServiceLocator.getInstance().getUsuariosDAO(getActivity().getBaseContext())
+                .getCantidadNoComen(dia, mes, anio);
+
+        int cantInvitados = ServiceLocator.getInstance().getUsuariosDAO(getActivity().getBaseContext())
+                .getCantidadDeInvitadosTotales(dia, mes, anio);
+
+        int cantidadSiVotaron = cantidadComensalesTotales - cantNoVotaron;
+        int cantidadSiComen = cantidadComensalesTotales - cantidadNoComen - cantNoVotaron;
+        int cantidadTotalAprox = cantidadSiComen + cantInvitados + cantNoVotaron;
+
+        TextView textViewCantNoVotaron = (TextView) getView().findViewById(R.id.textView_informe_detalle_CANTnoVotaron);
+        textViewCantNoVotaron.setText(String.valueOf(cantNoVotaron));
+
+        TextView textViewCantSiVotaron = (TextView) getView().findViewById(R.id.textView_informe_detalle_CANTsiVotaron);
+        textViewCantSiVotaron.setText(String.valueOf(cantidadSiVotaron));
+
+        TextView textViewCantSiComen = (TextView) getView().findViewById(R.id.textView_informe_detalle_CANTsiComen);
+        textViewCantSiComen.setText(String.valueOf(cantidadSiComen));
+
+        TextView textViewCantNoComen = (TextView) getView().findViewById(R.id.textView_informe_detalle_CANTnoComen);
+        textViewCantNoComen.setText(String.valueOf(cantidadNoComen));
+
+        TextView textViewCantInvitados = (TextView) getView().findViewById(R.id.textView_informe_detalle_CANTinvitados);
+        textViewCantInvitados.setText(String.valueOf(cantInvitados));
+
+        TextView textViewCantTotalAprox = (TextView) getView().findViewById(R.id.textView_informe_detalle_CANTtotalAprox);
+        textViewCantTotalAprox.setText(String.valueOf(cantidadTotalAprox));
     }
 
 }
