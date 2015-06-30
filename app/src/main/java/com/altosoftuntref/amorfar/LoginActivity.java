@@ -96,6 +96,12 @@ public class LoginActivity extends Activity {
     public void irACrearUsuario(View view){
         Intent intent = new Intent(this, CrearUsuarioActivity.class);
         startActivity(intent);
+        this.removerMenaje();
+    }
+
+    private void removerMenaje (){
+        TextView mensaje = (TextView)findViewById(R.id.textView_login_mensaje);
+        mensaje.setText("");
     }
 
 
