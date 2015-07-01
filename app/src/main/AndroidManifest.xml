@@ -18,7 +18,8 @@
         </activity>
         <activity
             android:name=".MainActivity"
-            android:label="@string/title_activity_main" >
+            android:label="@string/title_activity_main"
+            android:screenOrientation="portrait" >
         </activity>
         <activity
             android:name=".CrearMenuActivity"
@@ -46,7 +47,8 @@
         <activity
             android:name=".InformeActivityTabs"
             android:label="@string/title_activity_informe_activity_tabs"
-            android:theme="@style/InformeActivityTabsStyle">
+            android:theme="@style/InformeActivityTabsStyle"
+            android:screenOrientation="portrait">
         </activity>
     </application>
 

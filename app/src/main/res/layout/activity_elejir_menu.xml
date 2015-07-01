@@ -73,7 +73,7 @@ tools:context="com.altosoftuntref.amorfar.ElejirMenuActivity">
     <LinearLayout
         android:orientation="horizontal"
         android:layout_width="match_parent"
-        android:layout_height="56dp"
+        android:layout_height="@dimen/abc_action_bar_default_height_material"
         android:background="#ffe9ffdc">
 
         <RelativeLayout
@@ -127,7 +127,7 @@ tools:context="com.altosoftuntref.amorfar.ElejirMenuActivity">
         android:layout_width="match_parent"
         android:layout_height="60dp"
         android:background="#ffb0cbff"
-        android:onClick="enviarVotacion"
+        android:onClick="enviarVotacionClick"
         android:gravity="center">
 
         <TextView

@@ -23,6 +23,7 @@
     <string name="nuevo_plato">+  Nuevo plato</string>
     <string name="cantidad_de_platos">Cantidad de platos</string>
     <string name="confirmar">CONFIRMAR</string>
+    <string name="confirmar_minusc">Confirmar</string>
     <string name="title_activity_seleccion_plato">SeleccionPlatoActivity</string>
     <string name="nombre_plato">Nombre del plato</string>
     <string name="crear">Crear</string>
@@ -45,7 +46,7 @@
     <string name="title_activity_informe">InformeActivity</string>
     <string name="title_activity_lista_de_premios">ListaDePremiosActivity</string>
     <string name="reiniciar_premios">Reiniciar premios</string>
-    <string name="comensales_premiados">Comensales premiados:</string>
+    <string name="comensales_premiados">Premiados:</string>
     <string name="desea_reiniciar_premiados">¿Reiniciar lista de premiados?</string>
     <string name="cancelar">Cancelar</string>
     <string name="reiniciar">Reiniciar</string>
@@ -62,6 +63,8 @@
     <string name="cuidado">Cuidado!</string>
     <string name="advertencia_mensaje">Votaste despues de la hora permitida. Esta semana no hay premio :(</string>
     <string name="entendido">Entendido</string>
+    <string name="no_come_pero_lleva_invitados">Usted no come pero va con invitados.</string>
+    <string name="seguro">¿Seguro?</string>
 
     <string name="sobre_altosoft">UNTREF \n Analisis y disenio estructurado</string>
     <string name="title_activity_informe_tabs">InformeTabs</string>

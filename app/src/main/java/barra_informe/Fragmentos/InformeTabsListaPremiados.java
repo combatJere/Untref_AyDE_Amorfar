@@ -1,6 +1,8 @@
 package barra_informe.Fragmentos;
 
 import android.app.Activity;
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
@@ -9,11 +11,12 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
 
 import com.altosoftuntref.amorfar.R;
+
+import java.util.Calendar;
 
 import adapter.ComensalesConPremioAdapter;
 import dialogs.ReiniciarPremiadosDialogFragment;
@@ -46,6 +49,7 @@ public class InformeTabsListaPremiados extends Fragment implements ReiniciarPrem
 
     private OnFragmentInteractionListener mListener;
 
+    private static final String SAVED_FECHA_REINICIO_KEY = "fecha_reinicio_key";
     ComensalesConPremioAdapter premiadosAdapter;
 
     /**
@@ -94,6 +98,7 @@ public class InformeTabsListaPremiados extends Fragment implements ReiniciarPrem
     public void onActivityCreated(Bundle savedInstanceState){
         super.onActivityCreated(savedInstanceState);
         this.instanciarListViewPremiados();
+        this.instanciarFechaReinicio();
     }
 
 
@@ -202,11 +207,49 @@ public class InformeTabsListaPremiados extends Fragment implements ReiniciarPrem
     public void confirmarReiniciarPremiadosClick() {
         ServiceLocator.getInstance().getUsuariosDAO(getActivity().getBaseContext()).reiniciarPremios();
         actualizarListViewPremiados();
+        guardarFechaReinicio();
     }
 
 
-    public void reiniciarPijas(View view){
+//    public void reiniciarPijas(View view){
+//
+//    }
 
+
+    /**
+     * Guarda la fecha actual como la fecha del ultimo reinicio y la setea en el textview
+     */
+    private void guardarFechaReinicio() {
+        Calendar c = Calendar.getInstance();
+        int dia = c.get(Calendar.DAY_OF_MONTH);
+        int mes = c.get(Calendar.MONTH) + 1;
+        int anio = c.get(Calendar.YEAR);
+
+        String fechaEnTexto = this.getFechaEnTexto(dia, mes, anio);
+
+        SharedPreferences sharedPref = getActivity().getPreferences(Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPref.edit();
+        editor.putString(SAVED_FECHA_REINICIO_KEY, fechaEnTexto);
+        editor.commit();
+
+        TextView textViewUltimoReinicio = (TextView) getView().findViewById(R.id.textView_listaDePremiados_fechaReinicioUltima);
+        textViewUltimoReinicio.setText(fechaEnTexto);
+    }
+
+
+    /**
+     * obtiene la fecha de reinicio guardada.
+     */
+    private void instanciarFechaReinicio(){
+        SharedPreferences sharedPref = getActivity().getPreferences(Context.MODE_PRIVATE);
+        String fechaReinicioGuardada = sharedPref.getString(SAVED_FECHA_REINICIO_KEY, "No existe");
+        TextView textViewUltimoReinicio = (TextView) getView().findViewById(R.id.textView_listaDePremiados_fechaReinicioUltima);
+        textViewUltimoReinicio.setText(fechaReinicioGuardada);
+    }
+
+
+    public String getFechaEnTexto(int dia, int mes, int anio){
+        return dia + "/" + mes +"/" + anio;
     }
 
 }

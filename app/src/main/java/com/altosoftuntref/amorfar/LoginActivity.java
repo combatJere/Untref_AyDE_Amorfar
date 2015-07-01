@@ -99,13 +99,14 @@ public class LoginActivity extends Activity {
         this.removerMenaje();
     }
 
+
     private void removerMenaje (){
         TextView mensaje = (TextView)findViewById(R.id.textView_login_mensaje);
         mensaje.setText("");
     }
 
 
-    //    @Override
+//    @Override
 //    public boolean onCreateOptionsMenu(Menu menu) {
 //        // Inflate the menu; this adds items to the action bar if it is present.
 //        getMenuInflater().inflate(R.menu.menu_login, menu);

@@ -2,6 +2,7 @@ package com.altosoftuntref.amorfar;
 
 import android.app.DialogFragment;
 import android.content.Intent;
+import android.content.res.Configuration;
 import android.database.Cursor;
 import android.graphics.PorterDuff;
 import android.os.Bundle;
@@ -206,6 +207,10 @@ public class CrearMenuActivity extends AppCompatActivity implements TimePickerFr
         platosCursorAdapter = new PlatosCursorAdapter(getBaseContext(),platosDelMenu,0);
         platosGridView.setAdapter(platosCursorAdapter);
         platosGridView.setOnItemClickListener(onPlatoClick);
+
+        if(this.getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {
+            platosGridView.setNumColumns(4);
+        }
     }
 
 

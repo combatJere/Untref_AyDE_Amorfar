@@ -1,7 +1,9 @@
 package com.altosoftuntref.amorfar;
 
+import android.content.res.Configuration;
 import android.database.Cursor;
 import android.graphics.PorterDuff;
+import android.graphics.drawable.GradientDrawable;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
@@ -21,13 +23,14 @@ import Utilidades.TransformadorIntSetArray;
 import adapter.PlatosSingleChoiceAdapter;
 import dialogs.AdvertenciaVotoTardeDialog;
 import dialogs.CantidadInvitadosDialogFragment;
+import dialogs.ConInvitadosDialog;
 import inversiondecontrol.ServiceLocator;
 
 
 /**
  * @Pre El menu debe existir. de lo contrario, la actividad fallara.
  */
-public class ElejirMenuActivity extends AppCompatActivity implements CantidadInvitadosDialogFragment.CantidadInvitadosDialogListener{
+public class ElejirMenuActivity extends AppCompatActivity implements CantidadInvitadosDialogFragment.CantidadInvitadosDialogListener, ConInvitadosDialog.ConInvitadosDialogListener{
 
     public final static String EXTRA_CANTIDAD_INVITADOS = "amorfar.elejirMenu.CANTIDAD_INVITADOS";
 
@@ -82,11 +85,12 @@ public class ElejirMenuActivity extends AppCompatActivity implements CantidadInv
             }
         }
         setContentView(R.layout.activity_elejir_menu);
-        this.actualizarTextviewFecha();
-        this.actualizarTextviewHorario();
-        this.actualizarTextViewCantidadInvitados();
-        this.cambiarEstadoBotonNoComo();
-        this.crearGridViewPlatos();
+        this.instanciarComponentes();
+//        this.actualizarTextviewFecha();
+//        this.actualizarTextviewHorario();
+//        this.actualizarTextViewCantidadInvitados();
+//        this.cambiarEstadoBotonNoComo();
+//        this.crearGridViewPlatos();
     }
 
 
@@ -222,6 +226,10 @@ public class ElejirMenuActivity extends AppCompatActivity implements CantidadInv
         platosCursorAdapter = new PlatosSingleChoiceAdapter(getBaseContext(), platosDelMenu, 0, idPlatoElejido);
         platosGridView.setAdapter(platosCursorAdapter);
         platosGridView.setOnItemClickListener(onPlatoClick);
+
+        if(this.getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {
+            platosGridView.setNumColumns(4);
+        }
     }
 
 
@@ -277,7 +285,7 @@ public class ElejirMenuActivity extends AppCompatActivity implements CantidadInv
      */
     private void cambiarEstadoBotonNoComo(){
         Button botonNoComo = (Button) findViewById(R.id.button_elejirMenu_hoyNoComo);
-        if(idPlatoElejido == Configuraciones.NO_COME){
+        if(idPlatoElejido == Configuraciones.NO_COME) {
             botonNoComo.setBackgroundColor(getResources().getColor(R.color.gridViewItemCentro_background_checked));
         }else{
             botonNoComo.setBackgroundColor(getResources().getColor(R.color.gridViewItemCentro_background));
@@ -295,7 +303,7 @@ public class ElejirMenuActivity extends AppCompatActivity implements CantidadInv
         bundle.putInt(EXTRA_CANTIDAD_INVITADOS, cantidadInvitados);
         CantidadInvitadosDialogFragment cantInvitadosDialog = new CantidadInvitadosDialogFragment();
         cantInvitadosDialog.setArguments(bundle);
-        cantInvitadosDialog.show(this.getFragmentManager(),"cantInvitadpsDialog");
+        cantInvitadosDialog.show(this.getFragmentManager(), "cantInvitadpsDialog");
     }
 
 
@@ -321,44 +329,53 @@ public class ElejirMenuActivity extends AppCompatActivity implements CantidadInv
 
 
     /**
-     * Envia la votacion, si es que no se voto o se hizo algun cambio
-     * Siempre y cuando el horario no pase de las 11hs (CAMBIAR POR HISTORIA DE USUARIO CAMBIAR)
+     * Envia la votacaion solo si hubo cambios.
+     * En caso de votar NO COMO e ir con invitados pide confirmacion.
      */
-    public void enviarVotacion(){
+    public void enviarVotacionClick(){
 
         if (hayCambios) {
-            boolean guardadoExitoso;
-            //si conservava el premio, y voto, lo sigue conservando.
-            boolean conservaPremio;
 
-//            if(!horaDeVotacionPermitida()){
-//                conservaPremio = false;
-//            }else{
-//                conservaPremio = ServiceLocator.getInstance().getUsuariosDAO(getBaseContext())
-//                        .usuarioTienePremio(nombreUsuarioID);
-//            }
-            conservaPremio = this.analizarEstadoPremio();
-
-            guardadoExitoso = ServiceLocator.getInstance().getUsuariosDAO(getBaseContext()).
-                    enviarVoto(nombreUsuarioID, conservaPremio, idPlatoElejido, cantidadInvitados);
-
-            String textoConservaPremio = getTextoConservaPremio(conservaPremio);
-
-            if (guardadoExitoso) {
-                if(horaDeVotacionPermitida()){
-                    Toast.makeText(getBaseContext(), "Votacion enviada!\n" + textoConservaPremio, Toast.LENGTH_SHORT).show();
-                    finish();
-                }else{
-                    showAdvertenciaTardeDialogYEnviar();
-                }
-
-            } else {
-                Toast.makeText(getBaseContext(), "Upss, vuelva a intentarlo", Toast.LENGTH_SHORT).show();
-                finish();
+            if(cantidadInvitados > 0 && idPlatoElejido == Configuraciones.NO_COME){
+                ConInvitadosDialog conInvitadosDialog = new ConInvitadosDialog();
+                conInvitadosDialog.show(getFragmentManager(), "conInvitadosDialog");
+            }else{
+                enviarVotacion();
             }
 
         } else {
             Toast.makeText(getBaseContext(), "No hay cambios que enviar", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+
+    /**
+     * Guarda recalcula premio y guarda la votacion.
+     * En caso de votar despues de de la hora deseada, muestra dialog informando.
+     */
+    private void enviarVotacion(){
+        boolean guardadoExitoso;
+        //si conservava el premio, y voto, lo sigue conservando.
+        boolean conservaPremio;
+
+        conservaPremio = this.analizarEstadoPremio();
+
+        guardadoExitoso = ServiceLocator.getInstance().getUsuariosDAO(getBaseContext()).
+                enviarVoto(nombreUsuarioID, conservaPremio, idPlatoElejido, cantidadInvitados);
+
+        String textoConservaPremio = getTextoConservaPremio(conservaPremio);
+
+        if (guardadoExitoso) {
+            if(horaDeVotacionPermitida()){
+                Toast.makeText(getBaseContext(), "Votacion enviada!\n" + textoConservaPremio, Toast.LENGTH_SHORT).show();
+                finish();
+            }else{
+                showAdvertenciaTardeDialogYSalir(); //El mismo Dialog cierra esta activity cuando se confirma.
+            }
+
+        } else {
+            Toast.makeText(getBaseContext(), "Upss, vuelva a intentarlo", Toast.LENGTH_SHORT).show();
+            finish();
         }
     }
 
@@ -423,9 +440,20 @@ public class ElejirMenuActivity extends AppCompatActivity implements CantidadInv
      * Muestra un mensaje de advertencia para los usuarios que votaron despues del horario permitido
      * y finaliza la actividad.
      */
-    private void showAdvertenciaTardeDialogYEnviar(){
+    private void showAdvertenciaTardeDialogYSalir(){
         AdvertenciaVotoTardeDialog votoTardeDialog = new AdvertenciaVotoTardeDialog();
         votoTardeDialog.show(getFragmentManager(),"advertencia_dialog");
+    }
+
+
+    @Override
+    public void onConInvitadosConfirmarClick() {
+        this.enviarVotacion();
+    }
+
+    @Override
+    public void onConInvitadosCancelarClick() {
+        Toast.makeText(getBaseContext(), "No enviado.", Toast.LENGTH_SHORT).show();
     }
 
 
@@ -483,7 +511,7 @@ public class ElejirMenuActivity extends AppCompatActivity implements CantidadInv
             return true;
         }
         if (id == R.id.action_elegirMenu_Enviar){
-            this.enviarVotacion();
+            this.enviarVotacionClick();
             return true;
         }
 

@@ -2,6 +2,7 @@ package com.altosoftuntref.amorfar;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.content.res.Configuration;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.view.View;
@@ -87,6 +88,10 @@ public class SeleccionPlatoActivity extends Activity implements NombrePlatoDialo
         platosCursorAdapter = new PlatosCursorAdapter(getBaseContext(), cursorAllPlatos, 0);
         gridViewPlatos.setAdapter(platosCursorAdapter);
         gridViewPlatos.setOnItemClickListener(onPlatoClick);
+
+        if(this.getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {
+            gridViewPlatos.setNumColumns(4);
+        }
     }
 
 

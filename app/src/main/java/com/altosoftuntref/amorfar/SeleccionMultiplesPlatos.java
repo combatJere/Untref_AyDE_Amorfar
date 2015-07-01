@@ -2,6 +2,7 @@ package com.altosoftuntref.amorfar;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.content.res.Configuration;
 import android.database.Cursor;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
@@ -83,6 +84,10 @@ public class SeleccionMultiplesPlatos extends Activity implements NombrePlatoDia
         platosCursorAdapter = new PlatosMultipleChoiceAdapter(getBaseContext(), cursorAllPlatos, 0, idPlatosElejidos);
         gridViewPlatosMultiCheck.setAdapter(platosCursorAdapter);
         gridViewPlatosMultiCheck.setOnItemClickListener(onPlatoClick);
+
+        if(this.getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {
+            gridViewPlatosMultiCheck.setNumColumns(4);
+        }
     }
 
     /**
